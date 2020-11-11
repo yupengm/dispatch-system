@@ -11,8 +11,10 @@ public class HelloWorld {
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        if (session != null) {
+        if (session == null) {
             session.invalidate();
+        } else {
+            System.out.print("warning");
         }
 
 
