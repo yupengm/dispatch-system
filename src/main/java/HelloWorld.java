@@ -7,7 +7,7 @@ import java.io.IOException;
 public class HelloWorld {
     public static void main(String[] args){
         int[] array = new int[]{0,1};
-        System.out.print("Hello");
+        System.out.print("Hello a day");
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
