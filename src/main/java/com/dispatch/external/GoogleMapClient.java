@@ -1,6 +1,6 @@
-package External;
+package com.dispatch.external;
 
-public class GoogleMapTest {
+public class GoogleMapClient {
     final String Key = "AIzaSyBuoOrk0v4p_2Q-Pb7xymPwQoJvDP9v-ck" ;
 
     String test = "900 S Clark, Chicago, IL";
