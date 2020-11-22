@@ -5,10 +5,15 @@ class Main extends Component {
     render(){
         return (
             <div className='main'>
-                <div className='left'>
+                <div className="left-side">
+                    left
                     <UserInput />
+                    <div className="address">
+                        Address Component
+                    </div>
                 </div>
-                <div className='right'>
+                <div className="right-side">
+                    Map
                     <Map />
                 </div>
             </div>

@@ -1,16 +1,18 @@
 .main{
-    position:relative;
+    position:absolute;
     height:760px;
 }
 .left-side{
-    position:absolute;
+    position:relative;
     top:0;
     left:0;
     height:760px;
     width:420px;
-    padding:20px;
+    float: left;
 }
 .right-side{
-    mairgin-left:420px;
+    float: left;
+    padding-left: 10px;
+    mairgin-left:450px;
     height:760px;
 }
