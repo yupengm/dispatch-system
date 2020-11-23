@@ -1,18 +1,24 @@
 .main{
-    position:absolute;
+    /*position:relative;*/
     height:760px;
 }
 .left-side{
-    position:relative;
+    /*position:absolute;*/
     top:0;
     left:0;
     height:760px;
     width:420px;
+    width: 30%;
     float: left;
+    margin-top: 5px;
+    /*border: 1px solid red;*/
 }
 .right-side{
-    float: left;
-    padding-left: 10px;
-    mairgin-left:450px;
-    height:760px;
+    /*position: fixed;*/
+    /*float: left;*/
+    /*padding-left: 10px;*/
+    /*mairgin-left:450px;*/
+    /*height:760px;*/
+    /*width: 1000px;*/
+    /*border: 1px solid green;*/
 }
