@@ -1,14 +1,18 @@
 import React, {Component} from 'react';
-import UserInput from './UserInput';
+import UserSetting from "./UserInput";
 import Map from"./Map"
+import UserAddress from "./UserAddress";
 class Main extends Component {
     render(){
         return (
             <div className='main'>
-                <div className='left'>
-                    <UserInput />
+                <div className="left-side">
+                        <UserSetting />
+                        <div className="address">
+                            <UserAddress />
+                        </div>
                 </div>
-                <div className='right'>
+                <div>
                     <Map />
                 </div>
             </div>
