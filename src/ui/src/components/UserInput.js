@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Select, InputNumber, Button} from 'antd';
+import {Form, Select, InputNumber, Checkbox, Row, Col, Button,} from 'antd';
 const { Option } = Select;
 
 class UserInputForm extends Component{
@@ -34,8 +34,8 @@ class UserInputForm extends Component{
         const { getFieldDecorator } = this.props.form;
         return (
             <div>
-                <div>Please help us know more about your package:</div>
                 <Form {...formItemLayout} className='user-input' onSubmit={this.handleSubmit}>
+                    <Form.Item label="Please help us know more about your package:"/>
                     <Form.Item label="Size" hasFeedback>
                         {getFieldDecorator('size', {
                             rules:[{required: true, message: 'Please select your package size !'}],
@@ -60,16 +60,75 @@ class UserInputForm extends Component{
                             </Select>,
                         )}
                     </Form.Item>
-                    <Form.Item label="Include Lithium Batteries" hasFeedback>
-                        {getFieldDecorator('batteries', {
-                            rules:[{required: true, message: 'Does your package includes Lithium Batteries ?'}],
-                        })(
-                            <Select placeholder="Does your package includes Lithium Batteries ?">
-                                <Option value='yes'>Yes</Option>
-                                <Option value='no'>No</Option>
-                            </Select>,
-                        )}
+
+                    <Form.Item name="checkbox" label="Features">
+                        <Checkbox.Group>
+                            <Row>
+                                <Col span={8}>
+                                    <Checkbox
+                                        value="Liquid"
+                                        style={{
+                                            lineHeight: '32px',
+                                        }}
+                                    >
+                                        Liquid
+                                    </Checkbox>
+                                </Col>
+                                <Col span={8}>
+                                    <Checkbox
+                                        value="Fragile"
+                                        style={{
+                                            lineHeight: '32px',
+                                        }}
+                                    >
+                                        Fragile
+                                    </Checkbox>
+                                </Col>
+                                <Col span={8}>
+                                    <Checkbox
+                                        value="Battery"
+                                        style={{
+                                            lineHeight: '32px',
+                                        }}
+                                    >
+                                        Battery
+                                    </Checkbox>
+                                </Col>
+                                <Col span={8}>
+                                    <Checkbox
+                                        value="Pharmacy"
+                                        style={{
+                                            lineHeight: '32px',
+                                        }}
+                                    >
+                                        Pharmacy
+                                    </Checkbox>
+                                </Col>
+                                <Col span={8}>
+                                    <Checkbox
+                                        value="Grocery"
+                                        style={{
+                                            lineHeight: '32px',
+                                        }}
+                                    >
+                                        Grocery
+                                    </Checkbox>
+                                </Col>
+                                <Col span={8}>
+                                    <Checkbox
+                                        value="Gift"
+                                        style={{
+                                            lineHeight: '32px',
+                                        }}
+                                    >
+                                        Gift
+                                    </Checkbox>
+                                </Col>
+                            </Row>
+                        </Checkbox.Group>
                     </Form.Item>
+
+
                     <Form.Item label="Declared Value (USD)">
                         {getFieldDecorator('value', { initialValue: 0 })(<InputNumber min={0} max={10000} />)}
                         <span className="ant-form-text"> USD</span>

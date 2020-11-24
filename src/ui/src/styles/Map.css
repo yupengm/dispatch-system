@@ -1,39 +1,10 @@
-.map-box {
-    position: relative;
-    height: inherit;
-    width: inherit;
-}
-/*position absolute, to overlay*/
-/*their parent is map-box*/
-.map, .track, .spinner {
+.mapWrapper{
+    margin-top: 5px;
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-}
-/*use  z index to adjust which canvas is on top*/
-.map {
-    z-index: 0;
+    margin-left: 30.5%;
+    height: 100%;
 }
 
-.track {
-    z-index: 100;
-}
-
-.spinner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 600px;
-    width: 960px;
-}
-
-.hint {
-    color: red;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    width: 100%;
+.map{
+    position: absolute;
 }
