@@ -1,5 +1,4 @@
 package com.dispatch.entity;
 
-public class User {
-
+public class Customer {
 }

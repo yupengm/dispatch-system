@@ -1,4 +1,4 @@
 package com.dispatch.entity;
 
-public class test {
+public class PutDownAddress {
 }
