@@ -6,6 +6,7 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.util.*;
@@ -26,7 +27,7 @@ public class GoogleMapClient {
     //189 Prairie Run, Edmond, OK
     String request2 = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=189%20Prairie%20Run%20Edmond%20OK&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=YOUR_API_KEY";
 
-    public void getLocation(String input) {
+    public String getLocation(String input) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         StringBuilder URL = new StringBuilder(EXTRACT_URL);
         input = input.replace(",","");
@@ -54,30 +55,37 @@ public class GoogleMapClient {
                     return "empty";
                 }
 
-                return entity.getContent().toString();
+                String responseXml = EntityUtils.toString(response.getEntity());
+                String[] allContent = responseXml.split(" ");
+                Boolean toPrint = false;
+//                for(String cur : allContent) {
+//                        System.out.println(cur);
+//                }
+                return responseXml;
             }
         };
 
         HttpPost request = new HttpPost(URL.toString());
         request.setHeader("Content-type", "application/json");
+        String all = null;
 
         try {
-            char[] all = httpClient.execute(request, responseHandler).toCharArray();
+             all = httpClient.execute(request, responseHandler);
 //            System.out.println();
-            for(char cur : all) {
-                System.out.print(cur);
-            }
+//            for(String cur : all) {
+//                System.out.print(all);
+//            }
             httpClient.close();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            return all;
         }
-
 
     }
 
     public static void main(String[] args) {
         GoogleMapClient a = new GoogleMapClient();
-        a.getLocation("900 S Clark, Chicago, IL");
-//        System.out.println(request1);
+        System.out.println(a.getLocation("900 S Clark, Chicago, IL"));
     }
 }
