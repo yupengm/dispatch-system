@@ -1,9 +1,14 @@
 import React, {Component} from 'react';
-import UserSetting from "./UserInput";
+import UserInput from "./UserInput";
 import Map from"./Map"
 import UserAddress from "./UserAddress";
+
+import Login from "./Login";
+import Register from "./Register";
+
 import Tracking from "./Tracking";
 import UserInput from "./UserInput";
+
 class Main extends Component {
 
     constructor(props) {
@@ -68,6 +73,7 @@ class Main extends Component {
         return (
             <div className='main'>
                 <div className="left-side">
+
                     <UserInput curr_step={steps}
                                 setSteps={this.handleSteps}
                                handleChange={this.handleChange}
