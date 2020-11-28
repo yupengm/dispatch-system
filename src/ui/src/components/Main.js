@@ -2,12 +2,10 @@ import React, {Component} from 'react';
 import UserInput from "./UserInput";
 import Map from"./Map"
 import UserAddress from "./UserAddress";
-
 import Login from "./Login";
 import Register from "./Register";
-
 import Tracking from "./Tracking";
-import UserInput from "./UserInput";
+
 
 class Main extends Component {
 
@@ -18,7 +16,9 @@ class Main extends Component {
             size: "",
             weight: "",
             features: [],
-            value: 0
+            value: 0,
+            destination: "",
+            target:""
         }
     }
 
@@ -66,13 +66,26 @@ class Main extends Component {
         return null;
     }
 
+    setPoints = (destination, target) =>{
+        this.setState(()=>({
+            destination: destination,
+                target: target
+        }))
+    }
+
 
     render(){
-        const {steps} = this.state
+        const {steps, destination, target} = this.state
 
         return (
             <div className='main'>
                 <div className="left-side">
+
+                    <Register />
+
+                    <UserAddress curr_step={steps}
+                                 setSteps={this.handleSteps}
+                    />
 
                     <UserInput curr_step={steps}
                                 setSteps={this.handleSteps}
@@ -82,9 +95,7 @@ class Main extends Component {
                                feature={this.state.feature}
                                value={this.state.value}
                     />
-                    <UserAddress curr_step={steps}
-                                 setSteps={this.handleSteps}
-                    />
+
 
                     {this.previousButton}
 
