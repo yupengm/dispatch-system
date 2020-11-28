@@ -18,8 +18,6 @@ public class User implements Serializable{
 
     private String password;
 
-    private boolean enabled;
-
     @OneToOne(mappedBy = "user")
     private Customer customer;
 
@@ -37,14 +35,6 @@ public class User implements Serializable{
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     public Customer getCustomer() {

@@ -33,6 +33,10 @@ public class Box implements Serializable {
 
     private boolean fragileOrNot;
 
+    private boolean batteryOrNot;
+
+    private boolean liquidOrnot;
+
     @OneToOne(mappedBy = "box")
     private Order order;
 
@@ -106,5 +110,21 @@ public class Box implements Serializable {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public boolean isBatteryOrNot() {
+        return batteryOrNot;
+    }
+
+    public void setBatteryOrNot(boolean batteryOrNot) {
+        this.batteryOrNot = batteryOrNot;
+    }
+
+    public boolean isLiquidOrnot() {
+        return liquidOrnot;
+    }
+
+    public void setLiquidOrnot(boolean liquidOrnot) {
+        this.liquidOrnot = liquidOrnot;
     }
 }
