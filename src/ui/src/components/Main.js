@@ -6,9 +6,9 @@ import Login from "./Login";
 import Register from "./Register";
 import Tracking from "./Tracking";
 
-
+// Main Component
 class Main extends Component {
-
+    
     constructor(props) {
         super(props);
         this.state = {
