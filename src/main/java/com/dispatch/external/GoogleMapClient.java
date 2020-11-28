@@ -17,15 +17,15 @@ public class GoogleMapClient {
     private static final String FORMAT_URL = "&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=";
 
 
-    String test = "900 S Clark, Chicago, IL";
-    //The following example shows a Find Place request for "Museum of Contemporary Art Australia",
-    // including the photos, formatted_address, name, rating, opening_hours, and geometry fields:
-    String request = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Museum%20of%20Contemporary%20Art%20Australia&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=YOUR_API_KEY";
-
-    public static String request1 = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=900%20S%20Clark%20Chicago%20IL&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=YOUR_API_KEY";
-
-    //189 Prairie Run, Edmond, OK
-    String request2 = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=189%20Prairie%20Run%20Edmond%20OK&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=YOUR_API_KEY";
+//    String test = "900 S Clark, Chicago, IL";
+//    //The following example shows a Find Place request for "Museum of Contemporary Art Australia",
+//    // including the photos, formatted_address, name, rating, opening_hours, and geometry fields:
+//    String request = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Museum%20of%20Contemporary%20Art%20Australia&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=YOUR_API_KEY";
+//
+//    public static String request1 = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=900%20S%20Clark%20Chicago%20IL&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=YOUR_API_KEY";
+//
+//    //189 Prairie Run, Edmond, OK
+//    String request2 = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=189%20Prairie%20Run%20Edmond%20OK&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=YOUR_API_KEY";
 
     public String getLocation(String input) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -40,9 +40,8 @@ public class GoogleMapClient {
         URL.delete(URL.length() - 3,URL.length());
         URL.append(FORMAT_URL);
         URL.append(KEY);
-//        System.out.println(URL);
 
-        //
+
         ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
             @Override
             public String handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
@@ -54,14 +53,30 @@ public class GoogleMapClient {
                 if (entity == null) {
                     return "empty";
                 }
-
+                // get String from google api response
                 String responseXml = EntityUtils.toString(response.getEntity());
-                String[] allContent = responseXml.split(" ");
-                Boolean toPrint = false;
-//                for(String cur : allContent) {
-//                        System.out.println(cur);
+
+//                // return all json as string
+//                return responseXml;
+
+
+                // form a String "lat,lng"
+                String[] allContent = responseXml.split("\\{");
+//                for(int i = 0; i < allContent.length; i++) {
+//                    System.out.println(i + ":" +allContent[i]);
 //                }
-                return responseXml;
+//                System.out.println(allContent[4]);
+                String[] result = allContent[4].split(" ");
+//                for(int i = 0; i < result.length; i++) {
+//                    System.out.println(i  +result[i]);
+//                } // 17,34
+
+                String toReturn = result[17] + result[34];
+                toReturn = toReturn.replace("\n","");
+//                System.out.print("--------");
+//                System.out.print(toReturn);
+//                System.out.print("--------");
+                return toReturn;
             }
         };
 
@@ -71,10 +86,7 @@ public class GoogleMapClient {
 
         try {
              all = httpClient.execute(request, responseHandler);
-//            System.out.println();
-//            for(String cur : all) {
-//                System.out.print(all);
-//            }
+
             httpClient.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -85,7 +97,10 @@ public class GoogleMapClient {
     }
 
     public static void main(String[] args) {
-        GoogleMapClient a = new GoogleMapClient();
-        System.out.println(a.getLocation("900 S Clark, Chicago, IL"));
+//        GoogleMapClient a = new GoogleMapClient();
+
+//        a.getLocation("189 Prairie Run, Edmond, OK");
+//        a.getLocation("Museum of Contemporary Art Australia");
+//        System.out.println(a.getLocation("900 S Clark, Chicago, IL"));
     }
 }
