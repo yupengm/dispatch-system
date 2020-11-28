@@ -17,8 +17,8 @@ class Main extends Component {
             weight: "",
             features: [],
             value: 0,
-            destination: "",
-            target:""
+            destination: {lat: 37.776290, lng: -122.431323},
+            target: {lat: 37.757936, lng: -122.409895}
         }
     }
 
