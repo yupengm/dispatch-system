@@ -10,6 +10,7 @@ class UserInputForm extends Component{
                 console.log('Received values of form: ', values);
             }
         });
+        this.props.setSteps()
     };
 
     normFile = e => {
