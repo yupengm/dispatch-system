@@ -5,7 +5,6 @@ import UserAddress from "./UserAddress";
 import Login from "./Login";
 import Register from "./Register";
 import Tracking from "./Tracking";
-
 import WelcomePage from './WelcomePage';
 
 
@@ -85,29 +84,29 @@ class Main extends Component {
                 <div className="welcome-page">
                     <WelcomePage />
                 </div>
-                <div className="left-side">
+            {/*    <div className="left-side">*/}
 
-                    <Register />
+            {/*        <Register />*/}
 
-                    <UserAddress curr_step={steps}
-                                 setSteps={this.handleSteps}
-                    />
+            {/*        <UserAddress curr_step={steps}*/}
+            {/*                     setSteps={this.handleSteps}*/}
+            {/*        />*/}
 
-                    <UserInput curr_step={steps}
-                                setSteps={this.handleSteps}
-                               handleChange={this.handleChange}
-                               weight={this.state.weight}
-                               size={this.state.size}
-                               feature={this.state.feature}
-                               value={this.state.value}
-                    />
+            {/*        <UserInput curr_step={steps}*/}
+            {/*                    setSteps={this.handleSteps}*/}
+            {/*                   handleChange={this.handleChange}*/}
+            {/*                   weight={this.state.weight}*/}
+            {/*                   size={this.state.size}*/}
+            {/*                   feature={this.state.feature}*/}
+            {/*                   value={this.state.value}*/}
+            {/*        />*/}
 
-                    {this.previousButton}
+            {/*        {this.previousButton}*/}
 
-                </div>
-                <div>
-                    <Map des={destination} tar={target}/>
-                </div>
+            {/*    </div>*/}
+            {/*    <div>*/}
+            {/*        <Map des={destination} tar={target}/>*/}
+            {/*    </div>*/}
             </div>
         );
     }
