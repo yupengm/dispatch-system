@@ -1,9 +1,11 @@
 import React from 'react';
-import { withGoogleMap, GoogleMap, withScriptjs, InfoWindow, Marker } from "react-google-maps";
+import { withGoogleMap, GoogleMap, withScriptjs, InfoWindow, Marker, GoogleApiWrapper } from "react-google-maps";
+// import Route from "./Route"
 // import Geocode from "react-geocode";
 // import Autocomplete from 'react-google-autocomplete';
 // import { Descriptions } from 'antd';
 // import {useGoogleMap} from "@react-google-maps/api";
+
 
 const { MarkerWithLabel } = require("react-google-maps/lib/components/addons/MarkerWithLabel");
 
@@ -16,9 +18,18 @@ class Map extends React.Component {
         state: '',
         zoom: 13,
         height: 400,
+        route : [
+            {"lat": 3.028846373870724, "lng": 101.62019493865353},
+            {"lat": 3.0293392107899226, "lng": 101.62000181960445},
+            {"lat": 3.0297677644503347, "lng": 101.61980870055538},
+            {"lat": 3.0301963179410842, "lng": 101.61967995452267},
+            {"lat": 3.0307105819060256, "lng": 101.6194868354736},
+            {"lat": 3.0319319578431805, "lng": 101.61916497039181}
+        ]
     }
 
     render() {
+        const {route} = this.state;
         const MapWithAMarker = withScriptjs(withGoogleMap(props =>
 
             <GoogleMap
@@ -55,7 +66,10 @@ class Map extends React.Component {
                         </div>
                     </InfoWindow>
                 </Marker>
-
+                {/*<Route*/}
+                {/*    // 传入route*/}
+                {/*    route = {route}*/}
+                {/*/>*/}
             </GoogleMap>
         ));
 
@@ -77,4 +91,7 @@ class Map extends React.Component {
     }
 
 }
-export default Map;
+export default GoogleApiWrapper({
+    apiKey: "AIzaSyC3VIYN9hiyxIdNHYVv2aQDOukTu64pLzA ",
+    libraries: []
+})(Map);
