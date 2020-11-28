@@ -6,6 +6,11 @@
 @import "./styles/Map.css";
 @import "./styles/UserAddress.css";
 @import "./styles/Login.css";
+@import "./styles/Recommendation.css";
+@import "./styles/CreditCard.css";
+@import "./styles/Confirmation.css";
+@import "./styles/Tracking.css";
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
