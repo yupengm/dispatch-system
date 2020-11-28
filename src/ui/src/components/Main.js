@@ -5,10 +5,14 @@ import UserAddress from "./UserAddress";
 import Login from "./Login";
 import Register from "./Register";
 import Tracking from "./Tracking";
+
 import WelcomePage from './WelcomePage';
 
-class Main extends Component {
 
+// Main Component
+
+class Main extends Component {
+    
     constructor(props) {
         super(props);
         this.state = {
