@@ -70,13 +70,16 @@ class UserAddress extends React.Component {
         this.props.showPoints(target, destination);
         console.log(target);
         console.log(destination);
+        this.props.setSteps();
     }
 
     render() {
+        if(this.props.curr_step!=2)
+            return null
         const formItemLayout = {labelCol: { span: 4 }, wrapperCol: { span: 14 }};
         const buttonItemLayout = {wrapperCol: { span: 14, offset: 4 }};
         return (
-            <div>
+            <div className="address">
                 <Form className='user-address' layout="horizontal">
                     <Form.Item label="Where should we pick it up?"/>
                     <Form.Item label="Address Line 1" {...formItemLayout} required hasFeedback
