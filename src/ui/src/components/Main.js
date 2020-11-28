@@ -5,6 +5,7 @@ import UserAddress from "./UserAddress";
 import Tracking from "./Tracking";
 import UserInput from "./UserInput";
 class Main extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -80,9 +81,10 @@ class Main extends Component {
                     />
 
                     {this.previousButton}
+
                 </div>
                 <div>
-                    <Map />
+                    <Map des={destination} tar={target}/>
                 </div>
             </div>
         );
