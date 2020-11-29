@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Form, Icon, Input, Button,Checkbox} from 'antd';
+// import axios from 'axios';
 
 class LoginForm extends Component {
     handleSubmit = e => {
@@ -11,7 +12,15 @@ class LoginForm extends Component {
         });
     };
 
-    // axios.get("./Dispatch/login");
+//     axios.get("./Dispatch/login")
+//             .then(response => {
+//                 console.log(response.data)
+//                 this.setState({
+//                     username: response.data;
+//                     password: true;
+//                               }
+//     )
+// })
 
     render() {
         const { getFieldDecorator } = this.props.form;

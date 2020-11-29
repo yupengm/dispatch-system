@@ -39,6 +39,19 @@ class RegisterForm extends Component {
         this.setState({ autoCompleteResult });
     };
 
+    //     axios.post("./Dispatch/signup")
+//             .then(response => {
+//                 console.log(response.data)
+//                 this.setState({
+//                     email: ;
+//                     password: ;
+//                     first_name:
+//                     last_name:
+//                     phone_number:
+//                               }
+//     )
+// })
+
 
     render() {
         const formItemLayout = {
@@ -82,7 +95,7 @@ class RegisterForm extends Component {
 
 
         const prefixSelector = getFieldDecorator('prefix', {
-            initialValue: '86',
+            initialValue: '1',
         })(
             <Select style={{ width: 70 }}>
                 <Option value="1">+1</Option>
