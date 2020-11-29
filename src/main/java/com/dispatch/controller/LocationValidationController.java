@@ -17,7 +17,7 @@ public class LocationValidationController {
     @Autowired
     LocationValidationService locationValidationService;
 
-    @RequestMapping(value = "/addressValidation", method = RequestMethod.GET)
+    @RequestMapping(value = "/addressValidation", method = RequestMethod.POST)
     public JSONObject addressValidation(@RequestBody HashMap<String, String> requestData, BindingResult result) {
         if (result.hasErrors()) {
             return null;

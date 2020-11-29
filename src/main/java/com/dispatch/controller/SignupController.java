@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +18,7 @@ public class SignupController {
     private SignupService signupService;
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public JSONObject signup(@RequestBody Customer customer, BindingResult result) {
+    public JSONObject signup(@ModelAttribute Customer customer, BindingResult result) {
         if (result.hasErrors()) {
             return null;
         }

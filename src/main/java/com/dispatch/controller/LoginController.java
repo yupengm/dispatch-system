@@ -15,10 +15,11 @@ public class LoginController {
     private LoginService loginService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public JSONObject login(@RequestBody User user, BindingResult result) {
+    public JSONObject login(@ModelAttribute User user, BindingResult result) {
         if (result.hasErrors()) {
             return null;
         }
+
         return loginService.getLogin(user);
 
 //        String res = loginService.getLogin(user);
