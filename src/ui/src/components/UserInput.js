@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {Form, Select, InputNumber, Checkbox, Row, Col, Button,} from 'antd';
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
+import {RightOutlined} from '@ant-design/icons';
+import axios from 'axios';
+
 const { Option } = Select;
 
 class UserInputForm extends Component{
@@ -14,7 +17,16 @@ class UserInputForm extends Component{
                 //axios
                 this.props.handleChange(values)
                 this.props.setSteps()
-            }
+
+                const params = {
+                        size: this.props.length * this.props.width * this.props.height,
+                    }
+
+                    let res = axios.post('Dispatch/input', params);
+
+                    // console.log(res.data);
+                }
+
         });
     };
 
@@ -41,11 +53,11 @@ class UserInputForm extends Component{
         const formItemLayout = {
             labelCol:{
                 xs:{ span: 24 },
-                sm: { span: 11 },
+                sm: { span: 8 },
             },
             wrapperCol:{
                 xs:{ span: 24 },
-                sm: { span: 13},
+                sm: { span: 16},
             }
         };
         const { getFieldDecorator } = this.props.form;
@@ -73,29 +85,34 @@ class UserInputForm extends Component{
 
                     <Form.Item label="Please help us know more about your package:"/>
 
-                    <Form.Item label="Size(Length)" >
+
+                    <Form.Item label="Length (inch)" hasFeedback>
                         {getFieldDecorator('length',
-                            {initialValue : this.props.length == 0?"":this.props.length})
-                        (<InputNumber min={0} max={1000} />)}
-                        <span className="ant-form-text"> INCH</span>
+                            {rules: [{required: true, message: 'Please input the size of your package'}],
+                            initialValue : this.props.length == 0?"":this.props.length}
+                            )(<InputNumber min={0} max={1000} />)}
                     </Form.Item>
 
-                    <Form.Item label="Size(Width)">
+                    <Form.Item label="Width (inch)" hasFeedback>
                         {getFieldDecorator('width',
-                            {initialValue : this.props.width == 0?"":this.props.width})(<InputNumber min={0} max={1000} />)}
-                        <span className="ant-form-text"> INCH</span>
+                            {rules: [{required: true, message: 'Please input the size of your package',
+                            initialValue : this.props.width == 0?"":this.props.width}]}
+                        )(<InputNumber min={0} max={1000} />)}
                     </Form.Item>
 
-                    <Form.Item label="Size(Height)">
+                    <Form.Item label="Height (inch)" hasFeedback>
                         {getFieldDecorator('height',
-                            {initialValue : this.props.height == 0?"":this.props.height})(<InputNumber min={0} max={1000} />)}
-                        <span className="ant-form-text"> INCH</span>
+                            {rules: [{required: true, message: 'Please input the size of your package',
+                            initialValue : this.props.height == 0?"":this.props.height}]}
+                        )(<InputNumber min={0} max={1000} />)}
                     </Form.Item>
 
-                    <Form.Item label="Weight">
+                    <Form.Item label="Weight (lbs)" hasFeedback>
                         {getFieldDecorator('weight',
-                            {initialValue : this.props.weight == 0?"":this.props.weight})(<InputNumber min={0} max={1000} />)}
-                        <span className="ant-form-text"> LBS</span>
+                            {rules: [{required: true, message: 'Please input the weights of your package',
+                            initialValue : this.props.weight == 0?"":this.props.weight}]}
+                            )(<InputNumber min={0} max={1000} />)}
+
                     </Form.Item>
 
                     <Form.Item name="checkbox" label="Features">
@@ -134,6 +151,7 @@ class UserInputForm extends Component{
                             </Row>
                         </Checkbox.Group>
                     </Form.Item>
+
 
 
                     {/*<Form.Item label="Please help us know more about your package:"/>*/}
@@ -232,14 +250,16 @@ class UserInputForm extends Component{
                     {/*</Form.Item>*/}
 
 
+
                     <Form.Item label="Declared Value (USD)">
-                        {getFieldDecorator('value', { initialValue: this.props.value })(<InputNumber min={0} max={10000} />)}
-                        <span className="ant-form-text"> USD</span>
+                        {getFieldDecorator('value')(<InputNumber min={0} max={10000} />)}
+                        {/*<span className="ant-form-text"> USD</span>*/}
                     </Form.Item>
 
-                    <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
-                        <Button type="primary" htmlType="submit">
-                            Submit
+                    <Form.Item wrapperCol={{ span: 12, offset: 6 }} className="arrow">
+                        <Button type="primary" htmlType="submit" >
+                            Next
+                            <RightOutlined />
                         </Button>
                     </Form.Item>
                 </Form>

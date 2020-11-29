@@ -21,7 +21,9 @@ class Main extends Component {
 
         return (
             <div className='main'>
+
                 <LeftSideForm />
+
                 <div>
                     <Map des={destination} tar={target}/>
                 </div>

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Form, Icon, Input, Button,Checkbox} from 'antd';
-import axios from 'axios'
+import axios from 'axios';
+
 class LoginForm extends Component {
     handleSubmit = e => {
         e.preventDefault();
@@ -16,19 +17,37 @@ class LoginForm extends Component {
                 console.log(res)
                 console.log('Received values of form: ', values);
                 this.props.loggedin()
-            }
+                const params = {
+                        email:  "1111@gmail.com",
+                        password:  "123123"
+                    }
+
+                    let res = axios.post("./Dispatch/login", params);
+
+                    // console.log(res.data);
+                }
         });
     };
-
-    // axios.get("./Dispatch/login");
 
     render() {
         if(this.props.curr_step!=10)
             return null
 
+        const formItemLayout = {
+            labelCol:{
+                xs:{ span: 24 },
+                sm: { span: 6 },
+            },
+            wrapperCol:{
+                xs:{ span: 24 },
+                sm: { span: 18},
+            }
+        };
+
         const { getFieldDecorator } = this.props.form;
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form" >
+            <Form {...formItemLayout}
+                onSubmit={this.handleSubmit} className="login-form">
                 <Form.Item>
                     {getFieldDecorator('username', {
                         rules: [{ required: true, message: 'Please input your username!' }],

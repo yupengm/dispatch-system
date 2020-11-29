@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Form, Input, Tooltip, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete,} from 'antd';
-
+import axios from 'axios';
 
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
@@ -18,7 +18,19 @@ class RegisterForm extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-            }
+                const params = {
+                    "emailId": "1111@gmail.com",
+                    "password": "123123",
+                    "firstName": "Christopher",
+                    "lastName": "Nolan",
+                    "phone": "1234567890"
+                    }
+
+                    let res = axios.post('Dispatch/signup', params);
+
+                    // console.log(res.data);
+                }
+
         });
     };
 
@@ -49,17 +61,21 @@ class RegisterForm extends Component {
             labelCol: {
                 xs: {
                     span: 24,
+                    offset: 1,
                 },
                 sm: {
                     span: 8,
+                    offset: 1,
                 },
             },
             wrapperCol: {
                 xs: {
                     span: 24,
+                    offset: 1,
                 },
                 sm: {
                     span: 16,
+                    offset: 1,
                 },
             },
         };
@@ -86,7 +102,7 @@ class RegisterForm extends Component {
 
 
         const prefixSelector = getFieldDecorator('prefix', {
-            initialValue: '86',
+            initialValue: '1',
         })(
             <Select style={{ width: 70 }}>
                 <Option value="1">+1</Option>
