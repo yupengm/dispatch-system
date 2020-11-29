@@ -3,9 +3,9 @@ import Map from"./Map"
 import LeftSideForm from "./LeftSideForm";
 import { withRouter } from "react-router-dom";
 
-
+// Main Component
 class Main extends Component {
-
+    
     constructor(props) {
         super(props);
         this.state = {
