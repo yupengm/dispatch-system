@@ -15,21 +15,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class SignupController {
 
     @Autowired
-    private SignupService signupService;
+    private CustomerService customerService;
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public JSONObject signup(@ModelAttribute Customer customer, BindingResult result) {
+    public JSONObject signup(@ModelAttribute User user, BindingResult result) {
         if (result.hasErrors()) {
             return null;
         }
-        return signupService.validSignup(customer);
+        return customerService.addUser(user);
 
-//        JSONObject res = signupService.validSignup(customer);
-//        if (res != null) {
-//            return ResponseEntity.status(HttpStatus.OK).body("ok");
-//        }
-//        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-//                .body("user already exists");
     }
 
 }

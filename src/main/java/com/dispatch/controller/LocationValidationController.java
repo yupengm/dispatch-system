@@ -15,25 +15,33 @@ import java.util.HashMap;
 @Controller
 public class LocationValidationController {
     @Autowired
-    LocationValidationService locationValidationService;
+    AddressValidationService addressValidationService;
 
     @RequestMapping(value = "/addressValidation", method = RequestMethod.POST)
     public JSONObject addressValidation(@RequestBody HashMap<String, String> requestData, BindingResult result) {
         if (result.hasErrors()) {
             return null;
         }
-        PickUpAddress pickUpAddress = new PickUpAddress();
-        pickUpAddress.setAddress = requestData.get("pickup_address");
-        pickUpAddress.setCity = requestData.get("pickup_city");
-        pickUpAddress.setZipcode = requestData.get("pickup_zip");
+        String pickupAddress = requestData.get("pickup_address") + " " +
+                requestData.get("pickup_city") + " " +
+                requestData.get("pickup_zip");
+        String deliverAddress = requestData.get("deliver_address") + " " +
+                requestData.get("deliver_city") + " " +
+                requestData.get("deliver_zip");
+        return addressValidationService.addressValidation(pickupAddress, deliverAddress);
 
-        PutDownAddress putDownAddress = new PutDownAddress();
-        putDownAddress.setAddress = requestData.get("deliver_address");
-        putDownAddress.setCity = requestData.get("deliver_city");
-        putDownAddress.setZipcode = requestData.get("deliver_zip");
-
-        JSONObject pickup = locationValidationService.addressValidation(pickUpAddress);
-        JSONObject deliver = locationValidationService.addressValidation(putDownAddress);
+//        PickUpAddress pickUpAddress = new PickUpAddress();
+//        pickUpAddress.setAddress = requestData.get("pickup_address");
+//        pickUpAddress.setCity = requestData.get("pickup_city");
+//        pickUpAddress.setZipcode = requestData.get("pickup_zip");
+//
+//        PutDownAddress putDownAddress = new PutDownAddress();
+//        putDownAddress.setAddress = requestData.get("deliver_address");
+//        putDownAddress.setCity = requestData.get("deliver_city");
+//        putDownAddress.setZipcode = requestData.get("deliver_zip");
+//
+//        JSONObject pickup = addressValidationService.addressValidation(pickUpAddress);
+//        JSONObject deliver = addressValidationService.addressValidation(putDownAddress);
 
     }
 }
