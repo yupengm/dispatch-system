@@ -1,2 +1,13 @@
+com/dispatch/dao/BoxDao.class
+com/dispatch/entity/Station.class
+com/dispatch/entity/Order.class
+com/dispatch/entity/Box.class
+com/dispatch/entity/Payment.class
 com/dispatch/Application.class
+com/dispatch/entity/PutDownAddress.class
+com/dispatch/entity/PickUpAddress.class
+com/dispatch/entity/Route.class
+com/dispatch/entity/User.class
+com/dispatch/service/OrderOptionService.class
 com/dispatch/ApplicationConfig.class
+com/dispatch/entity/Customer.class
