@@ -1,8 +1,18 @@
 import React, {Component} from 'react';
 import {Button, List} from "antd"
+import { withRouter } from "react-router-dom";
 
 class Confirmation extends Component {
+
+    handleRedirect = ()=>{
+        this.props.history.push("/home")
+    }
+
     render() {
+
+        if(this.props.curr_step != 5)
+            return null
+
         /*const satList = this.props.satInfo ? this.props.satInfo.above : [];
         const { isLoad } = this.props;*/
         const data = [
@@ -47,10 +57,12 @@ class Confirmation extends Component {
                 <hr/>
                 <div className="btn-container">
                     <Button className="tracking-list-btn"
-                            size="large">Tracking
+                            size="large"
+                            onClick={this.props.setSteps}>Tracking
                     </Button>
                     <Button className="tracking-list-btn"
-                            size="large">Home
+                            size="large"
+                            onClick={this.handleRedirect}>Home
                     </Button>
                 </div>
             </div>
@@ -58,4 +70,4 @@ class Confirmation extends Component {
     }
 }
 
-export default Confirmation;
+export default withRouter(Confirmation);

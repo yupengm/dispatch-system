@@ -4,9 +4,11 @@ import {Form, Input, Button,} from 'antd';
 class CreditCardForm extends Component {
     handleSubmit = e => {
         e.preventDefault();
+        this.props.setSteps()
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                this.props.setSteps()
             }
         });
     };
@@ -18,6 +20,9 @@ class CreditCardForm extends Component {
         return e && e.fileList;
     };
     render() {
+        if(this.props.curr_step != 4)
+            return null
+
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {

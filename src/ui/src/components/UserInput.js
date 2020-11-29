@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Form, Select, InputNumber, Checkbox, Row, Col, Button,} from 'antd';
+import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 const { Option } = Select;
 
 class UserInputForm extends Component{
@@ -10,6 +11,7 @@ class UserInputForm extends Component{
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                //axios
                 this.props.handleChange(values)
                 this.props.setSteps()
             }
@@ -58,42 +60,48 @@ class UserInputForm extends Component{
         //     }, []);
         console.log(this.props)
         return (
+            <CSSTransitionGroup
+                transitionName="location-cards"
+                transitionAppear={true}
+                transitionAppearTimeout={400}
+                transitionEnterTimeout={400}>
+
             <div>
                 <Form {...formItemLayout}
                       className='user-input'
                       onSubmit={this.handleSubmit}>
+
                     <Form.Item label="Please help us know more about your package:"/>
-                    <Form.Item label="Size" hasFeedback initialvalue="his">
-                        {getFieldDecorator('size', {
-                            rules:[{required: true,
-                                message: 'Please select your package size !'}],
-                            // initialValue: this.props.size == "" ? "n/a" : this.props.size
-                        })(
-                            <Select placeholder= {this.props.size == ""? "Please select a package size" : this.props.size} >
-                                <Option value='Small 13" x 11" x 2"'>Small 13" x 11" x 2"</Option>
-                                <Option value='Medium 16" x 11" x 3"'>Small 16" x 11" x 3"</Option>
-                                <Option value='Large 18" x 13" x 3"'>Large 18" x 13" x 3"</Option>
-                                <Option value='Extra Large'>Extra Large</Option>
-                            </Select>,
-                        )}
+
+                    <Form.Item label="Size(Length)" >
+                        {getFieldDecorator('length',
+                            {initialValue : this.props.length == 0?"":this.props.length})
+                        (<InputNumber min={0} max={1000} />)}
+                        <span className="ant-form-text"> INCH</span>
                     </Form.Item>
-                    <Form.Item label="Weight" hasFeedback>
-                        {getFieldDecorator('weight', {
-                            rules:[{required: true, message: 'Please select your package weight !'}],
-                        })(
-                            <Select placeholder={this.props.weight == ""? "Please select a package size" : this.props.weight} >
-                                <Option value='0 - 5 lbs'>0 - 5 lbs</Option>
-                                <Option value='5 - 10 lbs'>5 - 10 lbs</Option>
-                                <Option value='10 - 30 lbs'>1- - 30 lbs</Option>
-                                <Option value='> 30 lbs'> > 30 lbs </Option>
-                            </Select>,
-                        )}
+
+                    <Form.Item label="Size(Width)">
+                        {getFieldDecorator('width',
+                            {initialValue : this.props.width == 0?"":this.props.width})(<InputNumber min={0} max={1000} />)}
+                        <span className="ant-form-text"> INCH</span>
+                    </Form.Item>
+
+                    <Form.Item label="Size(Height)">
+                        {getFieldDecorator('height',
+                            {initialValue : this.props.height == 0?"":this.props.height})(<InputNumber min={0} max={1000} />)}
+                        <span className="ant-form-text"> INCH</span>
+                    </Form.Item>
+
+                    <Form.Item label="Weight">
+                        {getFieldDecorator('weight',
+                            {initialValue : this.props.weight == 0?"":this.props.weight})(<InputNumber min={0} max={1000} />)}
+                        <span className="ant-form-text"> LBS</span>
                     </Form.Item>
 
                     <Form.Item name="checkbox" label="Features">
                         <Checkbox.Group>
                             <Row>
-                                <Col span={8}>
+                                <Col span={16}>
                                     <Checkbox
                                         value="Liquid"
                                         style={{
@@ -103,7 +111,7 @@ class UserInputForm extends Component{
                                         Liquid
                                     </Checkbox>
                                 </Col>
-                                <Col span={8}>
+                                <Col span={16}>
                                     <Checkbox
                                         value="Fragile"
                                         style={{
@@ -113,7 +121,7 @@ class UserInputForm extends Component{
                                         Fragile
                                     </Checkbox>
                                 </Col>
-                                <Col span={8}>
+                                <Col span={16}>
                                     <Checkbox
                                         value="Battery"
                                         style={{
@@ -123,39 +131,105 @@ class UserInputForm extends Component{
                                         Battery
                                     </Checkbox>
                                 </Col>
-                                <Col span={8}>
-                                    <Checkbox
-                                        value="Pharmacy"
-                                        style={{
-                                            lineHeight: '32px',
-                                        }}
-                                    >
-                                        Pharmacy
-                                    </Checkbox>
-                                </Col>
-                                <Col span={8}>
-                                    <Checkbox
-                                        value="Grocery"
-                                        style={{
-                                            lineHeight: '32px',
-                                        }}
-                                    >
-                                        Grocery
-                                    </Checkbox>
-                                </Col>
-                                <Col span={8}>
-                                    <Checkbox
-                                        value="Gift"
-                                        style={{
-                                            lineHeight: '32px',
-                                        }}
-                                    >
-                                        Gift
-                                    </Checkbox>
-                                </Col>
                             </Row>
                         </Checkbox.Group>
                     </Form.Item>
+
+
+                    {/*<Form.Item label="Please help us know more about your package:"/>*/}
+                    {/*<Form.Item label="Size" hasFeedback initialvalue="his">*/}
+                    {/*    {getFieldDecorator('size', {*/}
+                    {/*        rules:[{required: true,*/}
+                    {/*            message: 'Please select your package size !'}],*/}
+                    {/*        // initialValue: this.props.size == "" ? "n/a" : this.props.size*/}
+                    {/*    })(*/}
+                    {/*        <Select placeholder= {this.props.size == ""? "Please select a package size" : this.props.size} >*/}
+                    {/*            <Option value='Small 13" x 11" x 2"'>Small 13" x 11" x 2"</Option>*/}
+                    {/*            <Option value='Medium 16" x 11" x 3"'>Small 16" x 11" x 3"</Option>*/}
+                    {/*            <Option value='Large 18" x 13" x 3"'>Large 18" x 13" x 3"</Option>*/}
+                    {/*            <Option value='Extra Large'>Extra Large</Option>*/}
+                    {/*        </Select>,*/}
+                    {/*    )}*/}
+                    {/*</Form.Item>*/}
+                    {/*<Form.Item label="Weight" hasFeedback>*/}
+                    {/*    {getFieldDecorator('weight', {*/}
+                    {/*        rules:[{required: true, message: 'Please select your package weight !'}],*/}
+                    {/*    })(*/}
+                    {/*        <Select placeholder={this.props.weight == ""? "Please select a package size" : this.props.weight} >*/}
+                    {/*            <Option value='0 - 5 lbs'>0 - 5 lbs</Option>*/}
+                    {/*            <Option value='5 - 10 lbs'>5 - 10 lbs</Option>*/}
+                    {/*            <Option value='10 - 30 lbs'>1- - 30 lbs</Option>*/}
+                    {/*            <Option value='> 30 lbs'> > 30 lbs </Option>*/}
+                    {/*        </Select>,*/}
+                    {/*    )}*/}
+                    {/*</Form.Item>*/}
+
+                    {/*<Form.Item name="checkbox" label="Features">*/}
+                    {/*    <Checkbox.Group>*/}
+                    {/*        <Row>*/}
+                    {/*            <Col span={8}>*/}
+                    {/*                <Checkbox*/}
+                    {/*                    value="Liquid"*/}
+                    {/*                    style={{*/}
+                    {/*                        lineHeight: '32px',*/}
+                    {/*                    }}*/}
+                    {/*                >*/}
+                    {/*                    Liquid*/}
+                    {/*                </Checkbox>*/}
+                    {/*            </Col>*/}
+                    {/*            <Col span={8}>*/}
+                    {/*                <Checkbox*/}
+                    {/*                    value="Fragile"*/}
+                    {/*                    style={{*/}
+                    {/*                        lineHeight: '32px',*/}
+                    {/*                    }}*/}
+                    {/*                >*/}
+                    {/*                    Fragile*/}
+                    {/*                </Checkbox>*/}
+                    {/*            </Col>*/}
+                    {/*            <Col span={8}>*/}
+                    {/*                <Checkbox*/}
+                    {/*                    value="Battery"*/}
+                    {/*                    style={{*/}
+                    {/*                        lineHeight: '32px',*/}
+                    {/*                    }}*/}
+                    {/*                >*/}
+                    {/*                    Battery*/}
+                    {/*                </Checkbox>*/}
+                    {/*            </Col>*/}
+                    {/*            <Col span={8}>*/}
+                    {/*                <Checkbox*/}
+                    {/*                    value="Pharmacy"*/}
+                    {/*                    style={{*/}
+                    {/*                        lineHeight: '32px',*/}
+                    {/*                    }}*/}
+                    {/*                >*/}
+                    {/*                    Pharmacy*/}
+                    {/*                </Checkbox>*/}
+                    {/*            </Col>*/}
+                    {/*            <Col span={8}>*/}
+                    {/*                <Checkbox*/}
+                    {/*                    value="Grocery"*/}
+                    {/*                    style={{*/}
+                    {/*                        lineHeight: '32px',*/}
+                    {/*                    }}*/}
+                    {/*                >*/}
+                    {/*                    Grocery*/}
+                    {/*                </Checkbox>*/}
+                    {/*            </Col>*/}
+                    {/*            <Col span={8}>*/}
+                    {/*                <Checkbox*/}
+                    {/*                    value="Gift"*/}
+                    {/*                    style={{*/}
+                    {/*                        lineHeight: '32px',*/}
+                    {/*                    }}*/}
+                    {/*                >*/}
+                    {/*                    Gift*/}
+                    {/*                </Checkbox>*/}
+                    {/*            </Col>*/}
+                    {/*        </Row>*/}
+                    {/*    </Checkbox.Group>*/}
+                    {/*</Form.Item>*/}
 
 
                     <Form.Item label="Declared Value (USD)">
@@ -170,6 +244,7 @@ class UserInputForm extends Component{
                     </Form.Item>
                 </Form>
             </div>
+            </CSSTransitionGroup>
         );
     }
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Form, Button, Input} from 'antd';
 import 'antd/dist/antd.css';
+import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
 class UserAddress extends React.Component {
     constructor(props){
@@ -79,6 +80,11 @@ class UserAddress extends React.Component {
         const formItemLayout = {labelCol: { span: 4 }, wrapperCol: { span: 14 }};
         const buttonItemLayout = {wrapperCol: { span: 14, offset: 4 }};
         return (
+            <CSSTransitionGroup
+                transitionName="location-cards"
+                transitionAppear={true}
+                transitionAppearTimeout={400}
+                transitionEnterTimeout={400}>
             <div className="address">
                 <Form className='user-address' layout="horizontal">
                     <Form.Item label="Where should we pick it up?"/>
@@ -124,11 +130,13 @@ class UserAddress extends React.Component {
                         <Input placeholder="Postal Code" onChange={this.checkZipB} />
                     </Form.Item>
                     <Form.Item {...buttonItemLayout}>
-                        <Button type="primary" onClick={this.sendInfo} disabled={!((this.state.zipMatchA && this.state.addressMatch1A && (this.state.addressMatch2A||this.state.emptyAdd2A) && this.state.cityMatchA)
-                            && (this.state.zipMatchB && this.state.addressMatch1B && (this.state.addressMatch2B||this.state.emptyAdd2B) && this.state.cityMatchB))}>Submit</Button>
+                        {/*<Button type="primary" onClick={this.sendInfo} disabled={!((this.state.zipMatchA && this.state.addressMatch1A && (this.state.addressMatch2A||this.state.emptyAdd2A) && this.state.cityMatchA)*/}
+                        {/*    && (this.state.zipMatchB && this.state.addressMatch1B && (this.state.addressMatch2B||this.state.emptyAdd2B) && this.state.cityMatchB))}>Submit</Button>*/}
+                        <Button type="primary" onClick={this.sendInfo} > Submit </Button>
                     </Form.Item>
                 </Form>
             </div>
+            </CSSTransitionGroup>
         );
     }
 }

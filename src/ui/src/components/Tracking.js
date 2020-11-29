@@ -1,8 +1,17 @@
 import React, {Component} from 'react';
 import { List, Button } from 'antd';
+import { withRouter } from "react-router-dom";
 
 class Tracking extends Component {
+
+    handleRedirect = ()=>{
+        this.props.history.push("/home")
+    }
+
     render() {
+
+        if(this.props.curr_step != 6)
+            return null
         /*const satList = this.props.satInfo ? this.props.satInfo.above : [];
         const { isLoad } = this.props;*/
         const data = [
@@ -53,10 +62,12 @@ class Tracking extends Component {
                 <hr/>
                 <div className="btn-container">
                     <Button className="tracking-list-btn"
-                            size="large">Sign out
+                            size="large"
+                            onClick={this.handleRedirect}>Sign out
                     </Button>
                     <Button className="tracking-list-btn"
-                            size="large">Home
+                            size="large"
+                            onClick={this.handleRedirect}>Home
                     </Button>
                 </div>
             </div>
@@ -64,4 +75,4 @@ class Tracking extends Component {
     }
 }
 
-export default Tracking;
+export default withRouter(Tracking);

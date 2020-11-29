@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Radio, Input, Button} from 'antd';
+import {Radio, Input, Button, List} from 'antd';
 
 class Recommendation extends Component {
     state = {
@@ -13,6 +13,8 @@ class Recommendation extends Component {
         });
     };
     render() {
+        if(this.props.curr_step != 3)
+            return null
         const radioStyle = {
             display: 'block',
             height: '30px',
@@ -42,7 +44,7 @@ class Recommendation extends Component {
                         Estimate Deliver Time:   15:00 today
                         Estimated Travel Distance: 10 mi
                     </Radio>
-                    <Radio style={radioStyle} value={4}>
+                    <Radio style={radioStyle} value={4} >
                         Option D
                         Robot 1
                         Estimated Price :  $20
@@ -53,11 +55,12 @@ class Recommendation extends Component {
                 </Radio.Group>
                 <hr/>
                 <div className="btn-container">
+                    {/*<Button className="recommendation-list-btn"*/}
+                    {/*        size="large">Back*/}
+                    {/*</Button>*/}
                     <Button className="recommendation-list-btn"
-                            size="large">Back
-                    </Button>
-                    <Button className="recommendation-list-btn"
-                            size="large">Pay
+                            size="large"
+                            onClick={this.props.gotoLogin}>Pay
                     </Button>
                 </div>
             </div>

@@ -14,6 +14,7 @@ class RegisterForm extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
+        this.props.gotoLogin()
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
@@ -41,6 +42,9 @@ class RegisterForm extends Component {
 
 
     render() {
+        if(this.props.curr_step!=11)
+            return null
+
         const formItemLayout = {
             labelCol: {
                 xs: {
