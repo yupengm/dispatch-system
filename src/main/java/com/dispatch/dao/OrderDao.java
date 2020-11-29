@@ -17,7 +17,7 @@ public class OrderDao {
         try{
             session = sessionFactory.openSession();
             session.beginTransaction();
-            session.save(order);
+            session.save(order);  // add Oder, Box, Route, Station, PickUpAddress, PutDownAddress, Customer in database
             session.getTransaction().commit();
         } catch (Exception e){
             e.printStackTrace();

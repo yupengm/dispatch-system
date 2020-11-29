@@ -1,31 +1,23 @@
 package com.dispatch.dao;
 
-import com.dispatch.entity.Authorities;
-import com.dispatch.entity.Customer;
 import com.dispatch.entity.User;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class CustomerDao {
+public class UserDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void addCustomer(Customer customer) {
-        Authorities authorities = new Authorities();
-        authorities.setAuthorities("ROLE_USER");
-        authorities.setEmailId(customer.getUser().getEmailId());
+    public void addUser(User user) {
         Session session = null;
 
         try {
             session = sessionFactory.openSession();
             session.beginTransaction();
-            session.save(authorities);
-            session.save(customer);
+            session.save(user);
             session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -37,17 +29,12 @@ public class CustomerDao {
         }
     }
 
-    public Customer getCustomerByUserName(String userName) {
-        User user = null;
+    public User getUserByEmailId(String emailId){
         try (Session session = sessionFactory.openSession()) {
-
-            Criteria criteria = session.createCriteria(User.class);
-            user = (User) criteria.add(Restrictions.eq("emailId", userName)).uniqueResult();
+            return session.get(User.class, emailId);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (user != null)
-            return user.getCustomer();
         return null;
     }
 

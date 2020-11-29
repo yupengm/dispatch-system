@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.hibernate.Session;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Repository
 public class StationDao {
     @Autowired
@@ -27,5 +30,15 @@ public class StationDao {
                 session.close();
             }
         }
+    }
+
+    public List<Station> getAllStations(){
+        List<Station> stations = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()){
+            stations = session.createCriteria(Station.class).list();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return stations;
     }
 }

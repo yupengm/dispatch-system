@@ -28,7 +28,7 @@ public class Payment implements Serializable {
     private String number;
 
     @ManyToOne
-    private Customer customer;
+    private User user;
 
     public int getId() {
         return id;
@@ -70,11 +70,11 @@ public class Payment implements Serializable {
         this.number = number;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public User getUser() {
+        return user;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

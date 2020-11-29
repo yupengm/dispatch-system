@@ -48,7 +48,7 @@ public class Order implements Serializable {
     private  PutDownAddress putDownAddress;
 
     @ManyToOne
-    private Customer customer;
+    private User user;
 
     public int getId() {
         return id;
@@ -138,11 +138,11 @@ public class Order implements Serializable {
         this.putDownAddress = putDownAddress;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public User getUser() {
+        return user;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -34,7 +34,7 @@ public class PutDownAddress implements Serializable {
     private String country;
 
     @ManyToOne
-    private Customer customer;
+    private User user;
 
 
     public int getId() {
@@ -101,12 +101,11 @@ public class PutDownAddress implements Serializable {
         this.country = country;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public User getUser() {
+        return user;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setUser(User user) {
+        this.user = user;
     }
-
 }
