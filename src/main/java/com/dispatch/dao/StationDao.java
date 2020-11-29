@@ -8,15 +8,11 @@ import org.springframework.stereotype.Repository;
 import org.hibernate.Session;
 
 @Repository
-public class StationDao {  // initialize stations: add stations in the database
-                           // information of stations:
-                           // "SanFranciscoStateUniversity": 37.725012099170854, -122.47986516603898
-                           // "UniversityOfSanFrancisco": 37.77659175985596, -122.45072433249807
-                           // "BernalHeightsPark": 37.74336758244373, -122.41411171945718
+public class StationDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    private void addStation(Station station) {
+    public void addStation(Station station) {
         Session session = null;
         try{
             session = sessionFactory.openSession();
