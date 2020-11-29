@@ -4,9 +4,22 @@ import { withRouter } from "react-router-dom";
 
 class Confirmation extends Component {
 
+
     handleRedirect = ()=>{
         this.props.history.push("/home")
     }
+
+
+    // axios.get(url)
+    //      .then(response => {
+    //            console.log(response.data)
+    //             this.setState({
+    //                 xxxInfo: response.data,
+    //                 isLoadingList: false
+    //     })
+    //     .catch(error => {
+    //          console.log('err in fetch xxx -> ', error);
+    //     })
 
     render() {
 
@@ -54,15 +67,15 @@ class Confirmation extends Component {
                     //     )}
                     // />
                 }
-                <hr/>
                 <div className="btn-container">
-                    <Button className="tracking-list-btn"
-                            size="large"
-                            onClick={this.props.setSteps}>Tracking
+
+                    <Button type="primary" htmlType="submit" className="tracking-list-btn"
+                            onClick={this.props.setSteps}>
+                        Tracking
                     </Button>
-                    <Button className="tracking-list-btn"
-                            size="large"
-                            onClick={this.handleRedirect}>Home
+                    <Button type="primary" htmlType="submit" className="home-list-btn"
+                            onClick={this.handleRedirect}>
+                        Home
                     </Button>
                 </div>
             </div>

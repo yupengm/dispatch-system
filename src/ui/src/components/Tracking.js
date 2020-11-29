@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { List, Button } from 'antd';
+import { Table } from 'antd';
 import { withRouter } from "react-router-dom";
 
 class Tracking extends Component {
@@ -14,60 +15,99 @@ class Tracking extends Component {
             return null
         /*const satList = this.props.satInfo ? this.props.satInfo.above : [];
         const { isLoad } = this.props;*/
-        const data = [
-            'We are happy to help tracking your package!',
-            'User ID: john@gmail.com\n',
-            'Order Number: 12345',
-            'Status: Delivered',
-            'Deliver Time:   14:00 today',
-            'Package Information:',
-            'Small, 5 lbs, no lithium battery, 50 USD',
-            'Drone 1',
-            'Price :  $40',
-            'Travel Distance: 10 mi',
-            'Order made at 11/10/2020 11:00am',
-            'Order out to for delivery on 11/10/2020  12:00pm',
-            'Route map displayed on Google Map',
-            '(route map was updated 3 minutes ago)',
-        ];
-        return(
-            <div className="tracking-list-box">
 
-                {
-                    /*isLoad ?
-                        <div className="spin-box">
-                            <Spin tip="Loading..." size="large" />
-                        </div>
-                        :*/
-                        <List
-                            bordered
-                            dataSource={data}
-                            renderItem={item => <List.Item>{item}</List.Item>}
-                        />
-                        // <List
-                        //     className="tracking-list"
-                        //     itemLayout="horizontal"
-                        //     size="small"
-                        //     dataSource={data}
-                        //     renderItem={item => (
-                        //         <List.Item>
-                        //             <List.Item.Meta
-                        //                 /*avatar={<Avatar size={50} src={satellite} />}*/
-                        //                 title={<a href="https://ant.design">{item.title}</a>}
-                        //             />
-                        //         </List.Item>
-                        //     )}
-                        // />
-                }
-                <hr/>
+        // axios.get(url)
+        //      .then(response => {
+        //            console.log(response.data)
+        //             this.setState({
+        //                 xxxInfo: response.data,
+        //                 isLoadingList: false
+        //     })
+        //     .catch(error => {
+        //          console.log('err in fetch xxx -> ', error);
+        //     })
+
+        const columns = [
+            {
+                title: 'Category',
+                dataIndex: 'category',
+            },
+            {
+                title: 'Information',
+                dataIndex: 'information',
+            },
+        ];
+
+        const data = [
+            {
+                key: '1',
+                category: 'User ID',
+                information: "john@gmail.com",
+            },
+            {
+                key: '2',
+                category: 'Order Number',
+                information: 123456,
+            },
+            {
+                key: '3',
+                category: 'Status',
+                information: 'Delivered',
+            },
+            {
+                key: '4',
+                category: 'Deliver Time',
+                information: '14:00 today',
+            },
+            {
+                key: '5',
+                category: 'Package Information',
+                information: 'Small, 5 lbs, No lithium battery, 50 USD',
+            },
+            {
+                key: '6',
+                category: 'Deliver Method',
+                information: 'Drone 1',
+            },
+            {
+                key: '7',
+                category: 'Price',
+                information: '$40',
+            },
+            {
+                key: '8',
+                category: 'Travel Distance',
+                information: '10 miles',
+            },
+            {
+                key: '9',
+                category: 'Order generated time',
+                information: '11/10/2020 11:00am',
+            },
+            {
+                key: '10',
+                category: 'Order out for delivery time',
+                information: '11/10/2020  12:00pm',
+            },
+        ];
+        return (
+            <div className={"tracking-table-box"}>
+                <h3>We are happy to help tracking your package!</h3>
+                <Table columns={columns} dataSource={data} size="small"/>
+                <div>
+                    Route map displayed on Google Map
+                    (route map was updated 3 minutes ago)
+                </div>
+                {/*document.getElementById('container')*/}
                 <div className="btn-container">
-                    <Button className="tracking-list-btn"
-                            size="large"
-                            onClick={this.handleRedirect}>Sign out
+
+                    <Button type="primary" htmlType="submit" className="signout-table-btn"
+                            onClick={this.handleRedirect}>
+                        Sign Out
                     </Button>
-                    <Button className="tracking-list-btn"
-                            size="large"
-                            onClick={this.handleRedirect}>Home
+                    <Button type="primary" htmlType="submit"  className="home-table-btn"
+                            onClick={this.handleRedirect}>
+                        Home
                     </Button>
                 </div>
             </div>
