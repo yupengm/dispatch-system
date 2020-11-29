@@ -2,6 +2,16 @@ import React, {Component} from 'react';
 import {Button, List} from "antd"
 
 class Confirmation extends Component {
+    // axios.get(url)
+    //      .then(response => {
+    //            console.log(response.data)
+    //             this.setState({
+    //                 xxxInfo: response.data,
+    //                 isLoadingList: false
+    //     })
+    //     .catch(error => {
+    //          console.log('err in fetch xxx -> ', error);
+    //     })
     render() {
         /*const satList = this.props.satInfo ? this.props.satInfo.above : [];
         const { isLoad } = this.props;*/
@@ -44,13 +54,12 @@ class Confirmation extends Component {
                     //     )}
                     // />
                 }
-                <hr/>
                 <div className="btn-container">
-                    <Button className="tracking-list-btn"
-                            size="large">Tracking
+                    <Button type="primary" htmlType="submit" className="tracking-list-btn">
+                        Tracking
                     </Button>
-                    <Button className="tracking-list-btn"
-                            size="large">Home
+                    <Button type="primary" htmlType="submit" className="home-list-btn">
+                        Home
                     </Button>
                 </div>
             </div>

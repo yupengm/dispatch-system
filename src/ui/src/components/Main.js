@@ -2,9 +2,7 @@ import React, {Component} from 'react';
 import UserInput from "./UserInput";
 import Map from"./Map"
 import UserAddress from "./UserAddress";
-import Login from "./Login";
-import Register from "./Register";
-import Tracking from "./Tracking";
+    import Register from "./Register";
 
 // Main Component
 class Main extends Component {
