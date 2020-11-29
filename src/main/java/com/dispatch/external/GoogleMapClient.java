@@ -45,7 +45,7 @@ public class GoogleMapClient {
         URL.delete(URL.length() - 3, URL.length());
         URL.append(FORMAT_URL);
         URL.append(KEY);
-        System.out.println(URL);
+//        System.out.println(URL);
 
 
         ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
