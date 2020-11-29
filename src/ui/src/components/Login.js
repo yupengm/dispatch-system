@@ -17,12 +17,12 @@ class LoginForm extends Component {
                 console.log(res)
                 console.log('Received values of form: ', values);
                 this.props.loggedin()
-                const params = {
-                        email:  "1111@gmail.com",
-                        password:  "123123"
-                    }
-
-                    let res = axios.post("./Dispatch/login", params);
+                // const params = {
+                //         email:  "1111@gmail.com",
+                //         password:  "123123"
+                //     }
+                //
+                //     let res = axios.post("./Dispatch/login", params);
 
                     // console.log(res.data);
                 }

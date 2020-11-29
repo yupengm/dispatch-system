@@ -95,22 +95,22 @@ class UserInputForm extends Component{
 
                     <Form.Item label="Width (inch)" hasFeedback>
                         {getFieldDecorator('width',
-                            {rules: [{required: true, message: 'Please input the size of your package',
-                            initialValue : this.props.width == 0?"":this.props.width}]}
+                            {rules: [{required: true, message: 'Please input the size of your package'}],
+                                initialValue : this.props.width == 0?"":this.props.width}
                         )(<InputNumber min={0} max={1000} />)}
                     </Form.Item>
 
                     <Form.Item label="Height (inch)" hasFeedback>
                         {getFieldDecorator('height',
-                            {rules: [{required: true, message: 'Please input the size of your package',
-                            initialValue : this.props.height == 0?"":this.props.height}]}
+                            {rules: [{required: true, message: 'Please input the size of your package'}],
+                                initialValue : this.props.height == 0?"":this.props.height}
                         )(<InputNumber min={0} max={1000} />)}
                     </Form.Item>
 
                     <Form.Item label="Weight (lbs)" hasFeedback>
                         {getFieldDecorator('weight',
-                            {rules: [{required: true, message: 'Please input the weights of your package',
-                            initialValue : this.props.weight == 0?"":this.props.weight}]}
+                            {rules: [{required: true, message: 'Please input the weights of your package'}],
+                                initialValue : this.props.weight == 0?"":this.props.weight}
                             )(<InputNumber min={0} max={1000} />)}
 
                     </Form.Item>
