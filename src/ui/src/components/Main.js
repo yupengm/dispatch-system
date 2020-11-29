@@ -81,6 +81,7 @@ class Main extends Component {
             <div className='main'>
                 <div className="left-side">
 
+                    <Login />
                     <Register />
 
                     <UserAddress curr_step={steps}

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Form, Input, Tooltip, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete,} from 'antd';
-
+import axios from 'axios';
 
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
@@ -17,7 +17,19 @@ class RegisterForm extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-            }
+                const params = {
+                    "emailId": "1111@gmail.com",
+                    "password": "123123",
+                    "firstName": "Christopher",
+                    "lastName": "Nolan",
+                    "phone": "1234567890"
+                    }
+
+                    let res = axios.post('Dispatch/signup', params);
+
+                    // console.log(res.data);
+                }
+
         });
     };
 
@@ -39,36 +51,27 @@ class RegisterForm extends Component {
         this.setState({ autoCompleteResult });
     };
 
-    //     axios.post("./Dispatch/signup")
-//             .then(response => {
-//                 console.log(response.data)
-//                 this.setState({
-//                     email: ;
-//                     password: ;
-//                     first_name:
-//                     last_name:
-//                     phone_number:
-//                               }
-//     )
-// })
-
 
     render() {
         const formItemLayout = {
             labelCol: {
                 xs: {
                     span: 24,
+                    offset: 1,
                 },
                 sm: {
                     span: 8,
+                    offset: 1,
                 },
             },
             wrapperCol: {
                 xs: {
                     span: 24,
+                    offset: 1,
                 },
                 sm: {
                     span: 16,
+                    offset: 1,
                 },
             },
         };
