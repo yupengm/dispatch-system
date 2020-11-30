@@ -51,6 +51,7 @@ export class MapContainer extends Component {
             },
             (response, status) => {
                 if (status === "OK") {
+                    console.log(response)
                     directionsDisplay.setDirections(response);
                 } else {
                     window.alert("Directions request failed due to " + status);
@@ -119,7 +120,7 @@ export class MapContainer extends Component {
                         lat: this.state.mapCenter.lat,
                         lng: this.state.mapCenter.lng
                     }}
-                    // onReady={this.handleMapReady}
+                    onReady={this.handleMapReady}
                 >
                     <Marker
                         position={{

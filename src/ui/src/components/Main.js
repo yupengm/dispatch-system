@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import UserInput from "./UserInput";
 import Map from"./Map"
 import UserAddress from "./UserAddress";
+import axios from 'axios';
 import Login from "./Login";
 import Register from "./Register";
 import Tracking from "./Tracking";
@@ -18,7 +19,12 @@ class Main extends Component {
             features: [],
             value: 0,
             destination: "",
-            target:""
+            target:"",
+            station1: null,
+            station2: null,
+            station3: null,
+            route: null,
+            routeList: []
         }
     }
 
@@ -73,9 +79,52 @@ class Main extends Component {
         }))
     }
 
+    // showRoute = (selected) => {
+    //     this.setState({
+    //         route: selected
+    //     })
+    // }
+
+    getRoutes = (destination, target) => {
+        // const { pickup_address } = destination;
+        // const { putdown_address } = target;
+        axios.post("http://localhost:8080/Dispatch/addressValidation", {
+            "pickup_address": "2130 Fulton St",
+            "pickup_city": "San Francisco",
+            "pickup_zip": "94117",
+            "deliver_address": "1600 Holloway Ave",
+            "deliver_city": "San Francisco",
+            "deliver_zip": "94132"
+        })
+            .then(response => {
+                console.log(response);
+                console.log(response.data);
+                // this.setState({
+                //     routes: response.data ? response.data : [],
+                // });
+            })
+            .catch(error => {
+                console.log("err in fetch route -> ", error);
+            })
+            .then(function () {
+                // always executed
+            });
+    }
+
+    // getLocations = (v) => {
+    //     const markers = this.props.userMarkers;
+    //     for (var i = 0; i < markers.length; i++) {
+    //         if (v === markers[i].label) {
+    //             return {lat: markers[i].lat, lng: markers[i].lng};
+    //         }
+    //     }
+    //     return "";
+    // }
+
 
     render(){
         const {steps, destination, target} = this.state
+        const {station1, station2, station3} = this.state
 
         return (
             <div className='main'>
@@ -102,7 +151,7 @@ class Main extends Component {
 
                 </div>
                 <div>
-                    <Map des={destination} tar={target}/>
+                    <Map des={destination} tar={target} station1={station1} station2={station2} station3={station3}/>
                 </div>
             </div>
         );
