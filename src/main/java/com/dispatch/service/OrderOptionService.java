@@ -16,12 +16,8 @@ public class OrderOptionService {
     @Autowired
     private StationDao stationDao;
 
-    //TODO:
-
-
-
     public JSONObject availabilityCheck(int size, double weight, String[] feature) {
-        //TODO: stations = stationDao.getAllStations();
+
         List<Station> stations = stationDao.getAllStations();
         JSONObject response = new JSONObject();
         int count = 1;
