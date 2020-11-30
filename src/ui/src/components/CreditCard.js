@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Form, Input, Button,} from 'antd';
 import axios from 'axios';
+import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
 class CreditCardForm extends Component {
     handleSubmit = e => {
@@ -62,6 +63,12 @@ class CreditCardForm extends Component {
         };
 
         return (
+            <CSSTransitionGroup
+                transitionName="location-cards"
+                transitionAppear={true}
+                transitionAppearTimeout={400}
+                transitionEnterTimeout={400}>
+
             <div>
                 <Form {...formItemLayout} className='credit-card' onSubmit={this.handleSubmit}>
                     <Form.Item label="Please fill in your payment method for this order"/>
@@ -120,6 +127,7 @@ class CreditCardForm extends Component {
                     </Form.Item>
                 </Form>
             </div>
+            </CSSTransitionGroup>
         );
     }
 }

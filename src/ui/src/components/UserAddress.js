@@ -75,7 +75,7 @@ class UserAddress extends React.Component {
     }
 
     render() {
-        if(this.props.curr_step!=2)
+        if(this.props.curr_step!=1)
             return null
         const formItemLayout = {labelCol: { span: 4 }, wrapperCol: { span: 14 }};
         const buttonItemLayout = {wrapperCol: { span: 14, offset: 4 }};
@@ -133,6 +133,7 @@ class UserAddress extends React.Component {
                         {/*<Button type="primary" onClick={this.sendInfo} disabled={!((this.state.zipMatchA && this.state.addressMatch1A && (this.state.addressMatch2A||this.state.emptyAdd2A) && this.state.cityMatchA)*/}
                         {/*    && (this.state.zipMatchB && this.state.addressMatch1B && (this.state.addressMatch2B||this.state.emptyAdd2B) && this.state.cityMatchB))}>Submit</Button>*/}
                         <Button type="primary" onClick={this.sendInfo} > Submit </Button>
+
                     </Form.Item>
                 </Form>
             </div>

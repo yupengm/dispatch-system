@@ -48,7 +48,7 @@ class UserInputForm extends Component{
     }
 
     render(){
-        if(this.props.curr_step != 1)
+        if(this.props.curr_step != 2)
             return null
         // const formItemLayout = {
         //     labelCol:{
@@ -258,10 +258,18 @@ class UserInputForm extends Component{
                     </Form.Item>
 
                     <Form.Item wrapperCol={{ span: 12, offset: 6 }} className="arrow" {...formItemLayout} >
-                        <Button type="primary" htmlType="submit" >
-                            Next
-                            <RightOutlined />
-                        </Button>
+                        <div className="btn-container">
+                            <Button type="primary" className="back-list-btn"
+                                    onClick={this.props.goback}>
+                                Back
+                            </Button>
+
+                            <Button type="primary" htmlType="submit" className="pay-list-btn">
+                                Next
+                                <RightOutlined />
+                            </Button>
+                        </div>
+
                     </Form.Item>
                 </Form>
             </div>

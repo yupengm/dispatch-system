@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Form, Input, Tooltip, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete,} from 'antd';
 import axios from 'axios';
+import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
@@ -111,6 +112,12 @@ class RegisterForm extends Component {
         );
 
         return (
+            <CSSTransitionGroup
+                transitionName="location-cards"
+                transitionAppear={true}
+                transitionAppearTimeout={400}
+                transitionEnterTimeout={400}>
+
             <Form{...formItemLayout} className="register" onSubmit={this.handleSubmit}>
 
                 <Form.Item
@@ -241,6 +248,7 @@ class RegisterForm extends Component {
 
 
             </Form>
+            </CSSTransitionGroup>
 
         );
     }

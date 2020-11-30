@@ -119,12 +119,14 @@ class LeftSideForm extends Component {
                            height = {this.state.height}
                            feature={this.state.feature}
                            value={this.state.value}
+                           goback={this._prev}
                 />
 
 
                 <Recommendation curr_step={steps}
                                 setSteps={this.handleSteps}
                                 gotoLogin={this.gotoLogin}
+                                goback={this._prev}
                 />
 
                 <Login curr_step={steps}
@@ -157,7 +159,7 @@ class LeftSideForm extends Component {
                 >
 
                 </CSSTransitionGroup>
-                {this.previousButton}
+                {/*{this.previousButton}*/}
             </div>
         );
     }

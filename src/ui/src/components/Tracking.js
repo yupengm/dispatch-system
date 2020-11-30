@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { List, Button } from 'antd';
 import { Table } from 'antd';
 import { withRouter } from "react-router-dom";
+import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
 class Tracking extends Component {
 
@@ -91,6 +92,12 @@ class Tracking extends Component {
             },
         ];
         return (
+            <CSSTransitionGroup
+                transitionName="location-cards"
+                transitionAppear={true}
+                transitionAppearTimeout={400}
+                transitionEnterTimeout={400}>
+
             <div className={"tracking-table-box"}>
                 <h3>We are happy to help tracking your package!</h3>
                 <Table columns={columns} dataSource={data} size="small"/>
@@ -111,6 +118,7 @@ class Tracking extends Component {
                     </Button>
                 </div>
             </div>
+            </CSSTransitionGroup>
         );
     }
 }

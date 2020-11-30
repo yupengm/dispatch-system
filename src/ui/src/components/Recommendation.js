@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Radio, Input, Button, List} from 'antd';
+import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
 
 class Recommendation extends Component {
@@ -58,6 +59,11 @@ class Recommendation extends Component {
             return null      
 
         return (
+            <CSSTransitionGroup
+                transitionName="location-cards"
+                transitionAppear={true}
+                transitionAppearTimeout={400}
+                transitionEnterTimeout={400}>
             <div className="recommendation-list-box">
                 <div>
                         <input type="radio" value="OPTION A" name="options"/>Option A
@@ -100,7 +106,8 @@ class Recommendation extends Component {
                 </div>
 
                 <div className="btn-container">
-                    <Button type="primary" htmlType="submit" className="back-list-btn">
+                    <Button type="primary" htmlType="submit" className="back-list-btn"
+                        onClick={this.props.goback}>
                         Back
                     </Button>
                     <Button type="primary" 
@@ -111,6 +118,7 @@ class Recommendation extends Component {
                     </Button>
                 </div>
             </div>
+            </CSSTransitionGroup>
         );
     }
 }

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Button, List} from "antd"
 import { withRouter } from "react-router-dom";
+import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
 class Confirmation extends Component {
 
@@ -39,6 +40,12 @@ class Confirmation extends Component {
             'Estimated Travel Distance: 10 mi',
         ];
         return(
+            <CSSTransitionGroup
+                transitionName="location-cards"
+                transitionAppear={true}
+                transitionAppearTimeout={400}
+                transitionEnterTimeout={400}>
+
             <div className="tracking-list-box">
 
                 {
@@ -79,6 +86,7 @@ class Confirmation extends Component {
                     </Button>
                 </div>
             </div>
+            </CSSTransitionGroup>
         );
     }
 }

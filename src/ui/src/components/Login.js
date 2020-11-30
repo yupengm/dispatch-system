@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Form, Icon, Input, Button,Checkbox} from 'antd';
 import axios from 'axios';
+import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
 class LoginForm extends Component {
     handleSubmit = e => {
@@ -46,6 +47,11 @@ class LoginForm extends Component {
 
         const { getFieldDecorator } = this.props.form;
         return (
+            <CSSTransitionGroup
+                transitionName="location-cards"
+                transitionAppear={true}
+                transitionAppearTimeout={400}
+                transitionEnterTimeout={400}>
             <Form {...formItemLayout}
                 onSubmit={this.handleSubmit} className="login-form">
                 <Form.Item>
@@ -55,6 +61,7 @@ class LoginForm extends Component {
                         <Input
                             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                             placeholder="Username"
+                            className="logininput"
                         />,
                     )}
                 </Form.Item>
@@ -66,6 +73,7 @@ class LoginForm extends Component {
                             prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                             type="password"
                             placeholder="Password"
+                            className="logininput"
                         />,
                     )}
                 </Form.Item>
@@ -83,6 +91,7 @@ class LoginForm extends Component {
                     Or <a onClick={this.props.gotoRegister}>register now!</a>
                 </Form.Item>
             </Form>
+            </CSSTransitionGroup>
         );
         }
 }
