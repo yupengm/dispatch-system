@@ -7,14 +7,14 @@ import org.json.JSONObject;
 import com.dispatch.entity.User;
 
 
-public class CustomerService {
+public class UserService {
     @Autowired
     private UserDao userDao;
 
     @Autowired
     private User user;
 
-    public JSONObject loginCustomer(String emailId, String password){
+    public JSONObject loginUser(String emailId, String password){
         JSONObject loginResponse = new JSONObject();
         try {
             User user = userDao.getUserByEmailId(emailId);// Here I think should return a user not customer.

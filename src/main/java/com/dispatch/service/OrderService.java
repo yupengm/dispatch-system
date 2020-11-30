@@ -1,4 +1,5 @@
 package com.dispatch.service;
+import com.dispatch.dao.OrderDao;
 import com.dispatch.entity.Order;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,13 @@ public class OrderService {
     @Autowired
     private Order order;
 
+    @Autowired
+    private OrderDao orderDao;
+
     public JSONObject addOrder(Order order) {
         JSONObject response = new JSONObject();
         try {
-            //OrderDao.addOrder()
+            orderDao.addOrder(order);
             response.put("status", 200);
             response.put("email", order.getUser().getEmailId());
             response.put("station", order.getStation());
