@@ -50,16 +50,16 @@ class UserInputForm extends Component{
     render(){
         if(this.props.curr_step != 1)
             return null
-        const formItemLayout = {
-            labelCol:{
-                xs:{ span: 24 },
-                sm: { span: 8 },
-            },
-            wrapperCol:{
-                xs:{ span: 24 },
-                sm: { span: 16},
-            }
-        };
+        // const formItemLayout = {
+        //     labelCol:{
+        //         xs:{ span: 24 },
+        //         sm: { span: 8 },
+        //     },
+        //     wrapperCol:{
+        //         xs:{ span: 24 },
+        //         sm: { span: 16},
+        //     }
+        // };
         const { getFieldDecorator } = this.props.form;
 
         // const myValue = ({ form: { setFieldsValue } }) => {
@@ -71,6 +71,7 @@ class UserInputForm extends Component{
         //         });
         //     }, []);
         console.log(this.props)
+        const formItemLayout = {labelCol: { span: 4 }, wrapperCol: { span: 14 }};
         return (
             <CSSTransitionGroup
                 transitionName="location-cards"
@@ -79,35 +80,35 @@ class UserInputForm extends Component{
                 transitionEnterTimeout={400}>
 
             <div>
-                <Form {...formItemLayout}
+                <Form
                       className='user-input'
-                      onSubmit={this.handleSubmit}>
+                      onSubmit={this.handleSubmit} >
 
                     <Form.Item label="Please help us know more about your package:"/>
 
 
-                    <Form.Item label="Length (inch)" hasFeedback>
+                    <Form.Item label="Length (inch)" {...formItemLayout} hasFeedback>
                         {getFieldDecorator('length',
                             {rules: [{required: true, message: 'Please input the size of your package'}],
                             initialValue : this.props.length == 0?"":this.props.length}
                             )(<InputNumber min={0} max={1000} />)}
                     </Form.Item>
 
-                    <Form.Item label="Width (inch)" hasFeedback>
+                    <Form.Item label="Width (inch)" {...formItemLayout} hasFeedback>
                         {getFieldDecorator('width',
                             {rules: [{required: true, message: 'Please input the size of your package'}],
                                 initialValue : this.props.width == 0?"":this.props.width}
                         )(<InputNumber min={0} max={1000} />)}
                     </Form.Item>
 
-                    <Form.Item label="Height (inch)" hasFeedback>
+                    <Form.Item label="Height (inch)" {...formItemLayout} hasFeedback>
                         {getFieldDecorator('height',
                             {rules: [{required: true, message: 'Please input the size of your package'}],
                                 initialValue : this.props.height == 0?"":this.props.height}
                         )(<InputNumber min={0} max={1000} />)}
                     </Form.Item>
 
-                    <Form.Item label="Weight (lbs)" hasFeedback>
+                    <Form.Item label="Weight (lbs)" {...formItemLayout} hasFeedback>
                         {getFieldDecorator('weight',
                             {rules: [{required: true, message: 'Please input the weights of your package'}],
                                 initialValue : this.props.weight == 0?"":this.props.weight}
@@ -115,7 +116,7 @@ class UserInputForm extends Component{
 
                     </Form.Item>
 
-                    <Form.Item name="checkbox" label="Features">
+                    <Form.Item name="checkbox" label="Features" {...formItemLayout} >
                         <Checkbox.Group>
                             <Row>
                                 <Col span={16}>
@@ -251,12 +252,12 @@ class UserInputForm extends Component{
 
 
 
-                    <Form.Item label="Declared Value (USD)">
+                    <Form.Item label="Declared Value (USD)" {...formItemLayout} >
                         {getFieldDecorator('value')(<InputNumber min={0} max={10000} />)}
                         {/*<span className="ant-form-text"> USD</span>*/}
                     </Form.Item>
 
-                    <Form.Item wrapperCol={{ span: 12, offset: 6 }} className="arrow">
+                    <Form.Item wrapperCol={{ span: 12, offset: 6 }} className="arrow" {...formItemLayout} >
                         <Button type="primary" htmlType="submit" >
                             Next
                             <RightOutlined />

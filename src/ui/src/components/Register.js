@@ -111,7 +111,7 @@ class RegisterForm extends Component {
         );
 
         return (
-            <Form{...formItemLayout} name="register" onSubmit={this.handleSubmit}>
+            <Form{...formItemLayout} className="register" onSubmit={this.handleSubmit}>
 
                 <Form.Item
                     name="email"
