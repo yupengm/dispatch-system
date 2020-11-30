@@ -14,16 +14,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class SignupController {
 
-    @Autowired
-    private CustomerService customerService;
-
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public JSONObject signup(@ModelAttribute User user, BindingResult result) {
-        if (result.hasErrors()) {
-            return null;
-        }
-        return customerService.addUser(user);
-
-    }
+//    @Autowired
+//    private CustomerService customerService;
+//
+//    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+//    public JSONObject signup(@ModelAttribute User user, BindingResult result) {
+//        if (result.hasErrors()) {
+//            return null;
+//        }
+//        return customerService.addUser(user);
+//
+//    }
 
 }

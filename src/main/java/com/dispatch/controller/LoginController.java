@@ -23,7 +23,6 @@ public class LoginController {
         }
 
         return customerService.loginCustomer(user.get("email"), user.get("password"));
-
     }
 
 }

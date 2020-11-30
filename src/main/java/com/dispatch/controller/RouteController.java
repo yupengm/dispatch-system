@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class RouteController {
 
-    @Autowired
-    RouteService routeService;
+//    @Autowired
+//    RouteService routeService;
 
 //    @RequestMapping(value = "/getRoute", method = RequestMethod.POST)
 //    public JSONObject getRoute(@RequestBody) {
@@ -29,8 +29,6 @@ public class RouteController {
 //        // sorting price[]
 //
 //        return
-
-
-    }
+//    }
 
 }
