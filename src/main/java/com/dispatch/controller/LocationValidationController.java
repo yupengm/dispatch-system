@@ -25,12 +25,14 @@ public class LocationValidationController {
         if (result.hasErrors()) {
             return null;
         }
-        String pickupAddress = requestData.get("pickup_address") + " " +
-                requestData.get("pickup_city") + " " +
-                requestData.get("pickup_zip");
-        String deliverAddress = requestData.get("deliver_address") + " " +
-                requestData.get("deliver_city") + " " +
-                requestData.get("deliver_zip");
+        String pickupAddress = requestData.get("pickup_address");
+        String deliverAddress = requestData.get("deliver_address");
+//        String pickupAddress = requestData.get("pickup_address") + " " +
+//                requestData.get("pickup_city") + " " +
+//                requestData.get("pickup_zip");
+//        String deliverAddress = requestData.get("deliver_address") + " " +
+//                requestData.get("deliver_city") + " " +
+//                requestData.get("deliver_zip");
         JSONObject res = addressValidationService.addressValidation(pickupAddress, deliverAddress);
 
         return res;
