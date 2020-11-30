@@ -13,8 +13,8 @@ import java.util.HashMap;
 @RestController
 public class LoginController {
 
-    @Autowired
-    private CustomerService customerService;
+//    @Autowired
+//    private CustomerService customerService;
 
     @RequestMapping("/login")
     @ResponseBody
@@ -23,7 +23,8 @@ public class LoginController {
             return null;
         }
 
-        return customerService.loginCustomer(user.get("email"), user.get("password"));
+//        return customerService.loginCustomer(user.get("email"), user.get("password"));
+        return null;
     }
 
 }

@@ -13,62 +13,63 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+//@Controller
 public class InputController {
 
-    @Autowired
-    OrderOptionService orderOptionService;
+//    @Autowired
+//    OrderOptionService orderOptionService;
 
-    @RequestMapping(value = "/input", method = RequestMethod.POST)
-    @ResponseBody
-    public JSONObject userInput(@RequestBody UserInput userInput, BindingResult result) {
-        if (result.hasErrors()) {
-            return null;
-        }
-        int size = userInput.getSize();
-        int weight = userInput.getWeight();
-        String[] feature = userInput.getFeature();
-        return orderOptionService.availabilityCheck(size, weight, feature);
-    }
+//    @RequestMapping(value = "/input", method = RequestMethod.POST)
+//    @ResponseBody
+//    public JSONObject userInput(@RequestBody UserInput userInput, BindingResult result) {
+//        if (result.hasErrors()) {
+//            return null;
+//        }
+//        int size = userInput.getSize();
+//        int weight = userInput.getWeight();
+//        String[] feature = userInput.getFeature();
+//
+//        return
+//    }
 
-    static class UserInput {
-        private int size;
-        private int weight;
-        private String[] feature;
-        @JsonProperty("declared_value")
-        private int declaredValue;
-
-        public int getSize() {
-            return size;
-        }
-
-        public void setSize(int size) {
-            this.size = size;
-        }
-
-        public int getWeight() {
-            return weight;
-        }
-
-        public void setWeight(int weight) {
-            this.weight = weight;
-        }
-
-        public String[] getFeature() {
-            return feature;
-        }
-
-        public void setFeature(String[] feature) {
-            this.feature = feature;
-        }
-
-        public int getDeclaredValue() {
-            return declaredValue;
-        }
-
-        public void setDeclared_value(int declaredValue) {
-            this.declaredValue = declaredValue;
-        }
-    }
+//    static class UserInput {
+//        private int size;
+//        private int weight;
+//        private String[] feature;
+//        @JsonProperty("declared_value")
+//        private int declaredValue;
+//
+//        public int getSize() {
+//            return size;
+//        }
+//
+//        public void setSize(int size) {
+//            this.size = size;
+//        }
+//
+//        public int getWeight() {
+//            return weight;
+//        }
+//
+//        public void setWeight(int weight) {
+//            this.weight = weight;
+//        }
+//
+//        public String[] getFeature() {
+//            return feature;
+//        }
+//
+//        public void setFeature(String[] feature) {
+//            this.feature = feature;
+//        }
+//
+//        public int getDeclaredValue() {
+//            return declaredValue;
+//        }
+//
+//        public void setDeclared_value(int declaredValue) {
+//            this.declaredValue = declaredValue;
+//        }
+//    }
 
 }

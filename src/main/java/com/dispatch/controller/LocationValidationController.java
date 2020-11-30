@@ -21,7 +21,7 @@ public class LocationValidationController {
 
     @RequestMapping(value = "/addressValidation", method = RequestMethod.POST)
     @ResponseBody
-    public String addressValidation(@RequestBody HashMap<String, String> requestData, BindingResult result) {
+    public JSONObject addressValidation(@RequestBody HashMap<String, String> requestData, BindingResult result) {
         if (result.hasErrors()) {
             return null;
         }
@@ -31,7 +31,9 @@ public class LocationValidationController {
         String deliverAddress = requestData.get("deliver_address") + " " +
                 requestData.get("deliver_city") + " " +
                 requestData.get("deliver_zip");
-        return addressValidationService.addressValidation(pickupAddress, deliverAddress).getString("status");
+        JSONObject res = addressValidationService.addressValidation(pickupAddress, deliverAddress);
+
+        return res;
 
 
 //        PickUpAddress pickUpAddress = new PickUpAddress();

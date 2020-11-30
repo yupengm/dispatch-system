@@ -8,20 +8,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+//@Controller
 public class SignupController {
 
-    @Autowired
-    private CustomerService customerService;
+//    @Autowired
+//    private CustomerService customerService;
 
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    @ResponseBody
-    public JSONObject signup(@RequestBody User user, BindingResult result) {
-        if (result.hasErrors()) {
-            return null;
-        }
-        return customerService.addUser(user);
-
-    }
+//    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+//    @ResponseBody
+//    public JSONObject signup(@RequestBody User user, BindingResult result) {
+//        if (result.hasErrors()) {
+//            return null;
+//        }
+//        return customerService.addUser(user);
+//    }
 
 }
