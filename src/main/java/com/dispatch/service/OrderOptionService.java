@@ -20,7 +20,7 @@ public class OrderOptionService {
 
 
 
-    public JSONObject availabilityCheck(int size, double weight, ArrayList<String> feature) {
+    public JSONObject availabilityCheck(int size, double weight, String[] feature) {
         //TODO: stations = stationDao.getAllStations();
         List<Station> stations = stationDao.getAllStations();
         JSONObject response = new JSONObject();
@@ -54,11 +54,11 @@ public class OrderOptionService {
     }
 
 
-    public boolean isDroneApplicable(int size, double weight, ArrayList<String> feature) {
+    public boolean isDroneApplicable(int size, double weight, String[] feature) {
         final int MAX_SIZE = 180; // TBD
         final int MAX_WEIGHT = 5; // TBD
 
-        if (size > MAX_SIZE || weight > MAX_WEIGHT || feature.size() > 0) {
+        if (size > MAX_SIZE || weight > MAX_WEIGHT || feature.length > 0) {
             return false;
         } else {
             return true;
