@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 
@@ -19,7 +20,8 @@ public class LocationValidationController {
     AddressValidationService addressValidationService;
 
     @RequestMapping(value = "/addressValidation", method = RequestMethod.POST)
-    public JSONObject addressValidation(@RequestBody HashMap<String, String> requestData, BindingResult result) {
+    @ResponseBody
+    public String addressValidation(@RequestBody HashMap<String, String> requestData, BindingResult result) {
         if (result.hasErrors()) {
             return null;
         }
@@ -29,7 +31,8 @@ public class LocationValidationController {
         String deliverAddress = requestData.get("deliver_address") + " " +
                 requestData.get("deliver_city") + " " +
                 requestData.get("deliver_zip");
-        return addressValidationService.addressValidation(pickupAddress, deliverAddress);
+        return addressValidationService.addressValidation(pickupAddress, deliverAddress).getString("status");
+
 
 //        PickUpAddress pickUpAddress = new PickUpAddress();
 //        pickUpAddress.setAddress = requestData.get("pickup_address");
