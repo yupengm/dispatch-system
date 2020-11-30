@@ -1,5 +1,6 @@
 package com.dispatch.controller;
 
+import com.dispatch.service.UserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 public class LoginController {
 
     @Autowired
-    private CustomerService customerService;
+    private UserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public JSONObject login(@ModelAttribute HashMap<String, String> user, BindingResult result) {
@@ -22,7 +23,7 @@ public class LoginController {
             return null;
         }
 
-        return customerService.loginCustomer(user.get("email"), user.get("password"));
+        return userService.loginUser(user.get("email"), user.get("password"));
 
     }
 
