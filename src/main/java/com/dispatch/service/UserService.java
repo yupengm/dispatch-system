@@ -39,7 +39,7 @@ public class UserService {
             addUserResponse.put("status",200);
             return addUserResponse;
         } catch (Exception e) {
-            System.out.println("Add customer failed.");
+            System.out.println("Add user failed.");
             addUserResponse.put("status",403);
             return addUserResponse;
         }
