@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 
@@ -19,6 +20,7 @@ public class LocationValidationController {
     AddressValidationService addressValidationService;
 
     @RequestMapping(value = "/addressValidation", method = RequestMethod.POST)
+    @ResponseBody
     public JSONObject addressValidation(@RequestBody HashMap<String, String> requestData, BindingResult result) {
         if (result.hasErrors()) {
             return null;
