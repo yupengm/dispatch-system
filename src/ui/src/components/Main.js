@@ -18,8 +18,10 @@ class Main extends Component {
             weight: "",
             features: [],
             value: 0,
-            destination: "",
             target:"",
+            destination: "",
+            origin: {lat: null, lng: null},
+            dropOff: {lat: null, lng: null},
             station1: null,
             station2: null,
             station3: null,
@@ -72,54 +74,62 @@ class Main extends Component {
         return null;
     }
 
-    setPoints = (destination, target) =>{
-        this.setState(()=>({
-            destination: destination,
-                target: target
-        }))
-    }
-
     // showRoute = (selected) => {
     //     this.setState({
     //         route: selected
     //     })
     // }
 
-    getRoutes = (destination, target) => {
-        // const { pickup_address } = destination;
-        // const { putdown_address } = target;
-        axios.post("http://localhost:8080/Dispatch/addressValidation", {
-            "pickup_address": "2130 Fulton St",
-            "pickup_city": "San Francisco",
-            "pickup_zip": "94117",
-            "deliver_address": "1600 Holloway Ave",
-            "deliver_city": "San Francisco",
-            "deliver_zip": "94132"
+    addressValidate = (target, destination) => {
+        axios.get('http://localhost:8080/Dispatch/addressValidation', {
+            params:{
+                pickup_address: target,
+                deliver_address: destination,
+            }
         })
             .then(response => {
                 console.log(response);
                 console.log(response.data);
-                // this.setState({
-                //     routes: response.data ? response.data : [],
-                // });
-            })
-            .catch(error => {
-                console.log("err in fetch route -> ", error);
-            })
-            .then(function () {
+                this.setState({
+                    origin: {lat: response.data.pickUpGeoLocationX, lng: response.data.pickUpGeoLocationY},
+                    dropOff: {lat: response.data.putDownGeoLocationX, lng: response.data.putDownGeoLocationY},
+                });
+            }).catch(error => {
+                if (error.status === "477"){
+                    console.log("Address is not in the service area")
+                } else {
+                    console.log("Address doesn't exist")
+                }
+                console.log("err in addressValidate -> ", error);
+            }).then(function () {
                 // always executed
             });
     }
 
-    // getLocations = (v) => {
-    //     const markers = this.props.userMarkers;
-    //     for (var i = 0; i < markers.length; i++) {
-    //         if (v === markers[i].label) {
-    //             return {lat: markers[i].lat, lng: markers[i].lng};
-    //         }
-    //     }
-    //     return "";
-    // }
+    getPrice = () => {
+        let routeList = this.state;
+        axios.get('http://localhost:8080/Dispatch/getPrice', {
+            params:{
+                station: this.state.station1,
+                equipment: 'robot',
+                // Distance: ,
+                // deliverTime: ,
+                Weight: this.state.weight,
+                Size: this.state.size,
+            }
+        })
+            .then(response => {
+                console.log(response);
+                const newItem = {
+                    station: response.data.station,
+                    equipment: response.data.equipment,
+                    tag: response.data.tag,
+                    price: response.data.price,
+                    time: response.data.time,
+                };
+                routeList.push(newItem);
+            })
+    }
 
 
     render(){
@@ -134,7 +144,7 @@ class Main extends Component {
 
                     <UserAddress curr_step={steps}
                                  setSteps={this.handleSteps}
-                                 showPoints={this.setPoints}
+                                 showAddress={this.addressValidate}
                     />
 
                     <UserInput curr_step={steps}

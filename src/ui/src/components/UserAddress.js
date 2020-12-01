@@ -67,7 +67,7 @@ class UserAddress extends React.Component {
     sendInfo() {
         let target = this.state.address1A + ' ' + this.state.address2A + ', ' + this.state.cityA + ', ' + this.state.zipA;
         let destination = this.state.address1B + ' ' + this.state.address2B + ', ' + this.state.cityB + ', ' + this.state.zipB;
-        this.props.showPoints(target, destination);
+        this.props.showAddress(target, destination);
         console.log(target);
         console.log(destination);
         this.props.setSteps();
