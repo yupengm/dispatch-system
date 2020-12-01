@@ -32,9 +32,7 @@ public class LocationValidationController {
         String deliverAddress = requestData.get("deliver_address") + " " +
                 requestData.get("deliver_city") + " " +
                 requestData.get("deliver_zip");
-        Map<String, String> toReturn = addressValidationService.addressValidation(pickupAddress, deliverAddress);
-        String json = new ObjectMapper().writeValueAsString(toReturn);
-        return new ResponseEntity<String>(json, HttpStatus.OK);
+        return addressValidationService.addressValidation(pickupAddress, deliverAddress);
     }
 }
 

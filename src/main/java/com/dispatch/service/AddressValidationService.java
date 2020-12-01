@@ -1,8 +1,11 @@
 package com.dispatch.service;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.json.JSONObject;
 
 import com.dispatch.external.GoogleMapClient;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,16 +17,30 @@ import java.util.Map;
 @Service
 @JsonSerialize
 public class AddressValidationService {
-    public Map<String, String> addressValidation(String pickUpLocation, String putDownLocation) throws Exception {
+    public ResponseEntity<String> addressValidation(String pickUpLocation, String putDownLocation) throws Exception {
         Map<String, String> toReturn = new HashMap<>();
         double[] pickUpGeoLocationXY = getGeolocationXY(pickUpLocation);
         double[] putDownGeoLocationXY = getGeolocationXY(putDownLocation);
-        toReturn.put("pickUpGeoLocationX", String.valueOf(pickUpGeoLocationXY[0]));
-        toReturn.put("pickUpGeoLocationY", String.valueOf(pickUpGeoLocationXY[1]));
-        toReturn.put("putDownGeoLocationX", String.valueOf(pickUpGeoLocationXY[0]));
-        toReturn.put("putDownGeoLocationY", String.valueOf(pickUpGeoLocationXY[1]));
+        try {
+            if (isSF(pickUpGeoLocationXY[0], pickUpGeoLocationXY[1])
+                    && isSF(putDownGeoLocationXY[0], putDownGeoLocationXY[1])) {
+                toReturn.put("pickUpGeoLocationX", String.valueOf(pickUpGeoLocationXY[0]));
+                toReturn.put("pickUpGeoLocationY", String.valueOf(pickUpGeoLocationXY[1]));
+                toReturn.put("putDownGeoLocationX", String.valueOf(putDownGeoLocationXY[0]));
+                toReturn.put("putDownGeoLocationY", String.valueOf(putDownGeoLocationXY[1]));
+                String json = new ObjectMapper().writeValueAsString(toReturn);
+                return new ResponseEntity<String>(json, HttpStatus.OK);
+            } else {
+                toReturn.put("message", "Out of service area");
+                String json = new ObjectMapper().writeValueAsString(toReturn);
+                return new ResponseEntity<String>(json, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            toReturn.put("message", "Addresses NOT exist");
+            String json = new ObjectMapper().writeValueAsString(toReturn);
+            return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
+        }
 
-        return toReturn;
 
     }
 
