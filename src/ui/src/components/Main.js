@@ -1,22 +1,35 @@
 import React, {Component} from 'react';
-import UserSetting from "./UserInput";
 import Map from"./Map"
-import UserAddress from "./UserAddress";
+import LeftSideForm from "./LeftSideForm";
+import { withRouter } from "react-router-dom";
+
+
+// Main Component
 class Main extends Component {
+    
+    constructor(props) {
+        super(props);
+        this.state = {
+            destination: "",
+            target:""
+        }
+    }
+
+
+
     render(){
+        const {destination, target} = this.state
+
         return (
             <div className='main'>
-                <div className="left-side">
-                        <UserSetting />
-                        <div className="address">
-                            <UserAddress />
-                        </div>
-                </div>
+
+                <LeftSideForm />
+
                 <div>
-                    <Map />
+                    <Map des={destination} tar={target}/>
                 </div>
             </div>
         );
     }
 }
-export default Main;
+export default withRouter(Main);

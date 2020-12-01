@@ -1,4 +1,4 @@
-.user-address {
+.user-input{
     width:100%;
     background-color: #fbfbfb;
     border: 1px solid #d9d9d9;
@@ -6,15 +6,11 @@
     text-align:left;
     /*margin-top: 10px;*/
 }
-.ant-form-item {
-    margin-bottom: 6px;
+.arrow{
+    text-align: right;
 }
 
-.ant-col-4 {
-    width: 40%;
+.ant-input-number{
+    width:230px;
 }
 
-.ant-form-item-label{
-    overflow: visible;
-    text-align: left;
-}
