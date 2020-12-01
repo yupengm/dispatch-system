@@ -7,12 +7,10 @@ import org.json.JSONObject;
 import com.dispatch.entity.User;
 
 
+@Service
 public class UserService {
     @Autowired
     private UserDao userDao;
-
-    @Autowired
-    private User user;
 
     public JSONObject loginUser(String emailId, String password){
         JSONObject loginResponse = new JSONObject();

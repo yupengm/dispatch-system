@@ -7,11 +7,11 @@ import org.json.JSONObject;
 import com.dispatch.dao.StationDao;
 import com.dispatch.entity.Station;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+
+@Service
 public class OrderOptionService {
-
-    @Autowired
-    private Station station;
 
     @Autowired
     private StationDao stationDao;
@@ -23,7 +23,7 @@ public class OrderOptionService {
         int count = 1;
         for (Station station : stations) {
             JSONObject stationInfo = new JSONObject();
-            if (isDroneApplicable(size,weight, feature)){
+            if (isDroneApplicable(size, weight, feature)){
                 if (station.getDroneAvailable() >= 1 && station.getRobotAvailable() >= 1) {
                     int methodCode = 3; // drone and robot both available
                 } else if (station.getDroneAvailable() < 1) {

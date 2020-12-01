@@ -8,7 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 
 @Controller
@@ -18,7 +19,8 @@ public class LoginController {
     private UserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public JSONObject login(@ModelAttribute HashMap<String, String> user, BindingResult result) {
+    @ResponseBody
+    public JSONObject login(@RequestBody HashMap<String, String> user, BindingResult result) {
         if (result.hasErrors()) {
             return null;
         }
@@ -26,5 +28,6 @@ public class LoginController {
         return userService.loginUser(user.get("email"), user.get("password"));
 
     }
+
 
 }

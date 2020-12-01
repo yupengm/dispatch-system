@@ -1,7 +1,9 @@
 package com.dispatch.service;
 
 import org.json.JSONObject;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RouteService {
     //need to return
     //      station:name

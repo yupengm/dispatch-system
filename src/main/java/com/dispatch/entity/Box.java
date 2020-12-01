@@ -1,5 +1,7 @@
 package com.dispatch.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 import javax.persistence.Entity;
@@ -23,19 +25,13 @@ public class Box implements Serializable {
 
     private double weight;
 
-    private double length;
+    private int size;
 
-    private double width;
+    private String[] feature;
 
-    private double height;
 
-    private double declaredValue;
-
-    private boolean fragileOrNot;
-
-    private boolean batteryOrNot;
-
-    private boolean liquidOrnot;
+    @JsonProperty("declared_value")
+    private int declaredValue;
 
     @OneToOne(mappedBy = "box")
     private Order order;
@@ -64,44 +60,28 @@ public class Box implements Serializable {
         this.weight = weight;
     }
 
-    public double getLength() {
-        return length;
+    public int getSize() {
+        return size;
     }
 
-    public void setLength(double length) {
-        this.length = length;
+    public void setSize(int size) {
+        this.size = size;
     }
 
-    public double getWidth() {
-        return width;
+    public String[] getFeature() {
+        return feature;
     }
 
-    public void setWidth(double width) {
-        this.width = width;
+    public void setFeature(String[] feature) {
+        this.feature = feature;
     }
 
-    public double getHeight() {
-        return height;
-    }
-
-    public void setHeight(double height) {
-        this.height = height;
-    }
-
-    public double getDeclaredValue() {
+    public int getDeclaredValue() {
         return declaredValue;
     }
 
-    public void setDeclaredValue(double declaredValue) {
+    public void setDeclaredValue(int declaredValue) {
         this.declaredValue = declaredValue;
-    }
-
-    public boolean isFragileOrNot() {
-        return fragileOrNot;
-    }
-
-    public void setFragileOrNot(boolean fragileOrNot) {
-        this.fragileOrNot = fragileOrNot;
     }
 
     public Order getOrder() {
@@ -110,21 +90,5 @@ public class Box implements Serializable {
 
     public void setOrder(Order order) {
         this.order = order;
-    }
-
-    public boolean isBatteryOrNot() {
-        return batteryOrNot;
-    }
-
-    public void setBatteryOrNot(boolean batteryOrNot) {
-        this.batteryOrNot = batteryOrNot;
-    }
-
-    public boolean isLiquidOrnot() {
-        return liquidOrnot;
-    }
-
-    public void setLiquidOrnot(boolean liquidOrnot) {
-        this.liquidOrnot = liquidOrnot;
     }
 }

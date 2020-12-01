@@ -8,10 +8,8 @@ import com.dispatch.external.GoogleMapClient;
 
 import java.util.ArrayList;
 
-
+@Service
 public class OrderService {
-    @Autowired
-    private Order order;
 
     @Autowired
     private OrderDao orderDao;

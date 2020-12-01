@@ -2,7 +2,10 @@ package com.dispatch.service;
 import org.json.JSONObject;
 
 import com.dispatch.external.GoogleMapClient;
+import org.springframework.stereotype.Service;
 
+
+@Service
 public class AddressValidationService {
     public JSONObject addressValidation(String pickUpLocation, String putDownLocation) {
         JSONObject response = new JSONObject();
