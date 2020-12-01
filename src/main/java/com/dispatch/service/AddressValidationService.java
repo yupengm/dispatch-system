@@ -1,44 +1,67 @@
 package com.dispatch.service;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.json.JSONObject;
 
 import com.dispatch.external.GoogleMapClient;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
+@Service
+@JsonSerialize
 public class AddressValidationService {
-    public JSONObject addressValidation(String pickUpLocation, String putDownLocation) {
-        JSONObject response = new JSONObject();
-        try {
-            double[] pickUpGeoLocationXY = getGeolocationXY(pickUpLocation);
-            if (isSF(pickUpGeoLocationXY[0], pickUpGeoLocationXY[1])) {
-                response.put("status","200");
-                response.put("pickUpGeoLocationX",pickUpGeoLocationXY[0]);
-                response.put("pickUpGeoLocationY",pickUpGeoLocationXY[1]);
-            } else {
-                response.put("status","477");
-                response.put("message","pick up location not in service area");
-            }
-        } catch (Exception e) {
-            response.put("status","457");
-            response.put("message","pick up location error");
-        }
+    public Map<String, String> addressValidation(String pickUpLocation, String putDownLocation) throws Exception {
+        Map<String, String> toReturn = new HashMap<>();
+        double[] pickUpGeoLocationXY = getGeolocationXY(pickUpLocation);
+        double[] putDownGeoLocationXY = getGeolocationXY(putDownLocation);
+        toReturn.put("pickUpGeoLocationX", String.valueOf(pickUpGeoLocationXY[0]));
+        toReturn.put("pickUpGeoLocationY", String.valueOf(pickUpGeoLocationXY[1]));
+        toReturn.put("putDownGeoLocationX", String.valueOf(pickUpGeoLocationXY[0]));
+        toReturn.put("putDownGeoLocationY", String.valueOf(pickUpGeoLocationXY[1]));
 
-        try {
-            double[] putDownGeoLocationXY = getGeolocationXY(putDownLocation);
-            if (isSF(putDownGeoLocationXY[0], putDownGeoLocationXY[1])) {
-                response.put("status","200");
-                response.put("putDownGeoLocationX",putDownGeoLocationXY[0]);
-                response.put("putDownGeoLocationY",putDownGeoLocationXY[1]);
-            } else {
-                response.put("status","477");
-                response.put("message","put down location not in service area");
-            }
-        } catch (Exception e) {
-            response.put("status","457");
-            response.put("message","put down location error");
-        }
-
-        return response;
+        return toReturn;
 
     }
+
+//    public JSONObject addressValidation(String pickUpLocation, String putDownLocation) {
+//        JSONObject response = new JSONObject();
+//        try {
+//            double[] pickUpGeoLocationXY = getGeolocationXY(pickUpLocation);
+//            if (isSF(pickUpGeoLocationXY[0], pickUpGeoLocationXY[1])) {
+//                response.put("status","200");
+//                response.put("pickUpGeoLocationX",pickUpGeoLocationXY[0]);
+//                response.put("pickUpGeoLocationY",pickUpGeoLocationXY[1]);
+//            } else {
+//                response.put("status","477");
+//                response.put("message","pick up location not in service area");
+//            }
+//        } catch (Exception e) {
+//            response.put("status","457");
+//            response.put("message","pick up location error");
+//        }
+//
+//        try {
+//            double[] putDownGeoLocationXY = getGeolocationXY(putDownLocation);
+//            if (isSF(putDownGeoLocationXY[0], putDownGeoLocationXY[1])) {
+//                response.put("status","200");
+//                response.put("putDownGeoLocationX",putDownGeoLocationXY[0]);
+//                response.put("putDownGeoLocationY",putDownGeoLocationXY[1]);
+//            } else {
+//                response.put("status","477");
+//                response.put("message","put down location not in service area");
+//            }
+//        } catch (Exception e) {
+//            response.put("status","457");
+//            response.put("message","put down location error");
+//        }
+//
+//        return response;
+
+//    }
 
     public static double[] getGeolocationXY(String location) throws Exception {
         GoogleMapClient mapClient = new GoogleMapClient();

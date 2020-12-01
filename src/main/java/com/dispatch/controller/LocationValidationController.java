@@ -1,25 +1,28 @@
 package com.dispatch.controller;
 
 import com.dispatch.service.AddressValidationService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class LocationValidationController {
     @Autowired
     AddressValidationService addressValidationService;
 
-    @RequestMapping(value = "/addressValidation", method = RequestMethod.POST)
-    public JSONObject addressValidation(@RequestBody HashMap<String, String> requestData, BindingResult result) {
+    @RequestMapping(value = "/addressValidation", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<String> addressValidation(@RequestBody HashMap<String, String> requestData, BindingResult result) throws Exception {
         if (result.hasErrors()) {
             return null;
         }
@@ -29,7 +32,12 @@ public class LocationValidationController {
         String deliverAddress = requestData.get("deliver_address") + " " +
                 requestData.get("deliver_city") + " " +
                 requestData.get("deliver_zip");
-        return addressValidationService.addressValidation(pickupAddress, deliverAddress);
+        Map<String, String> toReturn = addressValidationService.addressValidation(pickupAddress, deliverAddress);
+        String json = new ObjectMapper().writeValueAsString(toReturn);
+        return new ResponseEntity<String>(json, HttpStatus.OK);
+    }
+}
+
 
 //        PickUpAddress pickUpAddress = new PickUpAddress();
 //        pickUpAddress.setAddress = requestData.get("pickup_address");
@@ -44,5 +52,3 @@ public class LocationValidationController {
 //        JSONObject pickup = addressValidationService.addressValidation(pickUpAddress);
 //        JSONObject deliver = addressValidationService.addressValidation(putDownAddress);
 
-    }
-}
