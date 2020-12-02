@@ -28,7 +28,7 @@ public class UserService {
               String json = new ObjectMapper().writeValueAsString(loginResponse);
               return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
             }
-        String testPassword = user.getPassword();
+            String testPassword = user.getPassword();
             String truePassword = targetUser.getPassword();
             if (truePassword.equals(testPassword)) {
                 loginResponse.put("message","login success");
