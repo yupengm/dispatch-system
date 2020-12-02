@@ -28,7 +28,7 @@ export class MapContainer extends Component {
 
     calculateAndDisplayRoute(map) {
         const data = [this.state.station1, this.state.destination, this.state.target];
-        console.log(data);
+        // console.log(data);
         const directionsService = new google.maps.DirectionsService();
         const directionsDisplay = new google.maps.DirectionsRenderer();
         directionsDisplay.setMap(map);
@@ -51,6 +51,7 @@ export class MapContainer extends Component {
             },
             (response, status) => {
                 if (status === "OK") {
+                    console.log("google map response: ",response);
                     directionsDisplay.setDirections(response);
                 } else {
                     window.alert("Directions request failed due to " + status);
@@ -119,7 +120,7 @@ export class MapContainer extends Component {
                         lat: this.state.mapCenter.lat,
                         lng: this.state.mapCenter.lng
                     }}
-                    // onReady={this.handleMapReady}
+                    onReady={this.handleMapReady}
                 >
                     <Marker
                         position={{
@@ -137,23 +138,23 @@ export class MapContainer extends Component {
                             lng: this.state.station3.lng
                         }}/>
 
-                    {/*<Marker*/}
-                    {/*    icon={{*/}
-                    {/*        url: customMarker,*/}
-                    {/*    }}*/}
-                    {/*    position={{*/}
-                    {/*        lat: this.state.destination.lat,*/}
-                    {/*        lng: this.state.destination.lng*/}
-                    {/*    }}/>*/}
+                    <Marker
+                        icon={{
+                            url: customMarker,
+                        }}
+                        position={{
+                            lat: this.state.destination.lat,
+                            lng: this.state.destination.lng
+                        }}/>
 
-                    {/*<Marker*/}
-                    {/*    icon={{*/}
-                    {/*        url: customMarker,*/}
-                    {/*    }}*/}
-                    {/*    position={{*/}
-                    {/*        lat: this.state.target.lat,*/}
-                    {/*        lng: this.state.target.lng*/}
-                    {/*    }}/>*/}
+                    <Marker
+                        icon={{
+                            url: customMarker,
+                        }}
+                        position={{
+                            lat: this.state.target.lat,
+                            lng: this.state.target.lng
+                        }}/>
 
                 </Map>
             </div>
