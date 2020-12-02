@@ -15,13 +15,21 @@ import java.util.Map;
 
 
 @Service
-@JsonSerialize
 public class AddressValidationService {
+
     public ResponseEntity<String> addressValidation(String pickUpLocation, String putDownLocation) throws Exception {
         Map<String, String> toReturn = new HashMap<>();
-        double[] pickUpGeoLocationXY = getGeolocationXY(pickUpLocation);
-        double[] putDownGeoLocationXY = getGeolocationXY(putDownLocation);
-        try {
+        GoogleMapClient mapClient = new GoogleMapClient();
+        String pickUplocationXYString = mapClient.getLocation(pickUpLocation);
+        String putDownlocationXYString = mapClient.getLocation(putDownLocation);
+        if (pickUplocationXYString == null || putDownlocationXYString == null) {
+            toReturn.put("message", "Place NOT found.");
+            String json = new ObjectMapper().writeValueAsString(toReturn);
+            return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
+        }
+
+        double[] pickUpGeoLocationXY = splitGeolocationXY(pickUplocationXYString);
+        double[] putDownGeoLocationXY = splitGeolocationXY(putDownlocationXYString);
             if (isSF(pickUpGeoLocationXY[0], pickUpGeoLocationXY[1])
                     && isSF(putDownGeoLocationXY[0], putDownGeoLocationXY[1])) {
                 toReturn.put("pickUpGeoLocationX", String.valueOf(pickUpGeoLocationXY[0]));
@@ -33,13 +41,8 @@ public class AddressValidationService {
             } else {
                 toReturn.put("message", "Out of service area");
                 String json = new ObjectMapper().writeValueAsString(toReturn);
-                return new ResponseEntity<String>(json, HttpStatus.OK);
+                return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
             }
-        } catch (Exception e) {
-            toReturn.put("message", "Addresses NOT exist");
-            String json = new ObjectMapper().writeValueAsString(toReturn);
-            return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
-        }
 
 
     }
@@ -80,13 +83,8 @@ public class AddressValidationService {
 
 //    }
 
-    public static double[] getGeolocationXY(String location) throws Exception {
-        GoogleMapClient mapClient = new GoogleMapClient();
-        String geolocationXYString = mapClient.getLocation(location);
-        if (geolocationXYString.equals("empty")) {
-            throw new Exception("Address doesn't exist.");
-        }
-        String[] geolocationXYSplit= geolocationXYString.split(",");
+    public static double[] splitGeolocationXY(String locationXY) {
+        String[] geolocationXYSplit= locationXY.split(",");
         double geolocationX = Double.parseDouble(geolocationXYSplit[0]);
         double geolocationY = Double.parseDouble(geolocationXYSplit[1]);
         double[] geolocationXY = {geolocationX, geolocationY};

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.json.JSONObject;
 
 import com.dispatch.entity.User;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,12 +20,17 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
-    public ResponseEntity<String> loginUser(String emailId, String password) throws JsonProcessingException {
+    public ResponseEntity<String> loginUser(User user) throws JsonProcessingException {
         Map<String, String> loginResponse = new HashMap<>();
-        try {
-            User user = userDao.getUserByEmailId(emailId);// Here I think should return a user not customer.
-            String truePassword = user.getPassword();
-            if (truePassword.equals(password)) {
+            User targetUser = userDao.getUserByEmailId(user.getEmailId());// Here I think should return a user not customer.
+            if (targetUser == null) {
+              loginResponse.put("message","User NOT exist");
+              String json = new ObjectMapper().writeValueAsString(loginResponse);
+              return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
+            }
+        String testPassword = user.getPassword();
+            String truePassword = targetUser.getPassword();
+            if (truePassword.equals(testPassword)) {
                 loginResponse.put("message","login success");
                 String json = new ObjectMapper().writeValueAsString(loginResponse);
                 return new ResponseEntity<String>(json, HttpStatus.OK);
@@ -33,11 +39,6 @@ public class UserService {
                 String json = new ObjectMapper().writeValueAsString(loginResponse);
                 return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
             }
-        } catch (Exception e) {
-            loginResponse.put("message","UserID doesn't exist.");
-            String json = new ObjectMapper().writeValueAsString(loginResponse);
-            return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
-        }
     }
 
     public ResponseEntity<String> addUser(User user) throws JsonProcessingException {

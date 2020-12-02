@@ -1,5 +1,6 @@
 package com.dispatch.controller;
 
+import com.dispatch.entity.User;
 import com.dispatch.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONObject;
@@ -21,11 +22,12 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> login(@RequestBody HashMap<String, String> user, BindingResult result) throws JsonProcessingException {
+    public ResponseEntity<String> login(@RequestBody User user, BindingResult result) throws JsonProcessingException {
+        System.out.println("get Here");
         if (result.hasErrors()) {
             return null;
         }
-        return userService.loginUser(user.get("email"), user.get("password"));
+        return userService.loginUser(user);
 
     }
 
