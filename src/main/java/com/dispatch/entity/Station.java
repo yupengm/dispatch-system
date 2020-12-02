@@ -63,8 +63,4 @@ public class Station implements Serializable {
         this.robotAvailable = robotAvailable;
     }
 
-    private static final Station STATION1 = new Station();
-
-
-
 }

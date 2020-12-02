@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "payment")
 public class Payment implements Serializable {
-    private static final long serialVersionUID = -2455760938054036364L;
+    private static final long serialVersionUID = 2455760938054036364L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

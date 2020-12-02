@@ -1,7 +1,13 @@
 import {Menu, Dropdown, Button} from "antd";
+<<<<<<< HEAD
+// import {DownOutlined} from '@ant-design/icons';
+import React, {Component} from 'react';
+import logo from '../assets/images/logo_propeller.svg';
+=======
 import {DownOutlined} from '@ant-design/icons';
 import React, {Component} from 'react';
 import logo from '../drawable/logo_propeller.svg';
+>>>>>>> Oumeng
 
 
 
@@ -41,7 +47,11 @@ class Header extends Component {
                         &nbsp;
                         <Dropdown overlay={menu}>
                             <a className="User-dropdown" onClick={e => e.preventDefault()}>
+<<<<<<< HEAD
+
+=======
                                 <DownOutlined />
+>>>>>>> Oumeng
                             </a>
                         </Dropdown>
                     </div>

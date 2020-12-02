@@ -14,9 +14,9 @@ import javax.persistence.CascadeType;
 
 
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 public class Order implements Serializable {
-    private static final long serialVersionUID = -6571020025726257848L;
+    private static final long serialVersionUID = 6571020025726257848L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -45,7 +45,7 @@ public class Order implements Serializable {
     private PickUpAddress pickUpAddress;
 
     @ManyToOne
-    private  PutDownAddress putDownAddress;
+    private PutDownAddress putDownAddress;
 
     @ManyToOne
     private User user;
