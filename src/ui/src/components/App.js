@@ -1,10 +1,9 @@
+
 import React from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-
-
 
 import '../styles/App.css';
 import WelcomePage from "./WelcomePage";
@@ -14,6 +13,7 @@ function App() {
       <Router>
     <div className="App">
       <Header />
+
       <div>
           <Switch>
               <Route path="/home" component={WelcomePage} />
@@ -21,6 +21,7 @@ function App() {
               <Redirect from="/" exact to="/home" />
           </Switch>
       </div>
+
       <Footer />
     </div>
       </Router>

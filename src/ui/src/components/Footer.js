@@ -5,6 +5,7 @@ class Footer extends Component {
         return (
             <div className='footer'>
                 ©2020 All Rights Reserved. Website Made and Owned by Dispatch SF Ltd.
+
             </div>
         );
     }
