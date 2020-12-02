@@ -1,5 +1,5 @@
 import {Menu, Dropdown, Button} from "antd";
-// import {DownOutlined} from '@ant-design/icons';
+import {DownOutlined} from '@ant-design/icons';
 import React, {Component} from 'react';
 import logo from '../assets/images/logo_propeller.svg';
 
@@ -41,7 +41,7 @@ class Header extends Component {
                         &nbsp;
                         <Dropdown overlay={menu}>
                             <a className="User-dropdown" onClick={e => e.preventDefault()}>
-
+                                <DownOutlined />
                             </a>
                         </Dropdown>
                     </div>

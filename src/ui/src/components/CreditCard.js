@@ -1,15 +1,32 @@
 import React, {Component} from 'react';
 import {Form, Input, Button,} from 'antd';
+import axios from 'axios';
+import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
 class CreditCardForm extends Component {
     handleSubmit = e => {
         e.preventDefault();
+        this.props.setSteps()
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+
+                this.props.setSteps()
+
+            const params = {
+                "card_number": "1234567812345678",
+                "expire_date": "07/2025",
+                "CVV": "123",
+                "name_on_card": "Christopher Nolan"
+            }
+                let res = axios.post('./Dispatch/CreditCard', params);
+                // console.log(res.data);
+
             }
         });
     };
+
+
     normFile = e => {
         console.log('Upload event:', e);
         if (Array.isArray(e)) {
@@ -18,6 +35,9 @@ class CreditCardForm extends Component {
         return e && e.fileList;
     };
     render() {
+        if(this.props.curr_step != 4)
+            return null
+
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {
@@ -43,6 +63,12 @@ class CreditCardForm extends Component {
         };
 
         return (
+            <CSSTransitionGroup
+                transitionName="location-cards"
+                transitionAppear={true}
+                transitionAppearTimeout={400}
+                transitionEnterTimeout={400}>
+
             <div>
                 <Form {...formItemLayout} className='credit-card' onSubmit={this.handleSubmit}>
                     <Form.Item label="Please fill in your payment method for this order"/>
@@ -101,6 +127,7 @@ class CreditCardForm extends Component {
                     </Form.Item>
                 </Form>
             </div>
+            </CSSTransitionGroup>
         );
     }
 }

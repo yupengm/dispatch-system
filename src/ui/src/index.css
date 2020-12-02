@@ -10,6 +10,9 @@
 @import "./styles/CreditCard.css";
 @import "./styles/Confirmation.css";
 @import "./styles/Tracking.css";
+@import "./styles/WelcomePage.css";
+@import "./styles/LeftSideForm.css";
+@import "./styles/Register.css";
 
 body {
   margin: 0;
