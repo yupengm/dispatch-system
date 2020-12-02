@@ -2,6 +2,7 @@ package com.dispatch.controller;
 
 import com.dispatch.entity.User;
 import com.dispatch.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class SignupController {
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject signup(@RequestBody User user, BindingResult result) {
+    public ResponseEntity<String> signup(@RequestBody User user, BindingResult result) throws JsonProcessingException {
         if (result.hasErrors()) {
             return null;
         }

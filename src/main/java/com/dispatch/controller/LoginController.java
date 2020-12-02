@@ -1,6 +1,8 @@
 package com.dispatch.controller;
 
+import com.dispatch.entity.User;
 import com.dispatch.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,12 +22,11 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     @ResponseBody
-    public JSONObject login(@RequestBody HashMap<String, String> user, BindingResult result) {
+    public ResponseEntity<String> login(@RequestBody User user, BindingResult result) throws JsonProcessingException {
         if (result.hasErrors()) {
             return null;
         }
-
-        return userService.loginUser(user.get("email"), user.get("password"));
+        return userService.loginUser(user);
 
     }
 
