@@ -161,7 +161,7 @@ class Main extends Component {
 
                 </div>
                 <div>
-                    <Map des={destination} tar={target} station1={station1} station2={station2} station3={station3}/>
+                    <Map des={this.state.dropOff} tar={this.state.origin} station1={station1} station2={station2} station3={station3}/>
                 </div>
             </div>
         );
