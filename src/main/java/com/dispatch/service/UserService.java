@@ -51,7 +51,7 @@ public class UserService {
         } catch (Exception e) {
             addUserResponse.put("message","Add customer failed.");
             String json = new ObjectMapper().writeValueAsString(addUserResponse);
-            return new ResponseEntity<String>(json, HttpStatus.OK);
+            return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
         }
     }
 
