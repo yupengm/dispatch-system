@@ -3,6 +3,7 @@ package com.dispatch.controller;
 import com.dispatch.entity.Box;
 import com.dispatch.service.OrderOptionService;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class InputController {
 
     @RequestMapping(value = "/input", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject userInput(@RequestBody Box box, BindingResult result) {
+    public ResponseEntity<String> userInput(@RequestBody Box box, BindingResult result) throws JsonProcessingException {
         if (result.hasErrors()) {
             return null;
         }
