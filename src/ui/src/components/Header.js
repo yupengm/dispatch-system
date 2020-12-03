@@ -1,7 +1,6 @@
 import {Menu, Dropdown, Button} from "antd";
 import {DownOutlined} from '@ant-design/icons';
 import logo from '../assets/images/logo_propeller.svg';
-import {DownOutlined} from '@ant-design/icons';
 import React, {Component} from 'react';
 
 class Header extends Component {
