@@ -14,3 +14,9 @@
 .box.shipButton{
     outline: unset;
 }
+.welcome {
+    /*background-image: url("../assets/images/SFBackground.jpeg");*/
+    /*!*background-color: #222744;*!*/
+    /*width: 100%;*/
+    /*height: 760px;*/
+}

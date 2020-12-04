@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Form, Input, Tooltip, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete,} from 'antd';
-
+import axios from 'axios';
+import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
@@ -14,10 +15,23 @@ class RegisterForm extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
+        this.props.gotoLogin()
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-            }
+                const params = {
+                    "emailId": "1111@gmail.com",
+                    "password": "123123",
+                    "firstName": "Christopher",
+                    "lastName": "Nolan",
+                    "phone": "1234567890"
+                    }
+
+                    let res = axios.post('Dispatch/signup', params);
+
+                    // console.log(res.data);
+                }
+
         });
     };
 
@@ -41,21 +55,28 @@ class RegisterForm extends Component {
 
 
     render() {
+        if(this.props.curr_step!=11)
+            return null
+
         const formItemLayout = {
             labelCol: {
                 xs: {
                     span: 24,
+                    offset: 1,
                 },
                 sm: {
                     span: 8,
+                    offset: 1,
                 },
             },
             wrapperCol: {
                 xs: {
                     span: 24,
+                    offset: 1,
                 },
                 sm: {
                     span: 16,
+                    offset: 1,
                 },
             },
         };
@@ -82,7 +103,7 @@ class RegisterForm extends Component {
 
 
         const prefixSelector = getFieldDecorator('prefix', {
-            initialValue: '86',
+            initialValue: '1',
         })(
             <Select style={{ width: 70 }}>
                 <Option value="1">+1</Option>
@@ -91,7 +112,13 @@ class RegisterForm extends Component {
         );
 
         return (
-            <Form{...formItemLayout} name="register" onSubmit={this.handleSubmit}>
+            <CSSTransitionGroup
+                transitionName="location-cards"
+                transitionAppear={true}
+                transitionAppearTimeout={400}
+                transitionEnterTimeout={400}>
+
+            <Form{...formItemLayout} className="register" onSubmit={this.handleSubmit}>
 
                 <Form.Item
                     name="email"
@@ -221,6 +248,7 @@ class RegisterForm extends Component {
 
 
             </Form>
+            </CSSTransitionGroup>
 
         );
     }

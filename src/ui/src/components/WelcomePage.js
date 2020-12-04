@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import { Input, Button } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import backgroundImage from '../assets/images/SFBackground.jpeg';
-import axios from 'axios';
+import { useHistory } from "react-router-dom";
+// import axios from 'axios';
 
 const { Search } = Input;
 const onSearch = value => console.log(value);
@@ -15,6 +16,9 @@ class WelcomePage extends Component {
             size: 'large',
 //            isLoading: false,
         }
+    }
+    handleRedirect = ()=>{
+        this.props.history.push("/package")
     }
     // showTracking = trackingNum => {
     //     this.setState({
@@ -51,7 +55,7 @@ class WelcomePage extends Component {
         const { size } = this.state;
         const backgroundStyle={
             width: "100%",
-            height: "100%",
+            height: "780px",
             backgroundImage: `url(${backgroundImage})`,
             backgroundPosition: 'center',
             backgroundSize: 'cover',
@@ -59,24 +63,25 @@ class WelcomePage extends Component {
         }
 
         return(
-                <div className='welcome' style={backgroundStyle}>
-                    <div className='box'>
-                        <div className='search'>
-                            <Search placeholder="Search Tracking Number" onSearch={onSearch} style={{ width: 400, margin: '0 10px', textAlign: 'center'}} size={ size } enterButton/>
-                        </div>
-                        <br/>
-                        <div></div>
-                        <br/>
-                        <Button className='shipButton'
-                                type='primary'
-                                icon={<SendOutlined />}
-                                size={ size }
-                                >
-                            Click to Create a Shipment
-                        </Button>
+            <div className='welcome' style={backgroundStyle}>
+                <div className='box'>
+                    <div className='search'>
+                        <Search placeholder="Search Tracking Number" onSearch={onSearch} style={{ width: 400, margin: '0 10px', textAlign: 'center'}} size={ size } enterButton/>
                     </div>
+                    <br/>
+                    <div></div>
+                    <br/>
+                    <Button className='shipButton'
+                            type='primary'
+                            icon={<SendOutlined />}
+                            size={ size }
+                            onClick={this.handleRedirect}
+                    >
+                        Click to Create a Shipment
+                    </Button>
                 </div>
-            )
+            </div>
+        )
     }
 }
 export default WelcomePage;

@@ -1,22 +1,59 @@
 import React, {Component} from 'react';
 import {Form, Icon, Input, Button,Checkbox} from 'antd';
+import axios from 'axios';
+import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
 class LoginForm extends Component {
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
+                const params = {
+                    email: "111@gmail.com",
+                    password: "10000"
+
+                }
+
+                let res = axios.post("./login", params)
+                console.log(res)
                 console.log('Received values of form: ', values);
-            }
+                this.props.loggedin()
+                // const params = {
+                //         email:  "1111@gmail.com",
+                //         password:  "123123"
+                //     }
+                //
+                //     let res = axios.post("./Dispatch/login", params);
+
+                    // console.log(res.data);
+                }
         });
     };
 
-    // axios.get("./Dispatch/login");
-
     render() {
+        if(this.props.curr_step!=10)
+            return null
+
+        const formItemLayout = {
+            labelCol:{
+                xs:{ span: 24 },
+                sm: { span: 6 },
+            },
+            wrapperCol:{
+                xs:{ span: 24 },
+                sm: { span: 18},
+            }
+        };
+
         const { getFieldDecorator } = this.props.form;
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form">
+            <CSSTransitionGroup
+                transitionName="location-cards"
+                transitionAppear={true}
+                transitionAppearTimeout={400}
+                transitionEnterTimeout={400}>
+            <Form {...formItemLayout}
+                onSubmit={this.handleSubmit} className="login-form">
                 <Form.Item>
                     {getFieldDecorator('username', {
                         rules: [{ required: true, message: 'Please input your username!' }],
@@ -24,6 +61,7 @@ class LoginForm extends Component {
                         <Input
                             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                             placeholder="Username"
+                            className="logininput"
                         />,
                     )}
                 </Form.Item>
@@ -35,6 +73,7 @@ class LoginForm extends Component {
                             prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                             type="password"
                             placeholder="Password"
+                            className="logininput"
                         />,
                     )}
                 </Form.Item>
@@ -49,9 +88,10 @@ class LoginForm extends Component {
                     <Button type="primary" htmlType="submit" className="login-form-button">
                         Log in
                     </Button>
-                    Or <a href="">register now!</a>
+                    Or <a onClick={this.props.gotoRegister}>register now!</a>
                 </Form.Item>
             </Form>
+            </CSSTransitionGroup>
         );
         }
 }
