@@ -103,7 +103,6 @@ class LeftSideForm extends Component {
 
                 {/*<Register />*/}
 
-
                 <UserAddress curr_step={steps}
                              setSteps={this.handleSteps}
                              showPoints = {this.setPoints}

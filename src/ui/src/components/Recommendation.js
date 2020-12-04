@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Radio, Input, Button, List} from 'antd';
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
-
+import axios from 'axios';
 
 class Recommendation extends Component {
     // axios.get(url)
@@ -16,6 +16,7 @@ class Recommendation extends Component {
     //     })
     state = {
         value: 1,
+        option: 1,
     };
 
     onChange = e => {
@@ -65,8 +66,8 @@ class Recommendation extends Component {
                 transitionAppearTimeout={400}
                 transitionEnterTimeout={400}>
             <div className="recommendation-list-box">
-                <div>
-                        <input type="radio" value="OPTION A" name="options"/>Option A
+                <div onChange={this.setState}>
+                        <input type="radio" value="OPTION A" name="options"/> Option A
                         <List
                             bordered
                             dataSource={this.data1}
@@ -76,7 +77,7 @@ class Recommendation extends Component {
                 </div>
                 <br/>
                 <div>
-                    <input type="radio" value="OPTION B" name="options"/>Option B
+                    <input type="radio" value="OPTION B" name="options"/> Option B
                         <List
                             bordered
                             dataSource={this.data2}
@@ -86,7 +87,7 @@ class Recommendation extends Component {
                 </div>
                 <br/>
                 <div>
-                    <input type="radio" value="OPTION C" name="options"/>Option C
+                    <input type="radio" value="OPTION C" name="options"/> Option C
                         <List
                             bordered
                             dataSource={this.data3}
@@ -96,7 +97,7 @@ class Recommendation extends Component {
                 </div>
                 <br/>
                 <div>
-                    <input type="radio" value="OPTION D" name="options"/>Option D
+                    <input type="radio" value="OPTION D" name="options"/> Option D
                         <List
                             bordered
                             dataSource={this.data4}
@@ -122,5 +123,4 @@ class Recommendation extends Component {
         );
     }
 }
-
 export default Recommendation;
