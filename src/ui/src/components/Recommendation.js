@@ -16,9 +16,7 @@ class Recommendation extends Component {
     //     })
     state = {
         value: 1,
-        option: 1,
     };
-
     onChange = e => {
         console.log('radio checked', e.target.value);
         this.setState({
@@ -66,8 +64,21 @@ class Recommendation extends Component {
                 transitionAppearTimeout={400}
                 transitionEnterTimeout={400}>
             <div className="recommendation-list-box">
-                <div onChange={this.setState}>
-                        <input type="radio" value="OPTION A" name="options"/> Option A
+                <div>
+                    {/*dynamically passing in the options and create radio button for them*/}
+                    {
+                        this.props.options.map(function(complaintType) {
+                            return <label key={complaintType.id}>
+                                <input type="radio"
+                                       value={complaintType.id}
+                                       name="options"
+                                        key={complaintType.id}
+                                        onChange={this.onChange} />
+                                {complaintType.name}
+                            </label>
+                        }, this)}
+
+                        <input type="radio" value="OPTION A" name="options" onChange={this.onChange}/> Option A
                         <List
                             bordered
                             dataSource={this.data1}
@@ -77,7 +88,7 @@ class Recommendation extends Component {
                 </div>
                 <br/>
                 <div>
-                    <input type="radio" value="OPTION B" name="options"/> Option B
+                    <input type="radio" value="OPTION B" name="options" onChange={this.onChange}/> Option B
                         <List
                             bordered
                             dataSource={this.data2}
@@ -87,7 +98,7 @@ class Recommendation extends Component {
                 </div>
                 <br/>
                 <div>
-                    <input type="radio" value="OPTION C" name="options"/> Option C
+                    <input type="radio" value="OPTION C" name="options" onChange={this.onChange}/> Option C
                         <List
                             bordered
                             dataSource={this.data3}
@@ -97,7 +108,7 @@ class Recommendation extends Component {
                 </div>
                 <br/>
                 <div>
-                    <input type="radio" value="OPTION D" name="options"/> Option D
+                    <input type="radio" value="OPTION D" name="options" onChange={this.onChange}/> Option D
                         <List
                             bordered
                             dataSource={this.data4}
