@@ -1,6 +1,6 @@
 /* global google */
 import React, { Component } from "react";
-import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
+import {Map, Polyline, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng,} from 'react-places-autocomplete';
 import customMarker from '../assets/images/flag.png';
 
@@ -17,7 +17,7 @@ export class MapContainer extends Component {
             station2: {lat: 37.74575075621106, lng: -122.43330895872147},
             station3: {lat: 37.76475172762295, lng: -122.48394906175754},
             destination: {lat: 37.776290, lng: -122.431323},
-            target: {lat: 37.757936, lng: -122.409895}
+            origin: {lat: 37.757936, lng: -122.409895}
         }
         this.handleMapReady = this.handleMapReady.bind(this);
     }
@@ -27,7 +27,7 @@ export class MapContainer extends Component {
     }
 
     calculateAndDisplayRoute(map) {
-        const data = [this.state.station1, this.state.destination, this.state.target];
+        const data = [this.state.station1, this.state.destination, this.state.origin];
         console.log(data);
         const directionsService = new google.maps.DirectionsService();
         const directionsDisplay = new google.maps.DirectionsRenderer();
@@ -62,52 +62,58 @@ export class MapContainer extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         console.log(1)
+        const { des } = this.props;
+        const { tar } = this.props;
         if (prevProps.des !== this.props.des || prevProps.tar !== this.props.tar) {
             console.log(2)
-            this.locatePoint();
+            // this.locatePoint();
+            this.setState({destination: des})
+            this.setState({origin: tar})
             this.handleMapReady();
         }
 
     }
 
+
+
     // PlacesAutocomplete似乎有些问题。下面的console log不出来
-    locatePoint = () => {
-        const { des } = this.props;
-        const { tar } = this.props;
-        console.log('locatePoint', this.props.des)
-        console.log('locatePoint', des)
-
-        this.setState({ des, tar });
-        geocodeByAddress(des)
-            .then(results => getLatLng(results[0]))
-            .then(latLng => {
-                console.log('Success', latLng);
-                this.setState( {destination: latLng });
-            })
-            .catch(error => console.error('Error', error));
-
-        geocodeByAddress(tar)
-            .then(results => getLatLng(results[0]))
-            .then(latLng => {
-                console.log('Success', latLng);
-                this.setState( {target: latLng });
-            })
-            .catch(error => console.error('Error', error));
-    };
+    // locatePoint = () => {
+    //     const { des } = this.props;
+    //     const { tar } = this.props;
+    //     console.log('locatePoint', this.props.des)
+    //     console.log('locatePoint', des)
+    //
+    //     this.setState({ des, tar });
+    //     geocodeByAddress(des)
+    //         .then(results => getLatLng(results[0]))
+    //         .then(latLng => {
+    //             console.log('Success', latLng);
+    //             this.setState( {destination: latLng });
+    //         })
+    //         .catch(error => console.error('Error', error));
+    //
+    //     geocodeByAddress(tar)
+    //         .then(results => getLatLng(results[0]))
+    //         .then(latLng => {
+    //             console.log('Success', latLng);
+    //             this.setState( {target: latLng });
+    //         })
+    //         .catch(error => console.error('Error', error));
+    // };
 
     render() {
         return (
             <div className="mapWrapper" style={{height: `87%`, width: `69.5%`}}>
-                <PlacesAutocomplete
-                    value={this.locatePoint}
-                    // onChange={this.handleChange}
-                    // onSelect={this.locatePoint}
-                >
-                    {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-                        <div>
-                        </div>
-                    )}
-                </PlacesAutocomplete>
+                {/*<PlacesAutocomplete*/}
+                {/*    value={this.locatePoint}*/}
+                {/*    // onChange={this.handleChange}*/}
+                {/*    // onSelect={this.locatePoint}*/}
+                {/*>*/}
+                {/*    {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (*/}
+                {/*        <div>*/}
+                {/*        </div>*/}
+                {/*    )}*/}
+                {/*</PlacesAutocomplete>*/}
                 <Map
                     google={this.props.google}
                     zoom={this.state.zoom}
@@ -120,7 +126,7 @@ export class MapContainer extends Component {
                         lat: this.state.mapCenter.lat,
                         lng: this.state.mapCenter.lng
                     }}
-                    onReady={this.handleMapReady}
+                    // onReady={this.handleMapReady}
                 >
                     <Marker
                         position={{
@@ -137,7 +143,6 @@ export class MapContainer extends Component {
                             lat: this.state.station3.lat,
                             lng: this.state.station3.lng
                         }}/>
-
                     {/*<Marker*/}
                     {/*    icon={{*/}
                     {/*        url: customMarker,*/}
@@ -155,7 +160,6 @@ export class MapContainer extends Component {
                     {/*        lat: this.state.target.lat,*/}
                     {/*        lng: this.state.target.lng*/}
                     {/*    }}/>*/}
-
                 </Map>
             </div>
         )
