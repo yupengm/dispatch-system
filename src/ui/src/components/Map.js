@@ -19,15 +19,30 @@ export class MapContainer extends Component {
             destination: {lat: 37.776290, lng: -122.431323},
             origin: {lat: 37.757936, lng: -122.409895}
         }
-        this.handleMapReady = this.handleMapReady.bind(this);
+        this.calculateAndDisplayRoute = this.calculateAndDisplayRoute.bind(this);
+        this.drawPolyline = this.drawPolyline.bind(this);
     }
 
-    handleMapReady(mapProps, map) {
-        this.calculateAndDisplayRoute(map);
+    // handleMapReady(route, mapProps, map) {
+    //     this.calculateAndDisplayRoute(route, map);
+    //     this.drawPolyline(route, map);
+    // }
+
+    drawPolyline (points, map) {
+        const polyline = new google.maps.Polyline({
+            strokeColor: "#9500ff",
+            strokeOpacity: 0.5,
+            strokeWeight: 5,
+        });
+        console.log('drawPolyline', points, map);
+        polyline.setPath(points);
+        polyline.setMap(map);
     }
 
-    calculateAndDisplayRoute(map) {
-        const data = [this.state.station1, this.state.destination, this.state.origin];
+//  points is an array with three points(station, origin, destination)
+    calculateAndDisplayRoute(points, map) {
+        // const data = [this.state.station1, this.state.destination, this.state.origin];
+        const data = points;
         console.log(data);
         const directionsService = new google.maps.DirectionsService();
         const directionsDisplay = new google.maps.DirectionsRenderer();
@@ -51,10 +66,12 @@ export class MapContainer extends Component {
             },
             (response, status) => {
                 if (status === "OK") {
-                    console.log(response)
+                    console.log('route', response)
                     directionsDisplay.setDirections(response);
+                    return response.routes[0];
                 } else {
                     window.alert("Directions request failed due to " + status);
+                    return -1;
                 }
             }
         );
@@ -63,13 +80,13 @@ export class MapContainer extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         console.log(1)
         const { des } = this.props;
-        const { tar } = this.props;
-        if (prevProps.des !== this.props.des || prevProps.tar !== this.props.tar) {
+        const { origin } = this.props;
+        if (prevProps.des !== this.props.des || prevProps.origin !== this.props.origin) {
             console.log(2)
             // this.locatePoint();
             this.setState({destination: des})
-            this.setState({origin: tar})
-            this.handleMapReady();
+            this.setState({origin: origin})
+            // this.handleMapReady();
         }
 
     }
@@ -102,18 +119,10 @@ export class MapContainer extends Component {
     // };
 
     render() {
+        const polyCoords = [ ];
         return (
             <div className="mapWrapper" style={{height: `87%`, width: `69.5%`}}>
-                {/*<PlacesAutocomplete*/}
-                {/*    value={this.locatePoint}*/}
-                {/*    // onChange={this.handleChange}*/}
-                {/*    // onSelect={this.locatePoint}*/}
-                {/*>*/}
-                {/*    {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (*/}
-                {/*        <div>*/}
-                {/*        </div>*/}
-                {/*    )}*/}
-                {/*</PlacesAutocomplete>*/}
+
                 <Map
                     google={this.props.google}
                     zoom={this.state.zoom}
@@ -128,38 +137,23 @@ export class MapContainer extends Component {
                     }}
                     // onReady={this.handleMapReady}
                 >
-                    <Marker
-                        position={{
-                            lat: this.state.station1.lat,
-                            lng: this.state.station1.lng
-                        }}/>
-                    <Marker
-                        position={{
-                            lat: this.state.station2.lat,
-                            lng: this.state.station2.lng
-                        }}/>
-                    <Marker
-                        position={{
-                            lat: this.state.station3.lat,
-                            lng: this.state.station3.lng
-                        }}/>
-                    {/*<Marker*/}
-                    {/*    icon={{*/}
-                    {/*        url: customMarker,*/}
-                    {/*    }}*/}
-                    {/*    position={{*/}
-                    {/*        lat: this.state.destination.lat,*/}
-                    {/*        lng: this.state.destination.lng*/}
-                    {/*    }}/>*/}
 
                     {/*<Marker*/}
-                    {/*    icon={{*/}
-                    {/*        url: customMarker,*/}
-                    {/*    }}*/}
                     {/*    position={{*/}
-                    {/*        lat: this.state.target.lat,*/}
-                    {/*        lng: this.state.target.lng*/}
+                    {/*        lat: this.state.station1.lat,*/}
+                    {/*        lng: this.state.station1.lng*/}
                     {/*    }}/>*/}
+                    {/*<Marker*/}
+                    {/*    position={{*/}
+                    {/*        lat: this.state.station2.lat,*/}
+                    {/*        lng: this.state.station2.lng*/}
+                    {/*    }}/>*/}
+                    {/*<Marker*/}
+                    {/*    position={{*/}
+                    {/*        lat: this.state.station3.lat,*/}
+                    {/*        lng: this.state.station3.lng*/}
+                    {/*    }}/>*/}
+
                 </Map>
             </div>
         )

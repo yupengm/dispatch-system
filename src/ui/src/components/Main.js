@@ -22,9 +22,7 @@ class Main extends Component {
             destination: "",
             origin: {lat: null, lng: null},
             dropOff: {lat: null, lng: null},
-            station1: null,
-            station2: null,
-            station3: null,
+            station: null,
             route: null,
             routeList: []
         }
@@ -129,7 +127,9 @@ class Main extends Component {
                 };
                 routeList.push(newItem);
             })
+        return routeList
     }
+
 
 
     render(){
@@ -161,7 +161,7 @@ class Main extends Component {
 
                 </div>
                 <div>
-                    <Map des={this.state.dropOff} tar={this.state.origin} station1={station1} station2={station2} station3={station3}/>
+                    <Map des={this.state.dropOff} origin={this.state.origin} station={this.state.station} />
                 </div>
             </div>
         );
