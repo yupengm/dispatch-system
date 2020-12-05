@@ -6,19 +6,20 @@ class Recommendation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: '',
-            options: [["1","option1"],["2","option2"],["3","option3"]],
+            selected: '',
+            checked: 0
         }
     }
-    onChange = function(e){
-        console.log('radio checked', e.target.value);
+    onChange(index){
         this.setState({
-            value: e.target.value,
+            //selected: e.target.value,
+            checked: index
         });
+        console.log('radio checked', this.state.checked);
     };
 
     render() {
-
+        console.log(this.props.options);
         if(this.props.curr_step != 3)
             return null      
 
@@ -29,14 +30,14 @@ class Recommendation extends Component {
                 transitionAppearTimeout={400}
                 transitionEnterTimeout={400}>
             <div className="recommendation-list-box">
-                {this.state.options.map((choice, index) => (
+                {this.props.options.map((choice, index) => (
                     <label key={index}>
                         <input type="radio"
                                name="options"
                                value={choice}
                                key={index}
-                               checked={this.state.checked === index}
-                               onChange={this.onChange.bind(this)} /> Option {index + 1}
+                               checked={this.state.checked === index ? true : false}
+                               onChange={this.onChange.bind(this, index)} /> Option {index + 1}
                         <List
                             bordered
                             dataSource={choice}
@@ -64,5 +65,4 @@ class Recommendation extends Component {
         );
     }
 }
-
 export default Recommendation;
