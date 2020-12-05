@@ -27,20 +27,22 @@ export class MapContainer extends Component {
     }
 
     calculateAndDisplayRoute(map) {
+        let polyline1 = 0;
+        let polyline2 = 0;
 
         const data = [this.state.station1, this.state.destination, this.state.target];
         const directionsService = new google.maps.DirectionsService();
         const directionsDisplay = new google.maps.DirectionsRenderer();
         directionsDisplay.setMap(map);
 
-        const waypoints = data.map(item => {
+        let waypoints = data.map(item => {
             return {
                 location: {lat: item.lat, lng: item.lng},
                 stopover: true
             };
         });
-        const origin = waypoints.shift().location;
-        const destination = waypoints.pop().location;
+        let origin = waypoints.shift().location;
+        let destination = waypoints.pop().location;
 
         directionsService.route(
             {
@@ -56,7 +58,7 @@ export class MapContainer extends Component {
 
 
                     // directionsDisplay.setDirections(response);
-                    const polyline = new google.maps.Polyline({
+                    polyline1 = new google.maps.Polyline({
                         path: [],
                         strokeColor: "#03bafc",
                         strokeOpacity: 0.5,
@@ -72,19 +74,72 @@ export class MapContainer extends Component {
                         for (var j = 0; j < steps.length; j++) {
                             const nextSegment = steps[j].path;
                             for (var k = 0; k < nextSegment.length; k++) {
-                                polyline.getPath().push(nextSegment[k]);
+                                polyline1.getPath().push(nextSegment[k]);
                                 bounds.extend(nextSegment[k]);
                             }
                         }
                     }
 
-                    polyline.setMap(map);
+                    polyline1.setMap(map);
                 } else {
                     window.alert("Directions request failed due to " + status);
                 }
             }
         );
 
+
+        const data2 = [this.state.station2, this.state.destination, this.state.target];
+        waypoints = data2.map(item => {
+            return {
+                location: {lat: item.lat, lng: item.lng},
+                stopover: true
+            };
+        });
+        origin = waypoints.shift().location;
+        destination = waypoints.pop().location;
+
+        directionsService.route(
+            {
+                origin: origin,
+                destination: destination,
+                waypoints: waypoints,
+                travelMode: "DRIVING"
+            },
+            (response, status) => {
+                if (status === "OK") {
+                    // console.log("goole map: ", response);
+                    // directionsDisplay.setDirections(response);
+
+
+                    // directionsDisplay.setDirections(response);
+                    polyline2 = new google.maps.Polyline({
+                        path: [],
+                        strokeColor: "#03bafc",
+                        strokeOpacity: 0.5,
+                        strokeWeight: 6,
+                    });
+                    const bounds = new google.maps.LatLngBounds();
+
+
+                    const legs = response.routes[0].legs;
+                    for (var i = 0; i < legs.length; i++) {
+                        const steps = legs[i].steps;
+                        console.log(steps);
+                        for (var j = 0; j < steps.length; j++) {
+                            const nextSegment = steps[j].path;
+                            for (var k = 0; k < nextSegment.length; k++) {
+                                polyline2.getPath().push(nextSegment[k]);
+                                bounds.extend(nextSegment[k]);
+                            }
+                        }
+                    }
+
+                    polyline2.setMap(map);
+                } else {
+                    window.alert("Directions request failed due to " + status);
+                }
+            }
+        );
 
 
     }
