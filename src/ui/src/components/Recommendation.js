@@ -29,13 +29,10 @@ class Recommendation extends Component {
     //     });
     // };
     onChange(i){
+        console.log(this.state.checked);
         this.setState({
             checked: i,
         });
-//        console.log(this.state.checked);
-    }
-    handleClick() {
-        console.log('submitted option', this.state.selectedOption);
     }
 
     // handleOnChange(e) {
