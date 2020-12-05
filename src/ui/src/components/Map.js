@@ -51,7 +51,34 @@ export class MapContainer extends Component {
             },
             (response, status) => {
                 if (status === "OK") {
-                    console.log(response)
+                    console.log("goole map: ", response);
+                    directionsDisplay.setDirections(response);
+                } else {
+                    window.alert("Directions request failed due to " + status);
+                }
+            }
+        );
+
+        const data2 = [this.state.station2, this.state.destination, this.state.target];
+        const waypoints2 = data2.map(item => {
+            return {
+                location: { lat: item.lat, lng: item.lng },
+                stopover: true
+            };
+        });
+        const origin2 = waypoints2.shift().location;
+        const destination2 = waypoints2.pop().location;
+
+        directionsService.route(
+            {
+                origin: origin2,
+                destination: destination2,
+                waypoints: waypoints2,
+                travelMode: "DRIVING"
+            },
+            (response, status) => {
+                if (status === "OK") {
+                    console.log("goole map: ", response);
                     directionsDisplay.setDirections(response);
                 } else {
                     window.alert("Directions request failed due to " + status);
