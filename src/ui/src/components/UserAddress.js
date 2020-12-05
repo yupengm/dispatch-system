@@ -9,7 +9,8 @@ class UserAddress extends React.Component {
         super(props);
         this.state = {
             target: "", destination: "",
-            expectationAddress1: /^(\s?)(\d{1,10})(\s+)(\d*[A-Z|a-z]+)(\s+)([A-Z|a-z]+)(\s?)$/,
+        // /^(\s?)(\d{1,10})(\s+)(\d*[A-Z|a-z]+)(\s+)([A-Z|a-z]+)(\s?)$/,
+            expectationAddress1: /^(\s?)((\d*[A-Z|a-z]*\s*){1,5})(\s?)$/,
             expectationAddress2: /^(\s?)((\d*[A-Z|a-z]*\s*){1,5})(\s?)$/,
             expectationZip: /^(\s?)(\d{5}(-\d{4})?)(\s?)$/,
             expectationCity: /^(\s?)(([A-Z|a-z]*\s*){1,7})(\s?)$/,
