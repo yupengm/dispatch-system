@@ -27,7 +27,7 @@ export class MapContainer extends Component {
     }
 
     calculateAndDisplayRoute(map) {
-        const data = [this.state.station1, this.state.destination, this.state.target];
+        const data = [this.state.station2, this.state.destination, this.state.target];
         console.log(data);
         const directionsService = new google.maps.DirectionsService();
         const directionsDisplay = new google.maps.DirectionsRenderer();
@@ -51,7 +51,7 @@ export class MapContainer extends Component {
             },
             (response, status) => {
                 if (status === "OK") {
-                    console.log(response)
+                    console.log("Printed here: ", response)
                     directionsDisplay.setDirections(response);
                 } else {
                     window.alert("Directions request failed due to " + status);

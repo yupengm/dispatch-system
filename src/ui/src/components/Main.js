@@ -15,6 +15,18 @@ class Main extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            pickup:{
+                address1A: "",
+                address2A: "",
+                city: "",
+                zip: ""
+            },
+            deliver:{
+                address1A: "",
+                address2A: "",
+                city: "",
+                zip: ""
+            },
             target:"",
             destination: "",
             origin: {lat: null, lng: null},
@@ -27,10 +39,16 @@ class Main extends Component {
         }
     }
 
+    handleAddress = ()=>{
+
+    }
 
 
-
-    addressValidate = (target, destination) => {
+    addressValidate = (target, destination, target_val, destination_val) => {
+        this.setState({
+            pickup:target_val,
+            deliver:destination_val
+        })
         axios.get('http://localhost:8080/Dispatch/addressValidation', {
             params:{
                 pickup_address: target,
@@ -91,15 +109,15 @@ class Main extends Component {
             <div className='main'>
 
 
-                 {/* <LeftSideForm 
+                 <LeftSideForm
                                 curr_step={steps}
                                  setSteps={this.handleSteps}
-                                 showAddress={this.addressValidate}/> */}
+                                 showAddress={this.addressValidate}/>
 
-                    <UserAddress curr_step={steps}
-                                 setSteps={this.handleSteps}
-                                 showAddress={this.addressValidate}
-                    />
+                    {/*<UserAddress curr_step={steps}*/}
+                    {/*             setSteps={this.handleSteps}*/}
+                    {/*             showAddress={this.addressValidate}*/}
+                    {/*/>*/}
 
                 <div>
                     <Map des={this.state.dropOff} tar={this.state.origin} station1={station1} station2={station2} station3={station3}/>

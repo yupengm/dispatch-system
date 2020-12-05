@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Form, Button, Input} from 'antd';
+import {Form, Button, Input, InputNumber} from 'antd';
 import 'antd/dist/antd.css';
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
+import axios from "axios";
 
 class UserAddress extends React.Component {
     constructor(props){
@@ -68,7 +69,62 @@ class UserAddress extends React.Component {
     sendInfo() {
         let target = this.state.address1A + ' ' + this.state.address2A + ', ' + this.state.cityA + ', ' + this.state.zipA;
         let destination = this.state.address1B + ' ' + this.state.address2B + ', ' + this.state.cityB + ', ' + this.state.zipB;
-        this.props.showAddress(target, destination);
+        let target_val = {
+            address1A: this.state.address1A,
+            address2A: this.state.address2A,
+            city: this.state.cityA,
+            zip: this.state.zipA
+        }
+
+        let destination_val = {
+            address1A: this.state.address1B,
+            address2A: this.state.address2B,
+            city: this.state.cityB,
+            zip: this.state.zipB
+        }
+
+        // let url = '/Dispatch/addressValidation'
+        // const request = new Request(url, {
+        //     method: 'POST',
+        //     mode: 'cors',
+        //     body: JSON.stringify({
+        //         pickup_address: "2130 Fulton St",
+        //         pickup_city: "San Francisco",
+        //         pickup_zip: "94117",
+        //         deliver_address: "1600 Holloway Ave",
+        //         deliver_city: "San Francisco",
+        //         deliver_zip: "94132"
+        //     }),
+        //     headers: {
+        //         'Accept': 'application/json, text/plain, */*',
+        //         'Content-Type': 'application/json'
+        //     },
+        // });
+        //
+        // fetch(request)
+        //     .then(response => {
+        //         console.log(response.json());
+        //         console.log(response.data);
+        //     })
+
+        axios({
+            method: 'post',
+            url: '/Dispatch/addressValidation',
+            data: {
+                pickup_address: "2130 Fulton St",
+                pickup_city: "San Francisco",
+                pickup_zip: "94117",
+                deliver_address: "1600 Holloway Ave",
+                deliver_city: "San Francisco",
+                deliver_zip: "94132"
+            }
+        }).then((response) => {
+            console.log(response);
+        }, (error) => {
+            console.log(error);
+        });
+
+        // this.props.showAddress(target, destination, target_val, destination_val);
         console.log(target);
         console.log(destination);
         this.props.setSteps();
@@ -79,6 +135,7 @@ class UserAddress extends React.Component {
             return null
         const formItemLayout = {labelCol: { span: 4 }, wrapperCol: { span: 14 }};
         const buttonItemLayout = {wrapperCol: { span: 14, offset: 4 }};
+        // const { getFieldDecorator } = this.props.form;
         return (
             <CSSTransitionGroup
                 transitionName="location-cards"
@@ -91,6 +148,9 @@ class UserAddress extends React.Component {
                     <Form.Item label="Address Line 1" {...formItemLayout} required hasFeedback
                                validateStatus={this.state.emptyAdd1A ? "" : (this.state.addressMatch1A ? "success" : "error")}
                                id={this.state.emptyAdd1A ? "" : (this.state.addressMatch1A ? "success" : "error")} >
+                        {/*{getFieldDecorator('length',*/}
+                        {/*    {initialValue : this.props.pickup.address1A}*/}
+                        {/*)}*/}
                         <Input placeholder="Street Address" onChange={this.checkAddress1A} />
                     </Form.Item>
                     <Form.Item label="Address Line 2" {...formItemLayout} hasFeedback
