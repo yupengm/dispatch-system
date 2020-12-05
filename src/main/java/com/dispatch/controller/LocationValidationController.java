@@ -20,7 +20,7 @@ public class LocationValidationController {
     @Autowired
     AddressValidationService addressValidationService;
 
-    @RequestMapping(value = "/addressValidation", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/addressValidation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<String> addressValidation(@RequestBody HashMap<String, String> requestData, BindingResult result) throws Exception {
         if (result.hasErrors()) {
