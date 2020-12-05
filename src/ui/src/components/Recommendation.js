@@ -2,8 +2,14 @@ import React, {Component} from 'react';
 import {Radio, Input, Button, List} from 'antd';
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
-
 class Recommendation extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            checked: 0,
+            options: [["1","option1"],["2","option2"],["3","option3"]],
+        }
+    }
     // axios.get(url)
     //      .then(response => {
     //            console.log(response.data)
@@ -14,17 +20,25 @@ class Recommendation extends Component {
     //     .catch(error => {
     //          console.log('err in fetch xxx -> ', error);
     //     })
-    state = {
-        value: 1,
-    };
 
-    onChange = e => {
-        console.log('radio checked', e.target.value);
+
+    // onChange = e => {
+    //     console.log('radio checked', e.target.value);
+    //     this.setState({
+    //         value: e.target.value,
+    //     });
+    // };
+    onChange(i){
+        console.log(this.state.checked);
         this.setState({
-            value: e.target.value,
+            checked: i,
         });
-    };
-    const
+    }
+
+    // handleOnChange(e) {
+    //     console.log('selected option', e.target.value);
+    //     this.setState({ selectedOption: e.target.value});
+    // }
     data1 = [
         'Drone 1  FASTEST!',
         'Estimated Price :  $40',
@@ -65,54 +79,33 @@ class Recommendation extends Component {
                 transitionAppearTimeout={400}
                 transitionEnterTimeout={400}>
             <div className="recommendation-list-box">
-                <div>
-                        <input type="radio" value="OPTION A" name="options"/>Option A
+                {this.state.options.map((choice, index) => (
+                    <label key={index}>
+                        <input type="radio"
+                               name="options"
+                               value={choice}
+                               key={index}
+                               checked={this.state.checked === index}
+                               onChange={this.onChange.bind(this,index)} /> Option {index + 1}
                         <List
                             bordered
-                            dataSource={this.data1}
+                            dataSource={choice}
                             renderItem={item => <List.Item>{item}</List.Item>}
                             size = "small"
                         />
-                </div>
-                <br/>
-                <div>
-                    <input type="radio" value="OPTION B" name="options"/>Option B
-                        <List
-                            bordered
-                            dataSource={this.data2}
-                            renderItem={item => <List.Item>{item}</List.Item>}
-                            size = "small"
-                        />
-                </div>
-                <br/>
-                <div>
-                    <input type="radio" value="OPTION C" name="options"/>Option C
-                        <List
-                            bordered
-                            dataSource={this.data3}
-                            renderItem={item => <List.Item>{item}</List.Item>}
-                            size = "small"
-                        />
-                </div>
-                <br/>
-                <div>
-                    <input type="radio" value="OPTION D" name="options"/>Option D
-                        <List
-                            bordered
-                            dataSource={this.data4}
-                            renderItem={item => <List.Item>{item}</List.Item>}
-                            size = "small"
-                        />
-                </div>
+                        <br />
+                    </label>
+                ))}
+
 
                 <div className="btn-container">
                     <Button type="primary" htmlType="submit" className="back-list-btn"
                         onClick={this.props.goback}>
                         Back
                     </Button>
-                    <Button type="primary" 
-                        htmlType="submit" 
-                        className="pay-list-btn" 
+                    <Button type="primary"
+                        htmlType="submit"
+                        className="pay-list-btn"
                         onClick={this.props.gotoLogin}>
                         Pay
                     </Button>

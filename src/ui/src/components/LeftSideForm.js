@@ -9,6 +9,7 @@ import Confirmation from "./Confirmation";
 import Tracking from "./Tracking";
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import { withRouter } from "react-router-dom";
+import {List} from 'antd'
 
 class LeftSideForm extends Component {
     constructor(props) {
@@ -95,7 +96,34 @@ class LeftSideForm extends Component {
             target: target
         }))
     }
-
+    // const json = {
+    //     options: [["1","option1"],["2","option2"],["3","option3"]],
+    //     checked: 1,
+    // };
+    //
+    // const Option = ({ options, selected, onChange }) => {
+    //     return (
+    //         <div className="options">
+    //             {options.map((choice, index) => (
+    //                 <label key={index}>
+    //                     <input type="radio"
+    //                            name="options"
+    //                            value={choice}
+    //                            key={index}
+    //                            checked={selected === choice}
+    //                            onChange={onChange} /> Option {i + 1}
+    //                     <List
+    //                         bordered
+    //                         dataSource={choice}
+    //                         renderItem={item => <List.Item>{item}</List.Item>}
+    //                         size = "small"
+    //                     />
+    //                     <br />
+    //                 </label>
+    //             ))}
+    //         </div>
+    //     );
+    // };
     render() {
         const {steps} = this.state
         return (
@@ -127,6 +155,7 @@ class LeftSideForm extends Component {
                                 setSteps={this.handleSteps}
                                 gotoLogin={this.gotoLogin}
                                 goback={this._prev}
+                                // model={json}
                 />
 
                 <Login curr_step={steps}
