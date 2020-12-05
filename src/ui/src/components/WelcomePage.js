@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Input, Button } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
-import backgroundImage from '../assets/images/SFBackground.jpeg';
+import backgroundImage from '../assets/images/smart-city.jpg';
 import { useHistory } from "react-router-dom";
 // import axios from 'axios';
 
