@@ -1,7 +1,7 @@
 /* global google */
-import React, { Component } from "react";
-import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
-import PlacesAutocomplete, { geocodeByAddress, getLatLng,} from 'react-places-autocomplete';
+import React, {Component} from "react";
+import {Map, InfoWindow, Marker, GoogleApiWrapper, Polyline} from 'google-maps-react';
+import PlacesAutocomplete, {geocodeByAddress, getLatLng,} from 'react-places-autocomplete';
 import customMarker from '../assets/images/flag.png';
 
 export class MapContainer extends Component {
@@ -27,15 +27,15 @@ export class MapContainer extends Component {
     }
 
     calculateAndDisplayRoute(map) {
+
         const data = [this.state.station1, this.state.destination, this.state.target];
-        console.log(data);
         const directionsService = new google.maps.DirectionsService();
         const directionsDisplay = new google.maps.DirectionsRenderer();
         directionsDisplay.setMap(map);
 
         const waypoints = data.map(item => {
             return {
-                location: { lat: item.lat, lng: item.lng },
+                location: {lat: item.lat, lng: item.lng},
                 stopover: true
             };
         });
@@ -51,40 +51,42 @@ export class MapContainer extends Component {
             },
             (response, status) => {
                 if (status === "OK") {
-                    console.log("goole map: ", response);
-                    directionsDisplay.setDirections(response);
+                    // console.log("goole map: ", response);
+                    // directionsDisplay.setDirections(response);
+
+
+                    // directionsDisplay.setDirections(response);
+                    const polyline = new google.maps.Polyline({
+                        path: [],
+                        strokeColor: "#03bafc",
+                        strokeOpacity: 0.5,
+                        strokeWeight: 6,
+                    });
+                    const bounds = new google.maps.LatLngBounds();
+
+
+                    const legs = response.routes[0].legs;
+                    for (var i = 0; i < legs.length; i++) {
+                        const steps = legs[i].steps;
+                        console.log(steps);
+                        for (var j = 0; j < steps.length; j++) {
+                            const nextSegment = steps[j].path;
+                            for (var k = 0; k < nextSegment.length; k++) {
+                                polyline.getPath().push(nextSegment[k]);
+                                bounds.extend(nextSegment[k]);
+                            }
+                        }
+                    }
+
+                    polyline.setMap(map);
                 } else {
                     window.alert("Directions request failed due to " + status);
                 }
             }
         );
 
-        const data2 = [this.state.station2, this.state.destination, this.state.target];
-        const waypoints2 = data2.map(item => {
-            return {
-                location: { lat: item.lat, lng: item.lng },
-                stopover: true
-            };
-        });
-        const origin2 = waypoints2.shift().location;
-        const destination2 = waypoints2.pop().location;
 
-        directionsService.route(
-            {
-                origin: origin2,
-                destination: destination2,
-                waypoints: waypoints2,
-                travelMode: "DRIVING"
-            },
-            (response, status) => {
-                if (status === "OK") {
-                    console.log("goole map: ", response);
-                    directionsDisplay.setDirections(response);
-                } else {
-                    window.alert("Directions request failed due to " + status);
-                }
-            }
-        );
+
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -99,17 +101,17 @@ export class MapContainer extends Component {
 
     // PlacesAutocomplete似乎有些问题。下面的console log不出来
     locatePoint = () => {
-        const { des } = this.props;
-        const { tar } = this.props;
+        const {des} = this.props;
+        const {tar} = this.props;
         console.log('locatePoint', this.props.des)
         console.log('locatePoint', des)
 
-        this.setState({ des, tar });
+        this.setState({des, tar});
         geocodeByAddress(des)
             .then(results => getLatLng(results[0]))
             .then(latLng => {
                 console.log('Success', latLng);
-                this.setState( {destination: latLng });
+                this.setState({destination: latLng});
             })
             .catch(error => console.error('Error', error));
 
@@ -117,12 +119,13 @@ export class MapContainer extends Component {
             .then(results => getLatLng(results[0]))
             .then(latLng => {
                 console.log('Success', latLng);
-                this.setState( {target: latLng });
+                this.setState({target: latLng});
             })
             .catch(error => console.error('Error', error));
     };
 
     render() {
+        const path = [this.state.destination, this.state.target];
         return (
             <div className="mapWrapper" style={{height: `87%`, width: `69.5%`}}>
                 <PlacesAutocomplete
@@ -130,7 +133,7 @@ export class MapContainer extends Component {
                     // onChange={this.handleChange}
                     // onSelect={this.locatePoint}
                 >
-                    {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                    {({getInputProps, suggestions, getSuggestionItemProps, loading}) => (
                         <div>
                         </div>
                     )}
@@ -149,6 +152,11 @@ export class MapContainer extends Component {
                     }}
                     onReady={this.handleMapReady}
                 >
+                    <Polyline
+                        path={path}
+                        strokeColor="#03bafc"
+                        strokeOpacity={0.5}
+                        strokeWeight={6}/>
                     <Marker
                         position={{
                             lat: this.state.station1.lat,
@@ -165,23 +173,23 @@ export class MapContainer extends Component {
                             lng: this.state.station3.lng
                         }}/>
 
-                    {/*<Marker*/}
-                    {/*    icon={{*/}
-                    {/*        url: customMarker,*/}
-                    {/*    }}*/}
-                    {/*    position={{*/}
-                    {/*        lat: this.state.destination.lat,*/}
-                    {/*        lng: this.state.destination.lng*/}
-                    {/*    }}/>*/}
+                    <Marker
+                        icon={{
+                            url: customMarker,
+                        }}
+                        position={{
+                            lat: this.state.destination.lat,
+                            lng: this.state.destination.lng
+                        }}/>
 
-                    {/*<Marker*/}
-                    {/*    icon={{*/}
-                    {/*        url: customMarker,*/}
-                    {/*    }}*/}
-                    {/*    position={{*/}
-                    {/*        lat: this.state.target.lat,*/}
-                    {/*        lng: this.state.target.lng*/}
-                    {/*    }}/>*/}
+                    <Marker
+                        icon={{
+                            url: customMarker,
+                        }}
+                        position={{
+                            lat: this.state.target.lat,
+                            lng: this.state.target.lng
+                        }}/>
 
                 </Map>
             </div>
