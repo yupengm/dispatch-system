@@ -65,7 +65,7 @@ class Recommendation extends Component {
                 transitionAppearTimeout={400}
                 transitionEnterTimeout={400}>
             <div className="recommendation-list-box">
-                <div>
+                <div className="btn-fastest">
                         <input type="radio" value="OPTION A" name="options"/>Option A
                         <List
                             bordered
@@ -75,7 +75,7 @@ class Recommendation extends Component {
                         />
                 </div>
                 <br/>
-                <div>
+                <div className="btn-cheapest">
                     <input type="radio" value="OPTION B" name="options"/>Option B
                         <List
                             bordered
