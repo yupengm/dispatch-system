@@ -13,6 +13,8 @@ import java.time.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.dispatch.service.OrderService.getStringResponseEntity;
+
 
 @Service
 public class TrackingService {
@@ -28,16 +30,7 @@ public class TrackingService {
         Map<String, String> toReturn = new HashMap<>();
 
 //        toReturn.put("status", getStatus(order.getStartTime(), order.getStartTime(),order.getEndTime())); //TODO
-        toReturn.put("email", order.getUser().getEmailId());
-        toReturn.put("price", String.valueOf(order.getPrice()));
-        toReturn.put("station", String.valueOf(order.getStation()));
-        toReturn.put("type", order.getDeliverType());
-        toReturn.put("size", String.valueOf(order.getBox())); //TODO: maybe abandon the box
-        toReturn.put("weight", String.valueOf(order.getTotalWeight()));
-        toReturn.put("PickUpAddress",String.valueOf(order.getPickUpAddress()));
-        toReturn.put("PutDownAddress",String.valueOf(order.getPutDownAddress()));
-        String json = new ObjectMapper().writeValueAsString(toReturn);
-        return new ResponseEntity<String>(json, HttpStatus.OK);
+        return getStringResponseEntity(order, toReturn);
     }
 
     // when save order, use getNowTime to save a String type time
@@ -51,7 +44,7 @@ public class TrackingService {
 
     // To get String type status for current order
     // time 1 is leg1 cost in seconds, so does time2
-    private double getStatus(String StartTime, int time1, int time2) {
+    private int getStatus(String StartTime, int time1, int time2) {
 
         Instant start = Instant.parse(StartTime + "z");
         Instant now = Instant.parse(this.getNowTime() + "z");
@@ -63,12 +56,12 @@ public class TrackingService {
 
         if(timeElapsed.toMillis() < time1*1000) {
 //            return "On the way to pick up";
-            return 0+(timeElapsed).toMillis() /time1 * 1000;
+            return 0;
 
         } else if(timeElapsed.toMillis() < (time1+time2)*1000) {
 //            return "Shipping to destination";
 //            return 1;
-            return 1+(timeElapsed).toMillis() /time2 * 1000;
+            return 1;
         } else {
 //            return "Completed";
             return 2;

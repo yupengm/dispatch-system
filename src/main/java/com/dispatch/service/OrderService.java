@@ -27,23 +27,28 @@ public class OrderService {
             order.setStartTime(LocalDateTime.now().toString());
 //            order.setEndTime(LocalDateTime.now().toString() + order.); //TODO:delivery duration needed.
             orderDao.addOrder(order);
-
-            //TODO: orderDao.generate orderId
-            toReturn.put("email", order.getUser().getEmailId());
-            toReturn.put("price", String.valueOf(order.getPrice()));
-            toReturn.put("station", String.valueOf(order.getStation()));
-            toReturn.put("type", order.getDeliverType());
-            toReturn.put("size", String.valueOf(order.getBox())); //TODO: maybe abandon the box
-            toReturn.put("weight", String.valueOf(order.getTotalWeight()));
-            toReturn.put("PickUpAddress",String.valueOf(order.getPickUpAddress()));
-            toReturn.put("PutDownAddress",String.valueOf(order.getPutDownAddress()));
-            String json = new ObjectMapper().writeValueAsString(toReturn);
-            return new ResponseEntity<String>(json, HttpStatus.OK);
+            return getStringResponseEntity(order, toReturn);
         } catch (Exception e) {
+            //TODO: IllegalAccessException
             toReturn.put("message", "Order failed.");
             String json = new ObjectMapper().writeValueAsString(toReturn);
             return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    static ResponseEntity<String> getStringResponseEntity(Order order, Map<String, String> toReturn) throws JsonProcessingException {
+        toReturn.put("email", order.getUser().getEmailId());
+        toReturn.put("price", String.valueOf(order.getPrice()));
+        toReturn.put("station", String.valueOf(order.getStation()));
+        toReturn.put("type", order.getDeliverType());
+        //toReturn.put("size", String.valueOf(order.getSize()));
+//        toReturn.put("size", String.valueOf(order.getWeight()));
+//        toReturn.put("size", String.valueOf(order.getFeature()));
+        toReturn.put("weight", String.valueOf(order.getTotalWeight()));
+        toReturn.put("PickUpAddress",String.valueOf(order.getPickUpAddress()));
+        toReturn.put("PutDownAddress",String.valueOf(order.getPutDownAddress()));
+        String json = new ObjectMapper().writeValueAsString(toReturn);
+        return new ResponseEntity<String>(json, HttpStatus.OK);
     }
 
 
