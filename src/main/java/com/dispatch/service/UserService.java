@@ -53,6 +53,7 @@ public class UserService {
             String json = new ObjectMapper().writeValueAsString(addUserResponse);
             return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
         }
+
     }
 
 
