@@ -15,18 +15,8 @@ class Main extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            pickup:{
-                address1A: "",
-                address2A: "",
-                city: "",
-                zip: ""
-            },
-            deliver:{
-                address1A: "",
-                address2A: "",
-                city: "",
-                zip: ""
-            },
+            pickup:null,
+            deliver: null,
             steps : 1,
             size: "",
             weight: "",
@@ -52,22 +42,36 @@ class Main extends Component {
         })
     }
 
+    // setPickup = () =>{
+    //     this.setState({
+    //         pick
+    //     })
+    // }
 
-    addressValidate = (target, destination, target_val, destination_val) => {
+
+    addressValidate = (target, destination) => {
         this.setState({
-            pickup:target_val,
-            deliver:destination_val
+            pickup:target,
+            deliver:destination
         })
-        axios.get('http://localhost:8080/Dispatch/addressValidation', {
-            params:{
-                pickup_address: target,
-                deliver_address: destination,
+
+        axios({
+            method: 'post',
+            url: '/Dispatch/addressValidation',
+            data: {
+                pickup_address: target.address1A,
+                pickup_city: target.city,
+                pickup_zip: target.zipadd,
+                deliver_address: destination.address1A,
+                deliver_city: destination.city,
+                deliver_zip: destination.zipadd
             }
-        })
-            .then(response => {
+        }).then(response => {
                 console.log(response);
                 console.log(response.data);
                 this.setState({
+                    // pickup: target,
+                    // deliver: destination,
                     origin: {lat: response.data.pickUpGeoLocationX, lng: response.data.pickUpGeoLocationY},
                     dropOff: {lat: response.data.putDownGeoLocationX, lng: response.data.putDownGeoLocationY},
                 });
@@ -117,7 +121,7 @@ class Main extends Component {
 
         return (
             <div className='main'>
-                <div className="left-side">
+
 
                     <Register />
 
@@ -125,7 +129,8 @@ class Main extends Component {
                  <LeftSideForm
                                 curr_step={steps}
                                  setSteps={this.handleSteps}
-                                 showAddress={this.addressValidate}/>
+                                 showAddress={this.addressValidate}
+                                 value = {this.state}/>
 
                     {/*<UserAddress curr_step={steps}*/}
                     {/*             setSteps={this.handleSteps}*/}
@@ -144,7 +149,6 @@ class Main extends Component {
 
                     {this.previousButton}
 
-                </div>
                 <div>
                     <Map des={this.state.dropOff} origin={this.state.origin} station={this.state.station} />
                 </div>

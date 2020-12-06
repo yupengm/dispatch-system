@@ -27,7 +27,7 @@ public class ApplicationConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://laiproject-instance.cctzp1m6kuqr.us-east-1.rds.amazonaws.com:3306/ecommerce?createDatabaseIfNotExist=true&serverTimezone=UTC");
+        dataSource.setUrl("jdbc:mysql://laiproject-instance.cctzp1m6kuqr.us-east-1.rds.amazonaws.com:3306/dispatch?createDatabaseIfNotExist=true&serverTimezone=UTC");
         dataSource.setUsername("admin");
         dataSource.setPassword("oikjmn09");
         return dataSource;

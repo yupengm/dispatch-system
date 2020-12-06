@@ -16,17 +16,19 @@ export class MapContainer extends Component {
             station1: {lat: 37.78741078914182, lng: -122.43674218604595},
             station2: {lat: 37.74575075621106, lng: -122.43330895872147},
             station3: {lat: 37.76475172762295, lng: -122.48394906175754},
-            destination: {lat: 37.776290, lng: -122.431323},
-            origin: {lat: 37.757936, lng: -122.409895}
+            // destination: {lat: 37.776290, lng: -122.431323},
+            // origin: {lat: 37.757936, lng: -122.409895}
+            destination: null,
+            origin: null
         }
         this.calculateAndDisplayRoute = this.calculateAndDisplayRoute.bind(this);
         this.drawPolyline = this.drawPolyline.bind(this);
     }
 
-    // handleMapReady(route, mapProps, map) {
-    //     this.calculateAndDisplayRoute(route, map);
-    //     this.drawPolyline(route, map);
-    // }
+    handleMapReady(route, mapProps, map) {
+        this.calculateAndDisplayRoute(route, map);
+        this.drawPolyline(route, map);
+    }
 
     drawPolyline (points, map) {
         const polyline = new google.maps.Polyline({
@@ -83,9 +85,11 @@ export class MapContainer extends Component {
         const { origin } = this.props;
         if (prevProps.des !== this.props.des || prevProps.origin !== this.props.origin) {
             console.log(2)
-            // this.locatePoint();
+
             this.setState({destination: des})
             this.setState({origin: origin})
+
+            this.locatePoint();
             // this.handleMapReady();
         }
 
@@ -94,29 +98,29 @@ export class MapContainer extends Component {
 
 
     // PlacesAutocomplete似乎有些问题。下面的console log不出来
-    // locatePoint = () => {
-    //     const { des } = this.props;
-    //     const { tar } = this.props;
-    //     console.log('locatePoint', this.props.des)
-    //     console.log('locatePoint', des)
-    //
-    //     this.setState({ des, tar });
-    //     geocodeByAddress(des)
-    //         .then(results => getLatLng(results[0]))
-    //         .then(latLng => {
-    //             console.log('Success', latLng);
-    //             this.setState( {destination: latLng });
-    //         })
-    //         .catch(error => console.error('Error', error));
-    //
-    //     geocodeByAddress(tar)
-    //         .then(results => getLatLng(results[0]))
-    //         .then(latLng => {
-    //             console.log('Success', latLng);
-    //             this.setState( {target: latLng });
-    //         })
-    //         .catch(error => console.error('Error', error));
-    // };
+    locatePoint = () => {
+        const { des } = this.props;
+        const { tar } = this.props;
+        console.log('locatePoint', this.props.des)
+        console.log('locatePoint', des)
+
+        this.setState({ des, tar });
+        geocodeByAddress(des)
+            .then(results => getLatLng(results[0]))
+            .then(latLng => {
+                console.log('Success', latLng);
+                this.setState( {destination: latLng });
+            })
+            .catch(error => console.error('Error', error));
+
+        geocodeByAddress(tar)
+            .then(results => getLatLng(results[0]))
+            .then(latLng => {
+                console.log('Success', latLng);
+                this.setState( {target: latLng });
+            })
+            .catch(error => console.error('Error', error));
+    };
 
     render() {
         const polyCoords = [ ];
@@ -138,21 +142,21 @@ export class MapContainer extends Component {
                     // onReady={this.handleMapReady}
                 >
 
-                    {/*<Marker*/}
-                    {/*    position={{*/}
-                    {/*        lat: this.state.station1.lat,*/}
-                    {/*        lng: this.state.station1.lng*/}
-                    {/*    }}/>*/}
-                    {/*<Marker*/}
-                    {/*    position={{*/}
-                    {/*        lat: this.state.station2.lat,*/}
-                    {/*        lng: this.state.station2.lng*/}
-                    {/*    }}/>*/}
-                    {/*<Marker*/}
-                    {/*    position={{*/}
-                    {/*        lat: this.state.station3.lat,*/}
-                    {/*        lng: this.state.station3.lng*/}
-                    {/*    }}/>*/}
+                    <Marker
+                        position={{
+                            lat: this.state.station1.lat,
+                            lng: this.state.station1.lng
+                        }}/>
+                    <Marker
+                        position={{
+                            lat: this.state.station2.lat,
+                            lng: this.state.station2.lng
+                        }}/>
+                    <Marker
+                        position={{
+                            lat: this.state.station3.lat,
+                            lng: this.state.station3.lng
+                        }}/>
 
                 </Map>
             </div>
