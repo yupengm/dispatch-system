@@ -40,7 +40,7 @@ class Header extends Component {
                         &nbsp;
                         <Dropdown overlay={menu}>
                             <a className="User-dropdown" onClick={e => e.preventDefault()}>
-
+                                <DownOutlined />
                             </a>
                         </Dropdown>
                     </div>

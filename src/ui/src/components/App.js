@@ -13,15 +13,13 @@ function App() {
       <Router>
     <div className="App">
       <Header />
-
       <div>
           <Switch>
               <Route path="/home" component={WelcomePage} />
               <Route path="/package" component={Main} />
-              {/*<Redirect from="/" exact to="/home" />*/}
+              <Redirect from="/" exact to="/home" />
           </Switch>
       </div>
-
       <Footer />
     </div>
       </Router>

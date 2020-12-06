@@ -23,9 +23,8 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<String> login(@RequestBody User user, BindingResult result) throws JsonProcessingException {
-        System.out.println("get Here");
         if (result.hasErrors()) {
-            return null;
+            return null; //TODO: don't return null.
         }
         return userService.loginUser(user);
 

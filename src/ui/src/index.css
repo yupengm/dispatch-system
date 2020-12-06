@@ -1,10 +1,11 @@
 @import '~antd/dist/antd.css';
 @import "./styles/Main.css";
-@import "./styles/Header.css";
 @import "./styles/UserInput.css";
-@import "./styles/Footer.css";
 @import "./styles/Map.css";
 @import "./styles/UserAddress.css";
+@import "./styles/App.css";
+@import "./styles/Header.css";
+@import './styles/Footer.css';
 @import "./styles/Login.css";
 @import "./styles/Recommendation.css";
 @import "./styles/CreditCard.css";
@@ -13,7 +14,6 @@
 @import "./styles/WelcomePage.css";
 @import "./styles/LeftSideForm.css";
 @import "./styles/Register.css";
-
 
 body {
   margin: 0;

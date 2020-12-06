@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import UserInput from "./UserInput";
 import Map from"./Map"
 import LeftSideForm from "./LeftSideForm";
 import { withRouter } from "react-router-dom";
@@ -7,7 +8,6 @@ import axios from 'axios';
 import Login from "./Login";
 import Register from "./Register";
 import Tracking from "./Tracking";
-
 
 // Main Component
 class Main extends Component {
@@ -27,20 +27,29 @@ class Main extends Component {
                 city: "",
                 zip: ""
             },
+            steps : 1,
+            size: "",
+            weight: "",
+            features: [],
+            value: 0,
             target:"",
             destination: "",
             origin: {lat: null, lng: null},
             dropOff: {lat: null, lng: null},
-            station1: null,
-            station2: null,
-            station3: null,
+            station: null,
             route: null,
             routeList: []
         }
     }
 
-    handleAddress = ()=>{
+    // handleAddress = ()=>{
 
+    handleSteps = ()=> {
+        this.setState(prevState=>{
+            return{
+                steps: prevState.steps+1
+            }
+        })
     }
 
 
@@ -97,16 +106,20 @@ class Main extends Component {
                 };
                 routeList.push(newItem);
             })
+        return routeList
     }
+
 
 
     render(){
         const {steps, destination, target} = this.state
         const {station1, station2, station3} = this.state
 
-
         return (
             <div className='main'>
+                <div className="left-side">
+
+                    <Register />
 
 
                  <LeftSideForm
@@ -119,11 +132,24 @@ class Main extends Component {
                     {/*             showAddress={this.addressValidate}*/}
                     {/*/>*/}
 
+                    <UserInput curr_step={steps}
+                                setSteps={this.handleSteps}
+                               handleChange={this.handleChange}
+                               weight={this.state.weight}
+                               size={this.state.size}
+                               feature={this.state.feature}
+                               value={this.state.value}
+                    />
+
+
+                    {this.previousButton}
+
+                </div>
                 <div>
-                    <Map des={this.state.dropOff} tar={this.state.origin} station1={station1} station2={station2} station3={station3}/>
+                    <Map des={this.state.dropOff} origin={this.state.origin} station={this.state.station} />
                 </div>
             </div>
         );
     }
 }
-export default withRouter(Main);
+export default Main;

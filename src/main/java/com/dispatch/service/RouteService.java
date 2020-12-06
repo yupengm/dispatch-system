@@ -31,23 +31,6 @@ public class RouteService {
 
     }
 
-
-    public JSONObject getPrice(double distance, int methodCode, double price){
-        JSONObject response = new JSONObject();
-
-        try {
-            response.put("status", 200);
-            response.put("distance", distance);
-            response.put("methodCode", methodCode);
-            response.put("price", price);
-            return response;
-        } catch (Exception e) {
-            response.put("status", 403);
-            response.put("message", "Order failed.");
-            return response;
-        }
-    }
-
     public static double distance(double lat1, double lon1, double lat2, double lon2) {
 
         final int R = 6371; // Radius of the earth

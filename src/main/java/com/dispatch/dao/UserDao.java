@@ -11,7 +11,7 @@ public class UserDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void addUser(User user) {
+    public void addUser(User user){
         Session session = null;
 
         try {
@@ -19,6 +19,7 @@ public class UserDao {
             session.beginTransaction();
             session.save(user);
             session.getTransaction().commit();
+
         } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();
