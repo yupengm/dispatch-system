@@ -6,20 +6,23 @@ class Recommendation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selected: '',
-            checked: 0
+            checked: -1
         }
     }
     onChange(index){
         this.setState({
-            //selected: e.target.value,
-            checked: index
+            checked: index,
         });
-        console.log('radio checked', this.state.checked);
+        this.props.changeFn(index);
     };
-
+    // OnChange(e) {
+    //     console.log('selected option', e.target.value);
+    //     this.setState({
+    //         selectedOption: e.target.value
+    //     });
+    // }
     render() {
-        console.log(this.props.options);
+//        console.log(this.props.options);
         if(this.props.curr_step != 3)
             return null      
 
@@ -36,7 +39,7 @@ class Recommendation extends Component {
                                name="options"
                                value={choice}
                                key={index}
-                               checked={this.state.checked === index ? true : false}
+                               checked={this.state.checked === index}
                                onChange={this.onChange.bind(this, index)} /> Option {index + 1}
                         <List
                             bordered

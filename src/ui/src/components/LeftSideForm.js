@@ -25,6 +25,7 @@ class LeftSideForm extends Component {
             destination: "",
             target:"",
             options:[["1","option1"],["2","option2"],["3","option3"]],
+            selectedOption:""
         }
     }
 
@@ -97,7 +98,12 @@ class LeftSideForm extends Component {
             target: target
         }))
     }
-
+    selected = (selectedOption) => {
+        console.log()
+        this.setState({
+            selectedOption: selectedOption
+        })
+    }
     render() {
         const {steps, options} = this.state
         return (
@@ -130,6 +136,7 @@ class LeftSideForm extends Component {
                                 gotoLogin={this.gotoLogin}
                                 goback={this._prev}
                                 options={options}
+                                changeFn={this.selected}
                 />
 
                 <Login curr_step={steps}
