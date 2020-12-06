@@ -39,7 +39,7 @@ public class RouteController {
 
     // Version 1. Simple return the price by mapping to an entity
     // need construction
-    @RequestMapping(value = "/getPrice", method = RequestMethod.GET)
+    @RequestMapping(value = "/getPrice", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ArrayList<String>> getPrice(@RequestBody List<Route> inputs) throws Exception {
         ArrayList<String> jsonArray = new ArrayList<>();

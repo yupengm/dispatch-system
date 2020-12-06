@@ -17,7 +17,7 @@ public class InputController {
     @Autowired
     OrderOptionService orderOptionService;
 
-    @RequestMapping(value = "/input", method = RequestMethod.GET)
+    @RequestMapping(value = "/input", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ArrayList<String>> userInput(@RequestBody Box box, BindingResult result) throws JsonProcessingException {
         if (result.hasErrors()) {
