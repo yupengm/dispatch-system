@@ -49,7 +49,7 @@ public class RouteController {
         // loop over once for time and price, and their minimun
         for (Route input: inputs) {
             int type = input.getDeliverType();
-            Station station = stationDao.getStationByName(input.get());
+            Station station = stationDao.getStationByName(input.getStationName());
 
             //get price in the following:
             if (type == 2) {

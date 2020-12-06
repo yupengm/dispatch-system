@@ -46,7 +46,7 @@ public class TrackingService {
         } else if (type == 2 && timeInterval != -1) {
             double[] currentXY = trackDrone(TimeElapsed,timeInterval,
                         order.getRoute().getPickUpGeoX(),
-                        order.getRoute().getpickUpGeoY(),
+                        order.getRoute().getPickUpGeoY(),
                         order.getRoute().getPutDownGeoX(),
                         order.getRoute().getPutDownGeoY());
             toReturn.put("currentLng",String.valueOf(currentXY[0]));

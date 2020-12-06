@@ -30,27 +30,6 @@ public class UserDao {
         }
     }
 
-//    public boolean addUser(User user) {
-//        Session session = null;
-//        boolean isSuccuess = false;
-//
-//        try {
-//            session = sessionFactory.openSession();
-//            session.beginTransaction();
-//            session.save(user);
-//            session.getTransaction().commit();
-//            isSuccuess = true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            session.getTransaction().rollback();
-//        } finally {
-//            if (session != null) {
-//                session.close();
-//            }
-//            return isSuccuess;
-//        }
-//    }
-
     public User getUserByEmailId(String emailId){
         try (Session session = sessionFactory.openSession()) {
             return session.get(User.class, emailId);

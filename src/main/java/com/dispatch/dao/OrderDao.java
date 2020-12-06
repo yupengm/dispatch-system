@@ -17,12 +17,12 @@ public class OrderDao {
         try{
             session = sessionFactory.openSession();
             session.beginTransaction();
-            session.save(order);  // add Oder, Box, Route, Station, PickUpAddress, PutDownAddress, Customer in database
+            session.save(order);  // add Order, Box, Route, Station, PickUpAddress, PutDownAddress, Customer in database
             session.getTransaction().commit();
         } catch (Exception e){
             e.printStackTrace();
             session.getTransaction().rollback();
-            throw new IllegalAccessException();
+            throw new IllegalAccessException("add order failed");
         } finally {
             if (session != null){
                 session.close();
