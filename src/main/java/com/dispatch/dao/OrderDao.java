@@ -12,7 +12,7 @@ public class OrderDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void addOrder(Order order){
+    public void addOrder(Order order) throws IllegalAccessException {
         Session session = null;
         try{
             session = sessionFactory.openSession();
@@ -22,6 +22,7 @@ public class OrderDao {
         } catch (Exception e){
             e.printStackTrace();
             session.getTransaction().rollback();
+            throw new IllegalAccessException();
         } finally {
             if (session != null){
                 session.close();

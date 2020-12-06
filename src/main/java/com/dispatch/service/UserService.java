@@ -22,6 +22,7 @@ public class UserService {
 
     public ResponseEntity<String> loginUser(User user) throws JsonProcessingException {
         Map<String, String> loginResponse = new HashMap<>();
+<<<<<<< Updated upstream
             User targetUser = userDao.getUserByEmailId(user.getEmailId());
             if (targetUser == null) {
               loginResponse.put("message","User NOT exist");
@@ -39,6 +40,27 @@ public class UserService {
                 String json = new ObjectMapper().writeValueAsString(loginResponse);
                 return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
             }
+=======
+        User targetUser = userDao.getUserByEmailId(user.getEmailId());
+        if (targetUser == null) {
+            loginResponse.put("message","User NOT exist");
+            String json = new ObjectMapper().writeValueAsString(loginResponse);
+            return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
+            // status 400
+        }
+        String testPassword = user.getPassword();
+        String truePassword = targetUser.getPassword();
+        if (truePassword.equals(testPassword)) {
+            loginResponse.put("message","login success");
+            String json = new ObjectMapper().writeValueAsString(loginResponse);
+            return new ResponseEntity<String>(json, HttpStatus.OK);
+        } else {
+            loginResponse.put("message","Wrong password");
+            String json = new ObjectMapper().writeValueAsString(loginResponse);
+            return new ResponseEntity<String>(json, HttpStatus.UNAUTHORIZED);
+            // status 401
+        }
+>>>>>>> Stashed changes
     }
 
     public ResponseEntity<String> addUser(User user) throws JsonProcessingException {

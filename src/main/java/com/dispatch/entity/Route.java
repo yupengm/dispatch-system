@@ -37,6 +37,8 @@ public class Route implements Serializable {
 //    @OneToOne
 //    private PutDownAddress putDownAddress;
 
+    private String routePoly;
+
     public double pickUpGeoX;
 
     public double pickUpGeoY;
@@ -44,6 +46,14 @@ public class Route implements Serializable {
     public double putDownGeoX;
 
     public double putDownGeoY;
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
     public double price;
 
@@ -99,19 +109,27 @@ public class Route implements Serializable {
 
     public double getPickUpGeoX() {return this.pickUpGeoX;}
 
-    public void sePickUpGeoX(double pickUpGeoX) {this.pickUpGeoX = pickUpGeoX;}
+    public void setPickUpGeoX(double pickUpGeoX) {this.pickUpGeoX = pickUpGeoX;}
 
     public double getpickUpGeoY() {return this.pickUpGeoY;}
 
-    public void sepickUpGeoY(double pickUpGeoY) {this.pickUpGeoY = pickUpGeoY;}
+    public String getRoutePoly() {
+        return routePoly;
+    }
+
+    public void setRoutePoly(String route) {
+        this.routePoly = route;
+    }
+
+    public void setPickUpGeoY(double pickUpGeoY) {this.pickUpGeoY = pickUpGeoY;}
 
     public double getPutDownGeoX() {return this.putDownGeoX;}
 
-    public void sePutDownGeoX(double putDownGeoX) {this.putDownGeoX = putDownGeoX;}
+    public void setPutDownGeoX(double putDownGeoX) {this.putDownGeoX = putDownGeoX;}
 
     public double getPutDownGeoY() {return this.putDownGeoY;}
 
-    public void sePutDownGeoY(double putDownGeoY) {this.putDownGeoY = putDownGeoY;}
+    public void setPutDownGeoY(double putDownGeoY) {this.putDownGeoY = putDownGeoY;}
 
 //    public void setPickUpAddress(PickUpAddress pickUpAddress) { this.pickUpAddress = pickUpAddress;}
 //

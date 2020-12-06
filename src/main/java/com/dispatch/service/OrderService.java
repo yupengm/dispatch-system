@@ -1,6 +1,10 @@
 package com.dispatch.service;
 import com.dispatch.dao.OrderDao;
+import com.dispatch.dao.StationDao;
+import com.dispatch.dao.UserDao;
 import com.dispatch.entity.Order;
+import com.dispatch.entity.Station;
+import com.dispatch.entity.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
@@ -22,22 +26,36 @@ public class OrderService {
     @Autowired
     private OrderDao orderDao;
 
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private StationDao stationDao;
+
     public ResponseEntity<String> addOrder(Order order) throws JsonProcessingException {
         // TODO: String emailId = order.getEmail();
         // User user = userDao.getUserbyId(emailId);
         // order.setUser(user);
         // orderDao.addOrder(order);
 
+        // set User
+        User user = userDao.getUserByEmailId(order.getEmailId());
+        order.setUser(user);
+
+        // set Station
+        String stationName = order.getRoute().getStationName();
+        Station station = stationDao.getStationByName(stationName);
+        order.setStation(station);
 
         Map<String, String> toReturn = new HashMap<>();
 
         try {
             order.setStartTime(LocalDateTime.now().toString());
-//            order.setEndTime(LocalDateTime.now().toString() + order.); //TODO:delivery duration needed.
+            order.setEndTime(LocalDateTime.now().plusMinutes(order.getTimeFromPickUpAddressToPutDownAddress() +
+                    order.getTimeFromStationToPickUpAddress()).toString());
             orderDao.addOrder(order);
             return getStringResponseEntity(order, toReturn);
-        } catch (Exception e) {
-            //TODO: IllegalAccessException
+        } catch (IllegalAccessException e) {
             toReturn.put("message", "Order failed.");
             String json = new ObjectMapper().writeValueAsString(toReturn);
             return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
@@ -45,16 +63,16 @@ public class OrderService {
     }
 
     static ResponseEntity<String> getStringResponseEntity(Order order, Map<String, String> toReturn) throws JsonProcessingException {
+        toReturn.put("OrderNumber",String.valueOf(order.getId()));
         toReturn.put("email", order.getUser().getEmailId());
-        toReturn.put("price", String.valueOf(order.getPrice()));
-        toReturn.put("station", String.valueOf(order.getStation()));
-        toReturn.put("type", order.getDeliverType());
-        //toReturn.put("size", String.valueOf(order.getSize()));
-//        toReturn.put("size", String.valueOf(order.getWeight()));
-//        toReturn.put("size", String.valueOf(order.getFeature()));
-        toReturn.put("weight", String.valueOf(order.getTotalWeight()));
-        toReturn.put("PickUpAddress",String.valueOf(order.getPickUpAddress()));
-        toReturn.put("PutDownAddress",String.valueOf(order.getPutDownAddress()));
+        toReturn.put("price", String.valueOf(order.getRoute().getPrice()));
+        toReturn.put("station", String.valueOf(order.getStation().getName()));
+        toReturn.put("type", String.valueOf(order.getRoute().getDeliverType()));
+        toReturn.put("weight", String.valueOf(order.getBox().getWeight()));
+//        toReturn.put("PickUpAddress",String.valueOf(order.getPickUpAddress()));//TODO
+//        toReturn.put("PutDownAddress",String.valueOf(order.getPutDownAddress())); //TODO
+        toReturn.put("StartTime",String.valueOf(order.getStartTime()));
+        toReturn.put("EndTime",String.valueOf(order.getEndTime()));
         String json = new ObjectMapper().writeValueAsString(toReturn);
         return new ResponseEntity<String>(json, HttpStatus.OK);
     }
