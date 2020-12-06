@@ -35,4 +35,51 @@ public class Box implements Serializable {
     private Order order;
 
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public String[] getFeature() {
+        return feature;
+    }
+
+    public void setFeature(String[] feature) {
+        this.feature = feature;
+    }
+
+    public int getDeclaredValue() {
+        return declaredValue;
+    }
+
+    public void setDeclaredValue(int declaredValue) {
+        this.declaredValue = declaredValue;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }

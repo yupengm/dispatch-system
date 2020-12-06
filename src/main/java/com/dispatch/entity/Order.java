@@ -54,5 +54,99 @@ public class Order implements Serializable {
     private PutDownAddress putDownAddress;
 
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getTimeFromStationToPickUpAddress() {
+        return timeFromStationToPickUpAddress;
+    }
+
+    public void setTimeFromStationToPickUpAddress(String timeFromStationToPickUpAddress) {
+        this.timeFromStationToPickUpAddress = timeFromStationToPickUpAddress;
+    }
+
+    public String getTimeFromPickUpAddressToPutDownAddress() {
+        return timeFromPickUpAddressToPutDownAddress;
+    }
+
+    public void setTimeFromPickUpAddressToPutDownAddress(String timeFromPickUpAddressToPutDownAddress) {
+        this.timeFromPickUpAddressToPutDownAddress = timeFromPickUpAddressToPutDownAddress;
+    }
+
+    public Route getRoute() {
+        return route;
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
+    }
+
+    public Box getBox() {
+        return box;
+    }
+
+    public void setBox(Box box) {
+        this.box = box;
+    }
+
+    public Station getStation() {
+        return station;
+    }
+
+    public void setStation(Station station) {
+        this.station = station;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public PickUpAddress getPickUpAddress() {
+        return pickUpAddress;
+    }
+
+    public void setPickUpAddress(PickUpAddress pickUpAddress) {
+        this.pickUpAddress = pickUpAddress;
+    }
+
+    public PutDownAddress getPutDownAddress() {
+        return putDownAddress;
+    }
+
+    public void setPutDownAddress(PutDownAddress putDownAddress) {
+        this.putDownAddress = putDownAddress;
+    }
 }

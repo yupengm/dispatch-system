@@ -46,4 +46,107 @@ public class Route implements Serializable {
     private Order order;
 
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public double getTotalTime() {
+        return totalTime;
+    }
+
+    public void setTotalTime(double totalTime) {
+        this.totalTime = totalTime;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getDeliverType() {
+        return deliverType;
+    }
+
+    public void setDeliverType(int deliverType) {
+        this.deliverType = deliverType;
+    }
+
+    public double getPickUpGeoX() {
+        return pickUpGeoX;
+    }
+
+    public void setPickUpGeoX(double pickUpGeoX) {
+        this.pickUpGeoX = pickUpGeoX;
+    }
+
+    public double getPickUpGeoY() {
+        return pickUpGeoY;
+    }
+
+    public void setPickUpGeoY(double pickUpGeoY) {
+        this.pickUpGeoY = pickUpGeoY;
+    }
+
+    public double getPutDownGeoX() {
+        return putDownGeoX;
+    }
+
+    public void setPutDownGeoX(double putDownGeoX) {
+        this.putDownGeoX = putDownGeoX;
+    }
+
+    public double getPutDownGeoY() {
+        return putDownGeoY;
+    }
+
+    public void setPutDownGeoY(double putDownGeoY) {
+        this.putDownGeoY = putDownGeoY;
+    }
+
+    public String getRoute() {
+        return route;
+    }
+
+    public void setRoute(String route) {
+        this.route = route;
+    }
+
+    public String getStationName() {
+        return stationName;
+    }
+
+    public void setStationName(String stationName) {
+        this.stationName = stationName;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }
