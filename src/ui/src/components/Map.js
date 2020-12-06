@@ -91,6 +91,7 @@ export class MapContainer extends Component {
 
             this.locatePoint();
             // this.handleMapReady();
+
         }
 
     }
@@ -142,21 +143,39 @@ export class MapContainer extends Component {
                     // onReady={this.handleMapReady}
                 >
 
-                    <Marker
-                        position={{
-                            lat: this.state.station1.lat,
-                            lng: this.state.station1.lng
-                        }}/>
-                    <Marker
-                        position={{
-                            lat: this.state.station2.lat,
-                            lng: this.state.station2.lng
-                        }}/>
-                    <Marker
-                        position={{
-                            lat: this.state.station3.lat,
-                            lng: this.state.station3.lng
-                        }}/>
+                    {
+                        this.state.origin != null ? <Marker
+                            position={{
+                                lat: this.state.origin.lat,
+                                lng: this.state.origin.lng
+                            }}/> : <div></div>
+                    }
+
+                    {
+                        this.state.destination != null ? <Marker
+                            position={{
+                                lat: this.state.destination.lat,
+                                lng: this.state.destination.lng
+                            }}/> : <div></div>
+                    }
+
+
+
+                    {/*<Marker*/}
+                    {/*    position={{*/}
+                    {/*        lat: this.state.station1.lat,*/}
+                    {/*        lng: this.state.station1.lng*/}
+                    {/*    }}/>*/}
+                    {/*<Marker*/}
+                    {/*    position={{*/}
+                    {/*        lat: this.state.station2.lat,*/}
+                    {/*        lng: this.state.station2.lng*/}
+                    {/*    }}/>*/}
+                    {/*<Marker*/}
+                    {/*    position={{*/}
+                    {/*        lat: this.state.station3.lat,*/}
+                    {/*        lng: this.state.station3.lng*/}
+                    {/*    }}/>*/}
 
                 </Map>
             </div>
