@@ -1,5 +1,7 @@
 package com.dispatch.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 import javax.persistence.Entity;
@@ -22,15 +24,16 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    private String emailId;
+
     private String startTime;
 
     private String endTime;
 
-    private double totalWeight;
+    private String timeFromStationToPickUpAddress;
 
-    private double price;
+    private String timeFromPickUpAddressToPutDownAddress;
 
-    private String deliverType;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Route route;
@@ -41,108 +44,15 @@ public class Order implements Serializable {
     @ManyToOne
     private Station station;
 
-    @ManyToOne
-    private PickUpAddress pickUpAddress;
-
-    @ManyToOne
-    private PutDownAddress putDownAddress;
-
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private User user;
 
-    public int getId() {
-        return id;
-    }
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private PickUpAddress pickUpAddress;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private PutDownAddress putDownAddress;
 
-    public String getStartTime() {
-        return startTime;
-    }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
 
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public double getTotalWeight() {
-        return totalWeight;
-    }
-
-    public void setTotalWeight(double totalWeight) {
-        this.totalWeight = totalWeight;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getDeliverType() {
-        return deliverType;
-    }
-
-    public void setDeliverType(String deliverType) {
-        this.deliverType = deliverType;
-    }
-
-    public Route getRoute() {
-        return route;
-    }
-
-    public void setRoute(Route route) {
-        this.route = route;
-    }
-
-    public Box getBox() {
-        return box;
-    }
-
-    public void setBox(Box box) {
-        this.box = box;
-    }
-
-    public Station getStation() {
-        return station;
-    }
-
-    public void setStation(Station station) {
-        this.station = station;
-    }
-
-    public PickUpAddress getPickUpAddress() {
-        return pickUpAddress;
-    }
-
-    public void setPickUpAddress(PickUpAddress pickUpAddress) {
-        this.pickUpAddress = pickUpAddress;
-    }
-
-    public PutDownAddress getPutDownAddress() {
-        return putDownAddress;
-    }
-
-    public void setPutDownAddress(PutDownAddress putDownAddress) {
-        this.putDownAddress = putDownAddress;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

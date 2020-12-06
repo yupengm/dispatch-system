@@ -23,9 +23,9 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<String> login(@RequestBody User user, BindingResult result) throws JsonProcessingException {
-        if (result.hasErrors()) {
-            return null;
-        }
+//        if (result.hasErrors()) {
+//            return null; //TODO: don't return null.
+//        }
         return userService.loginUser(user);
 
     }

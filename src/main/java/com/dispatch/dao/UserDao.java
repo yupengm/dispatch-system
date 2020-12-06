@@ -11,7 +11,7 @@ public class UserDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void addUser(User user) {
+    public void addUser(User user) throws IllegalAccessException{
         Session session = null;
 
         try {
@@ -22,6 +22,7 @@ public class UserDao {
         } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();
+            throw new IllegalAccessException("Add user failed.");
         } finally {
             if (session != null) {
                 session.close();

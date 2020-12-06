@@ -21,7 +21,7 @@ public class UserService {
 
     public ResponseEntity<String> loginUser(User user) throws JsonProcessingException {
         Map<String, String> loginResponse = new HashMap<>();
-        User targetUser = userDao.getUserByEmailId(user.getEmailId());// Here I think should return a user not customer.
+        User targetUser = userDao.getUserByEmailId(user.getEmailId());
         if (targetUser == null) {
             loginResponse.put("message","User NOT exist");
             String json = new ObjectMapper().writeValueAsString(loginResponse);
@@ -47,11 +47,23 @@ public class UserService {
             addUserResponse.put("message","sign up success");
             String json = new ObjectMapper().writeValueAsString(addUserResponse);
             return new ResponseEntity<String>(json, HttpStatus.OK);
-        } catch (Exception e) {
+        } catch (IllegalAccessException e) {
             addUserResponse.put("message","Add customer failed.");
             String json = new ObjectMapper().writeValueAsString(addUserResponse);
-            return new ResponseEntity<String>(json, HttpStatus.OK);
+            return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
         }
+
+//        boolean isSuccess = userDao.addUser(user);
+//        if (isSuccess) {
+//            addUserResponse.put("message","sign up success");
+//            String json = new ObjectMapper().writeValueAsString(addUserResponse);
+//            return new ResponseEntity<String>(json, HttpStatus.OK);
+//        } else {
+//            addUserResponse.put("message","Add customer failed.");
+//            String json = new ObjectMapper().writeValueAsString(addUserResponse);
+//            return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
+//        }
+
     }
 
 

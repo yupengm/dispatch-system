@@ -23,48 +23,27 @@ public class Route implements Serializable {
 
     private double totalTime;
 
+    private double price;
+
+    private int deliverType;
+
+    private double pickUpGeoX;
+
+    private double pickUpGeoY;
+
+    private double putDownGeoX;
+
+    private double putDownGeoY;
+
     private String route;
+
+    private String stationName;
+
+    private String message;
+
 
     @OneToOne(mappedBy = "route")
     private Order order;
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public double getDistance() {
-        return distance;
-    }
-
-    public void setDistance(double distance) {
-        this.distance = distance;
-    }
-
-    public double getTotalTime() {
-        return totalTime;
-    }
-
-    public void setTotalTime(double totalTime) {
-        this.totalTime = totalTime;
-    }
-
-    public String getRoute() {
-        return route;
-    }
-
-    public void setRoute(String route) {
-        this.route = route;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
 }

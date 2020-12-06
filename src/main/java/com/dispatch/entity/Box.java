@@ -21,74 +21,18 @@ public class Box implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private String type;
+    private int size;
 
     private double weight;
 
-    private int size;
-
     private String[] feature;
-
 
     @JsonProperty("declared_value")
     private int declaredValue;
 
+
     @OneToOne(mappedBy = "box")
     private Order order;
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public String[] getFeature() {
-        return feature;
-    }
-
-    public void setFeature(String[] feature) {
-        this.feature = feature;
-    }
-
-    public int getDeclaredValue() {
-        return declaredValue;
-    }
-
-    public void setDeclaredValue(int declaredValue) {
-        this.declaredValue = declaredValue;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
 }

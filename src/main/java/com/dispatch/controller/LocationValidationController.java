@@ -4,6 +4,7 @@ import com.dispatch.service.AddressValidationService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -19,9 +20,9 @@ public class LocationValidationController {
     @Autowired
     AddressValidationService addressValidationService;
 
-    @RequestMapping(value = "/addressValidation", method = RequestMethod.POST)
+    @RequestMapping(value = "/addressValidation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public JSONObject addressValidation(@RequestBody HashMap<String, String> requestData, BindingResult result) {
+    public ResponseEntity<String> addressValidation(@RequestBody HashMap<String, String> requestData, BindingResult result) throws Exception {
         if (result.hasErrors()) {
             return null;
         }
@@ -32,6 +33,9 @@ public class LocationValidationController {
                 requestData.get("deliver_city") + " " +
                 requestData.get("deliver_zip");
         return addressValidationService.addressValidation(pickupAddress, deliverAddress);
+    }
+}
+
 
 //        PickUpAddress pickUpAddress = new PickUpAddress();
 //        pickUpAddress.setAddress = requestData.get("pickup_address");
@@ -45,6 +49,3 @@ public class LocationValidationController {
 //
 //        JSONObject pickup = addressValidationService.addressValidation(pickUpAddress);
 //        JSONObject deliver = addressValidationService.addressValidation(putDownAddress);
-
-    }
-}

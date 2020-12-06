@@ -31,12 +31,12 @@ public class StationService {
         station1.setLongitude(-122.45072433249807);
         station2.setLongitude(37.74336758244373);
         station3.setLongitude(-122.41411171945718);
-        station1.setDroneAvailable(Integer.MAX_VALUE);
-        station1.setRobotAvailable(Integer.MAX_VALUE);
-        station2.setDroneAvailable(Integer.MAX_VALUE);
-        station2.setRobotAvailable(Integer.MAX_VALUE);
-        station3.setDroneAvailable(Integer.MAX_VALUE);
-        station3.setRobotAvailable(Integer.MAX_VALUE);
+        station1.setDroneAvailable(10);
+        station1.setRobotAvailable(13);
+        station2.setDroneAvailable(2);
+        station2.setRobotAvailable(8);
+        station3.setDroneAvailable(2);
+        station3.setRobotAvailable(4);
         stationDao.addStation(station1);
         stationDao.addStation(station2);
         stationDao.addStation(station3);

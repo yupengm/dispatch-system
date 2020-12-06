@@ -1,5 +1,7 @@
 package com.dispatch.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 import javax.persistence.Entity;
@@ -19,62 +21,21 @@ public class Payment implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private String type;
-
+    @JsonProperty("name_on_card")
     private String holderName;
 
+    @JsonProperty("expire_date")
     private String expireDate;
 
+    @JsonProperty("card_number")
     private String number;
+
+    @JsonProperty("CVV")
+    private String cvv;
+
 
     @ManyToOne
     private User user;
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getHolderName() {
-        return holderName;
-    }
-
-    public void setHolderName(String holderName) {
-        this.holderName = holderName;
-    }
-
-    public String getExpireDate() {
-        return expireDate;
-    }
-
-    public void setExpireDate(String expireDate) {
-        this.expireDate = expireDate;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

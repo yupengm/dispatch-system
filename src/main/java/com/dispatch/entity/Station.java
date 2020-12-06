@@ -23,44 +23,7 @@ public class Station implements Serializable {
 
     private int robotAvailable;
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public int getDroneAvailable() {
-        return droneAvailable;
-    }
-
-    public void setDroneAvailable(int droneAvailable) {
-        this.droneAvailable = droneAvailable;
-    }
-
-    public int getRobotAvailable() {
-        return robotAvailable;
-    }
-
-    public void setRobotAvailable(int robotAvailable) {
-        this.robotAvailable = robotAvailable;
-    }
 
 }
