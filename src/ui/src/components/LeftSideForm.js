@@ -23,7 +23,9 @@ class LeftSideForm extends Component {
             features: [],
             value: 0,
             destination: "",
-            target:""
+            target:"",
+            options:[["1","option1"],["2","option2"],["3","option3"]],
+            selectedOption:""
         }
     }
 
@@ -96,36 +98,14 @@ class LeftSideForm extends Component {
             target: target
         }))
     }
-    // const json = {
-    //     options: [["1","option1"],["2","option2"],["3","option3"]],
-    //     checked: 1,
-    // };
-    //
-    // const Option = ({ options, selected, onChange }) => {
-    //     return (
-    //         <div className="options">
-    //             {options.map((choice, index) => (
-    //                 <label key={index}>
-    //                     <input type="radio"
-    //                            name="options"
-    //                            value={choice}
-    //                            key={index}
-    //                            checked={selected === choice}
-    //                            onChange={onChange} /> Option {i + 1}
-    //                     <List
-    //                         bordered
-    //                         dataSource={choice}
-    //                         renderItem={item => <List.Item>{item}</List.Item>}
-    //                         size = "small"
-    //                     />
-    //                     <br />
-    //                 </label>
-    //             ))}
-    //         </div>
-    //     );
-    // };
+    selected = (selectedOption) => {
+        console.log()
+        this.setState({
+            selectedOption: selectedOption
+        })
+    }
     render() {
-        const {steps} = this.state
+        const {steps, options} = this.state
         return (
             <div className="left-side">
 
@@ -157,7 +137,8 @@ class LeftSideForm extends Component {
                                 setSteps={this.handleSteps}
                                 gotoLogin={this.gotoLogin}
                                 goback={this._prev}
-                                // model={json}
+                                options={options}
+                                changeFn={this.selected}
                 />
 
                 <Login curr_step={steps}
