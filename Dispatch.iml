@@ -12,7 +12,13 @@
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
-      <configuration />
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/webapp/WEB-INF/Dispatch-servlet.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/smart-context.xml</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/dispatch/ApplicationConfig.java</file>
+        </fileset>
+      </configuration>
     </facet>
     <facet type="web" name="Web">
       <configuration>
@@ -45,7 +51,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:5.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:5.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.2.3.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context:5.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:5.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-web:5.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:5.2.3.RELEASE" level="project" />
@@ -72,6 +77,7 @@
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.6" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.webflow:spring-webflow:2.5.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.webflow:spring-binding:2.5.0.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:4.2.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:8.0.18" level="project" />
     <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.5.12" level="project" />

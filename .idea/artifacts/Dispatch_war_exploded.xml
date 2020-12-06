@@ -24,7 +24,6 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.2.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.2.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.2.3.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-context:5.2.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.2.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:5.2.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-core:5.2.3.RELEASE" />
@@ -51,6 +50,7 @@
           <element id="library" level="project" name="Maven: commons-io:commons-io:2.6" />
           <element id="library" level="project" name="Maven: org.springframework.webflow:spring-webflow:2.5.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.webflow:spring-binding:2.5.0.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:4.2.5.RELEASE" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.18" />
           <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.6.1" />
           <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.5.12" />

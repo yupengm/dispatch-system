@@ -8,24 +8,19 @@ class LoginForm extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                const params = {
-                    email: "111@gmail.com",
-                    password: "10000"
 
-                }
-
-                let res = axios.post("./login", params)
-                console.log(res)
-                console.log('Received values of form: ', values);
-                this.props.loggedin()
-                // const params = {
-                //         email:  "1111@gmail.com",
-                //         password:  "123123"
-                //     }
-                //
-                //     let res = axios.post("./Dispatch/login", params);
-
-                    // console.log(res.data);
+                axios({
+                            method: 'get',
+                            url: '/Dispatch/login',
+                            data: {
+                            email:  "1111@gmail.com",
+                            password:  "123123"
+                            }
+                        }).then((response) => {
+                            console.log(response);
+                        }, (error) => {
+                            console.log(error);
+                        });
                 }
         });
     };
