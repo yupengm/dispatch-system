@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class OrderService {
@@ -22,7 +23,14 @@ public class OrderService {
     private OrderDao orderDao;
 
     public ResponseEntity<String> addOrder(Order order) throws JsonProcessingException {
+        // TODO: String emailId = order.getEmail();
+        // User user = userDao.getUserbyId(emailId);
+        // order.setUser(user);
+        // orderDao.addOrder(order);
+
+
         Map<String, String> toReturn = new HashMap<>();
+
         try {
             order.setStartTime(LocalDateTime.now().toString());
 //            order.setEndTime(LocalDateTime.now().toString() + order.); //TODO:delivery duration needed.

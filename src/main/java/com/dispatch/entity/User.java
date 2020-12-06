@@ -43,7 +43,6 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Order> order;
 
-
     public String getFirstName() {
         return firstName;
     }

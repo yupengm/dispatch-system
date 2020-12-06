@@ -18,6 +18,8 @@ import javax.persistence.CascadeType;
 public class Order implements Serializable {
     private static final long serialVersionUID = 6571020025726257848L;
 
+    //TODO: have email field.
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
