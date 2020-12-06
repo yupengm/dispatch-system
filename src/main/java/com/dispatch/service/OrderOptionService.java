@@ -1,11 +1,10 @@
 package com.dispatch.service;
+import com.dispatch.external.GoogleMapClient;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
@@ -23,11 +22,11 @@ public class OrderOptionService {
     @Autowired
     private StationDao stationDao;
 
-    public ResponseEntity<ArrayList<String>> availabilityCheck(int size, double weight, String[] feature) throws JsonProcessingException {
+    public ResponseEntity<String> availabilityCheck(int size, double weight, String[] feature) throws JsonProcessingException {
+        Map<String, String> toReturn = new HashMap<>();
         List<Station> stations = stationDao.getAllStations();
-        ArrayList<String> jsonArray = new ArrayList<>();
         for (Station station : stations) {
-            Map<String, String> toReturn = new HashMap<>();
+            JSONObject stationInfo = new JSONObject();
             int methodCode = 0;
             if (isDroneApplicable(size, weight, feature)){
                 if (station.getDroneAvailable() >= 1 && station.getRobotAvailable() >= 1) {
@@ -49,14 +48,9 @@ public class OrderOptionService {
             toReturn.put("methodCode", String.valueOf(methodCode));
             toReturn.put("geoLocationX", String.valueOf(station.getLatitude()));
             toReturn.put("geoLocationY", String.valueOf(station.getLongitude()));
-
-            final ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
-            mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, false);
-            String json = mapper.writeValueAsString(toReturn);
-            jsonArray.add(json);
         }
-        return new ResponseEntity<ArrayList<String>>(jsonArray, HttpStatus.OK);
+        String json = new ObjectMapper().writeValueAsString(toReturn);
+        return new ResponseEntity<String>(json, HttpStatus.OK);
     }
 
 

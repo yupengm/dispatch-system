@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.dispatch.external.GoogleMapClient;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,19 +23,16 @@ public class OrderService {
     public ResponseEntity<String> addOrder(Order order) throws JsonProcessingException {
         Map<String, String> toReturn = new HashMap<>();
         try {
-            order.setStartTime(LocalDateTime.now().toString());
-//            order.setEndTime(LocalDateTime.now().toString() + order.); //TODO:delivery duration needed.
             orderDao.addOrder(order);
 
-            //TODO: orderDao.generate orderId
+            toReturn.put("status", String.valueOf(200));
             toReturn.put("email", order.getUser().getEmailId());
-            toReturn.put("price", String.valueOf(order.getPrice()));
             toReturn.put("station", String.valueOf(order.getStation()));
-            toReturn.put("type", order.getDeliverType());
-            toReturn.put("size", String.valueOf(order.getBox())); //TODO: maybe abandon the box
-            toReturn.put("weight", String.valueOf(order.getTotalWeight()));
-            toReturn.put("PickUpAddress",String.valueOf(order.getPickUpAddress()));
-            toReturn.put("PutDownAddress",String.valueOf(order.getPutDownAddress()));
+            toReturn.put("method", order.getDeliverType());
+            toReturn.put("height", String.valueOf(order.getTotalWeight()));
+            toReturn.put("pickUpLocation", String.valueOf(order.getPickUpAddress()));
+            toReturn.put("putDownLocation", String.valueOf(order.getPutDownAddress()));
+            toReturn.put("price", String.valueOf(order.getPrice()));
             String json = new ObjectMapper().writeValueAsString(toReturn);
             return new ResponseEntity<String>(json, HttpStatus.OK);
         } catch (Exception e) {
