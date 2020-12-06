@@ -2,6 +2,7 @@ package com.dispatch.dao;
 
 
 import com.dispatch.entity.Station;
+import com.dispatch.entity.User;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -40,5 +41,14 @@ public class StationDao {
             e.printStackTrace();
         }
         return stations;
+    }
+
+    public Station getStationByName(String stationName){
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(Station.class, stationName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

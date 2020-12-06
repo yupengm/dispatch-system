@@ -4,7 +4,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RouteService {
+public class PriceService {
     // input: list of hashmap: length = routes num
 
     //need to return
@@ -31,6 +31,14 @@ public class RouteService {
 
     }
 
+
+    // use for drone only
+    public double timeCalculator(double distance) throws Exception{
+        final double MPH = 40; // km per hour
+        return distance/MPH * 60 ;// convert to min
+    }
+
+
     public static double distance(double lat1, double lon1, double lat2, double lon2) {
 
         final int R = 6371; // Radius of the earth
@@ -41,7 +49,7 @@ public class RouteService {
                 + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
                 * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = R * c * 1000; // convert to meters
+        double distance = R * c; // convert to meters
 
         distance = Math.pow(distance, 2);
 
