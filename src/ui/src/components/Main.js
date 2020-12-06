@@ -150,7 +150,9 @@ class Main extends Component {
                     {this.previousButton}
 
                 <div>
-                    <Map des={this.state.dropOff} origin={this.state.origin} station={this.state.station} />
+                    <Map route={[{lat: 37.78741078914182, lng: -122.43674218604595}, {lat: 37.776290, lng: -122.431323}, {lat: 37.757936, lng: -122.409895} ]}
+                         drone={[]}
+                    />
                 </div>
             </div>
         );

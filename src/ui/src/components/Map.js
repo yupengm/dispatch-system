@@ -21,30 +21,32 @@ export class MapContainer extends Component {
             destination: null,
             origin: null
         }
-        this.calculateAndDisplayRoute = this.calculateAndDisplayRoute.bind(this);
-        this.drawPolyline = this.drawPolyline.bind(this);
+        this.handleRobot = this.handleRobot.bind(this);
+        this.handleDrone = this.handleDrone.bind(this);
     }
 
-    handleMapReady(route, mapProps, map) {
-        this.calculateAndDisplayRoute(route, map);
-        this.drawPolyline(route, map);
+    handleRobot(mapProps, map) {
+        this.calculateAndDisplayRoute(map);
     }
 
-    drawPolyline (points, map) {
+    handleDrone(mapProps, map) {
+        this.drawPolyline(map);
+    }
+
+    drawPolyline (map) {
         const polyline = new google.maps.Polyline({
             strokeColor: "#9500ff",
             strokeOpacity: 0.5,
             strokeWeight: 5,
         });
-        console.log('drawPolyline', points, map);
-        polyline.setPath(points);
+        console.log('drawPolyline', map);
+        polyline.setPath(this.props.drone);
         polyline.setMap(map);
     }
 
 //  points is an array with three points(station, origin, destination)
-    calculateAndDisplayRoute(points, map) {
-        // const data = [this.state.station1, this.state.destination, this.state.origin];
-        const data = points;
+    calculateAndDisplayRoute(map) {
+        const data = this.props.route;
         console.log(data);
         const directionsService = new google.maps.DirectionsService();
         const directionsDisplay = new google.maps.DirectionsRenderer();
@@ -70,14 +72,21 @@ export class MapContainer extends Component {
                 if (status === "OK") {
                     console.log('route', response)
                     directionsDisplay.setDirections(response);
-                    return response.routes[0];
+                    // this.props.routeResult(
+                    //         [response.routes[0].legs[0].duration,
+                    //         response.routes[0].legs[1].duration,
+                    //         response.routes[0].legs[0].distance,
+                    //         response.routes[0].legs[1].distance,
+                    //         ]
+                    // )
                 } else {
                     window.alert("Directions request failed due to " + status);
-                    return -1;
                 }
             }
         );
     }
+
+
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         console.log(1)
@@ -90,6 +99,7 @@ export class MapContainer extends Component {
             this.setState({origin: origin})
 
             this.locatePoint();
+        if (prevProps.route !== this.props.route) {
             // this.handleMapReady();
 
         }
@@ -140,7 +150,7 @@ export class MapContainer extends Component {
                         lat: this.state.mapCenter.lat,
                         lng: this.state.mapCenter.lng
                     }}
-                    // onReady={this.handleMapReady}
+                    onReady={this.handleRobot}
                 >
 
                     {
@@ -184,5 +194,5 @@ export class MapContainer extends Component {
 }
 
 export default GoogleApiWrapper({
-    apiKey: "AIzaSyCQd2_s804T25-Xtvm5PndruimLb6pEuY4"
+    apiKey: "AIzaSyAWbjebK_8bkRfvRyxmdl0z5gbsnd-DAVo"
 })(MapContainer)
