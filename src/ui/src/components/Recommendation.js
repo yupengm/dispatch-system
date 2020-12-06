@@ -1,13 +1,39 @@
 import React, {Component} from 'react';
 import {Radio, Input, Button, List} from 'antd';
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
+import axios from 'axios';
 
+//didMount get the route data from map>main>leftSideForm
+//
 class Recommendation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            checked: -1
+            checked: -1,
+            options:[],
+            isLoading: false
         }
+    }
+    //use didMount lifecycle to fetch route data from Main
+    componentDidMount() {
+        this.fetchData(this.props.route);
+    }
+    fetchData = route => {
+        //get route data from Map component
+        axios.post("./getPrice", { route })
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    options: response.data,
+                    isLoading: false
+                })
+            })
+            .catch(error => {
+                console.log('err in fetch satellite ->', error.message);
+                this.setState({
+                    isLoading: false
+                })
+            })
     }
     onChange(index){
         this.setState({
@@ -33,7 +59,7 @@ class Recommendation extends Component {
                 transitionAppearTimeout={400}
                 transitionEnterTimeout={400}>
             <div className="recommendation-list-box">
-                {this.props.options.map((choice, index) => (
+                {this.state.options.map((choice, index) => (
                     <label key={index}>
                         <input type="radio"
                                name="options"
