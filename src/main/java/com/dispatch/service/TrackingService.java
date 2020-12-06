@@ -130,7 +130,8 @@ public class TrackingService {
     private double getScale(int timeElapsed , int timeInterval) {
         double timeElapsedinSec = (double) (timeElapsed);
         double timeIntervalSec = (double) (timeInterval);
-        double scale = timeElapsedinSec / timeIntervalSec;
+        double scaleLong = timeElapsedinSec / timeIntervalSec;
+        double scale = Math.round(scaleLong * 100.0) / 100.0;
         return scale;
     }
 
