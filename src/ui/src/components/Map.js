@@ -19,13 +19,31 @@ export class MapContainer extends Component {
             // destination: {lat: 37.776290, lng: -122.431323},
             // origin: {lat: 37.757936, lng: -122.409895}
             destination: null,
-            origin: null
+            origin: null,
+            mapProps: null,
+            map: null,
+            directionsDisplay:null,
+            directionsService:null
         }
         this.handleRobot = this.handleRobot.bind(this);
         this.handleDrone = this.handleDrone.bind(this);
+        this.calculateRoute = this.calculateRoute.bind(this)
+    }
+
+    handleChange = (mapProps, map) =>{
+        this.setState({
+            mapProps:mapProps,
+            map:map
+        })
     }
 
     handleRobot(mapProps, map) {
+        let directionsService = new google.maps.DirectionsService();
+        let directionsDisplay = new google.maps.DirectionsRenderer();
+        this.setState({
+            mapProps:mapProps,
+            map:map
+        })
         this.calculateAndDisplayRoute(map);
     }
 
@@ -44,68 +62,149 @@ export class MapContainer extends Component {
         polyline.setMap(map);
     }
 
-//  points is an array with three points(station, origin, destination)
-    calculateAndDisplayRoute(map) {
-        const data = this.props.route;
-        console.log(data);
-        const directionsService = new google.maps.DirectionsService();
-        const directionsDisplay = new google.maps.DirectionsRenderer();
-        directionsDisplay.setMap(map);
-
-        const waypoints = data.map(item => {
+    calculateRoute(map){
+        let stations = this.props.stations
+        let directionsService = new google.maps.DirectionsService();
+        const waypoints = stations.map(item => {
             return {
-                location: { lat: item.lat, lng: item.lng },
+                location: {lat: item.lat, lng: item.lng},
                 stopover: true
             };
         });
-        const origin = waypoints.shift().location;
-        const destination = waypoints.pop().location;
-
-        directionsService.route(
-            {
-                origin: origin,
-                destination: destination,
-                waypoints: waypoints,
-                travelMode: "DRIVING"
-            },
-            (response, status) => {
-                if (status === "OK") {
-                    console.log('route', response)
-                    directionsDisplay.setDirections(response);
-                    // this.props.routeResult(
-                    //         [response.routes[0].legs[0].duration,
-                    //         response.routes[0].legs[1].duration,
-                    //         response.routes[0].legs[0].distance,
-                    //         response.routes[0].legs[1].distance,
-                    //         ]
-                    // )
-                } else {
-                    window.alert("Directions request failed due to " + status);
+        console.log("I am hereeeeeeeeee!")
+        let res = []
+        for(let i = 0; i < waypoints.length; i++){
+            directionsService.route(
+                {
+                    origin: this.props.origin,
+                    destination: this.props.des,
+                    waypoints: [waypoints[i]],
+                    travelMode: "DRIVING"
+                },
+                (response, status) => {
+                    if (status === "OK") {
+                        console.log('route', response)
+                        let cur = {
+                            time: response.routes[0].legs[0].duration.value +
+                                response.routes[0].legs[1].duration.value, // seconds
+                            distance: response.routes[0].legs[0].distance.value +
+                                response.routes[0].legs[1].distance.value // meters
+                        }
+                        res.push(cur)
+                    } else {
+                        window.alert("Directions request failed due to " + status);
+                    }
                 }
+            );
+        }
+
+        console.log(res)
+
+    }
+
+//  points is an array with three points(station, origin, destination)
+    calculateAndDisplayRoute(map) {
+        const data = this.props.route;
+        if(data[0].lat==null || data[1].lat==null || data[2].lat== null){
+            console.log("At least one point is null")
+        } else {
+            console.log(data);
+            let directionsService = this.state.directionsService;
+            let directionsDisplay = this.state.directionsDisplay;
+            if(directionsService != null || directionsDisplay != null){
+                directionsService = null
+                directionsDisplay.setMap(null)
+                directionsDisplay = null
             }
-        );
+            directionsService = new google.maps.DirectionsService();
+            directionsDisplay = new google.maps.DirectionsRenderer();
+
+
+            directionsDisplay.setMap(map);
+
+            const waypoints = data.map(item => {
+                return {
+                    location: {lat: item.lat, lng: item.lng},
+                    stopover: true
+                };
+            });
+            const origin = waypoints.shift().location;
+            const destination = waypoints.pop().location;
+
+            console.log(waypoints)
+
+            directionsService.route(
+                {
+                    origin: origin,
+                    destination: destination,
+                    waypoints: waypoints,
+                    travelMode: "DRIVING"
+                },
+                (response, status) => {
+                    if (status === "OK") {
+                        console.log('route', response)
+                        directionsDisplay.setDirections(response);
+                        // this.props.routeResult(
+                        //         [response.routes[0].legs[0].duration,
+                        //         response.routes[0].legs[1].duration,
+                        //         response.routes[0].legs[0].distance,
+                        //         response.routes[0].legs[1].distance,
+                        //         ]
+                        // )
+                    } else {
+                        window.alert("Directions request failed due to " + status);
+                    }
+                }
+            );
+
+            this.setState({
+                directionsDisplay: directionsDisplay,
+                directionsService: directionsService
+            })
+
+        }
     }
 
 
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         console.log(1)
-        const { des } = this.props;
-        const { origin } = this.props;
+        const {des} = this.props;
+        const {origin} = this.props;
+
         if (prevProps.des !== this.props.des || prevProps.origin !== this.props.origin) {
             console.log(2)
 
             this.setState({destination: des})
             this.setState({origin: origin})
+            console.log(des)
+            // this.locatePoint();
 
-            this.locatePoint();
-        if (prevProps.route !== this.props.route) {
-            // this.handleMapReady();
+
+            console.log(this.props.route)
+            if (prevProps.route !== this.props.route) {
+                this.forceUpdate()
+                this.handleRobot(this.state.mapProps, this.state.map)
+                this.calculateRoute(this.state.map)
+                // this.handleMapReady();
+                // this.setState({
+                //     mapCenter :{
+                //         lat: des.lat,
+                //         lng: des.lng
+                //     },
+                    // handleRobot:this.handleRobot
+                // })
+
+            }
 
         }
-
     }
 
+    // shouldComponentUpdate(nextProps, nextState, nextContext) {
+    //     if(this.props.route!=nextProps.route){
+    //         return true
+    //     }
+    // }
 
 
     // PlacesAutocomplete似乎有些问题。下面的console log不出来
@@ -134,7 +233,7 @@ export class MapContainer extends Component {
     };
 
     render() {
-        const polyCoords = [ ];
+        // const polyCoords = [ ];
         return (
             <div className="mapWrapper" style={{height: `87%`, width: `69.5%`}}>
 
@@ -151,23 +250,25 @@ export class MapContainer extends Component {
                         lng: this.state.mapCenter.lng
                     }}
                     onReady={this.handleRobot}
+                    onDragend={this.handleChange}
+                    // onCenter_changed={this.handleRobot}
                 >
 
-                    {
-                        this.state.origin != null ? <Marker
-                            position={{
-                                lat: this.state.origin.lat,
-                                lng: this.state.origin.lng
-                            }}/> : <div></div>
-                    }
+                    {/*{*/}
+                    {/*    this.state.origin != null ? <Marker*/}
+                    {/*        position={{*/}
+                    {/*            lat: this.state.origin.lat,*/}
+                    {/*            lng: this.state.origin.lng*/}
+                    {/*        }}/> : <div></div>*/}
+                    {/*}*/}
 
-                    {
-                        this.state.destination != null ? <Marker
-                            position={{
-                                lat: this.state.destination.lat,
-                                lng: this.state.destination.lng
-                            }}/> : <div></div>
-                    }
+                    {/*{*/}
+                    {/*    this.state.destination != null ? <Marker*/}
+                    {/*        position={{*/}
+                    {/*            lat: this.state.destination.lat,*/}
+                    {/*            lng: this.state.destination.lng*/}
+                    {/*        }}/> : <div></div>*/}
+                    {/*}*/}
 
 
 

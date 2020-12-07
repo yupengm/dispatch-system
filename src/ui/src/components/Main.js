@@ -72,8 +72,8 @@ class Main extends Component {
                 this.setState({
                     // pickup: target,
                     // deliver: destination,
-                    origin: {lat: response.data.pickUpGeoLocationX, lng: response.data.pickUpGeoLocationY},
-                    dropOff: {lat: response.data.putDownGeoLocationX, lng: response.data.putDownGeoLocationY},
+                    origin: {lat: parseFloat(response.data.pickUpGeoLocationX), lng: parseFloat(response.data.pickUpGeoLocationY)},
+                    dropOff: {lat: parseFloat(response.data.putDownGeoLocationX), lng: parseFloat(response.data.putDownGeoLocationY)},
                 });
             }).catch(error => {
                 if (error.status === "477"){
@@ -150,8 +150,14 @@ class Main extends Component {
                     {this.previousButton}
 
                 <div>
-                    <Map route={[{lat: 37.78741078914182, lng: -122.43674218604595}, {lat: 37.776290, lng: -122.431323}, {lat: 37.757936, lng: -122.409895} ]}
+                    {/*<Map route={[{lat: 37.78741078914182, lng: -122.43674218604595}, {lat: 37.776290, lng: -122.431323}, {lat: 37.757936, lng: -122.409895} ]}*/}
+                    {/*     drone={[]}*/}
+                    {/*     origin={this.state.origin} des={this.state.dropOff} station={this.state.station}*/}
+                    {/*/>*/}
+                    <Map route={[{lat: 37.78741078914182, lng: -122.43674218604595}, this.state.origin, this.state.dropOff ]}
                          drone={[]}
+                         stations={[{lat: 37.78741078914182, lng: -122.43674218604595},{lat: 37.74575075621106, lng: -122.43330895872147},{lat: 37.76475172762295, lng: -122.48394906175754}]}
+                         origin={this.state.origin} des={this.state.dropOff} station={this.state.station}
                     />
                 </div>
             </div>
