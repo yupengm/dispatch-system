@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 public class GoogleMapPolylineDecoder {
-    public List<Coordinate> decodePolyline(String polylineUrl){
+    public List<List<Double>> decodePolyline(String polylineUrl){
         int index = 0;
         int lat = 0;
         int lng = 0;
+        List<List<Double>> toReturn = new ArrayList<>();
         List<Coordinate> coordinates = new ArrayList<>();
         String[] array = {"latitude", "longitude"};
         Map<String, Integer> changes = new HashMap<>();
@@ -39,7 +40,13 @@ public class GoogleMapPolylineDecoder {
             lng += changes.get("longitude");
             coordinates.add(new Coordinate(lat / 100000.0, lng / 100000.0));
         }
-        return coordinates;
+        for (Coordinate coordinate: coordinates){
+            List<Double> point = new ArrayList<>();
+            point.add(coordinate.latitude);
+            point.add(coordinate.longitude);
+            toReturn.add(point);
+        }
+        return toReturn;
     }
 
     static class Coordinate{
@@ -55,10 +62,7 @@ public class GoogleMapPolylineDecoder {
     public static void main (String[] args){
         String url = "azljFjss{S?oA?kB";
         GoogleMapPolylineDecoder g = new GoogleMapPolylineDecoder();
-        for (Coordinate coordinate: g.decodePolyline(url)){
-            System.out.println(coordinate.latitude);
-            System.out.println(coordinate.longitude);
-        }
+        System.out.println(g.decodePolyline(url));
     }
 
 
