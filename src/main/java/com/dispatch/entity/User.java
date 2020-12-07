@@ -15,6 +15,10 @@ import javax.persistence.*;
 public class User implements Serializable {
     private static final long serialVersionUID = 2652327633296064143L;
 
+    public User(String email){
+        this.emailId = email;
+    }
+
     @Id
 //    @Column(name="U_id", nullable = false)
 //    @GeneratedValue(generator="system-uuid")
@@ -42,7 +46,6 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Order> order;
-
 
     public String getFirstName() {
         return firstName;

@@ -59,6 +59,7 @@ export class MapContainer extends Component {
         });
         console.log('drawPolyline', map);
         polyline.setPath(this.props.drone);
+        console.log('drawPolyline', polyline);
         polyline.setMap(map);
     }
 
@@ -186,6 +187,7 @@ export class MapContainer extends Component {
                 this.forceUpdate()
                 this.handleRobot(this.state.mapProps, this.state.map)
                 this.calculateRoute(this.state.map)
+                this.handleDrone(this.state.mapProps, this.state.map)
                 // this.handleMapReady();
                 // this.setState({
                 //     mapCenter :{

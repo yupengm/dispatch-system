@@ -2,7 +2,6 @@ package com.dispatch.dao;
 
 
 import com.dispatch.entity.Station;
-import com.dispatch.entity.User;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
