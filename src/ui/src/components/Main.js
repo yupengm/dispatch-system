@@ -155,7 +155,7 @@ class Main extends Component {
                     {/*     origin={this.state.origin} des={this.state.dropOff} station={this.state.station}*/}
                     {/*/>*/}
                     <Map route={[{lat: 37.78741078914182, lng: -122.43674218604595}, this.state.origin, this.state.dropOff ]}
-                         drone={[]}
+                         drone={[{lat: 37.78741078914182, lng: -122.43674218604595}, this.state.origin, this.state.dropOff]}
                          stations={[{lat: 37.78741078914182, lng: -122.43674218604595},{lat: 37.74575075621106, lng: -122.43330895872147},{lat: 37.76475172762295, lng: -122.48394906175754}]}
                          origin={this.state.origin} des={this.state.dropOff} station={this.state.station}
                     />

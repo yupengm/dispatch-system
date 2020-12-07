@@ -18,11 +18,11 @@ class UserInputForm extends Component{
                 this.props.handleChange(values)
                 this.props.setSteps()
 
-                const params = {
-                        size: this.props.length * this.props.width * this.props.height,
-                    }
-
-                    let res = axios.post('Dispatch/input', params);
+                // const params = {
+                //         size: this.props.length * this.props.width * this.props.height,
+                //     }
+                //
+                //     let res = axios.post('Dispatch/input', params);
 
                     // console.log(res.data);
                 }

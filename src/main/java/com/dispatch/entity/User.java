@@ -15,6 +15,10 @@ import javax.persistence.*;
 public class User implements Serializable {
     private static final long serialVersionUID = 2652327633296064143L;
 
+    public User(String email){
+        this.emailId = email;
+    }
+
     @Id
 //    @Column(name="U_id", nullable = false)
 //    @GeneratedValue(generator="system-uuid")

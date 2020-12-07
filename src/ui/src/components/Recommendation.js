@@ -1,13 +1,61 @@
 import React, {Component} from 'react';
 import {Radio, Input, Button, List} from 'antd';
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
+import axios from 'axios';
 
 class Recommendation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            checked: -1
+            checked: -1,
+            options:[],
+            isLoading: false
         }
+    }
+    //use didMount lifecycle to fetch route data from Main
+    componentDidMount() {
+        const json = [{stationName:"SanFranciscoStateUniversity",
+            deliverType:"1", // 1 for robot
+            totalTime:"24",
+            distance:"25.3",
+            pickUpGeoX:"37.7227669",
+            pickUpGeoY:"-122.4767213",
+            putDownGeoX:"-122.4517272",
+            putDownGeoY:"37.77526539999999"},
+            {stationName:"SanFranciscoStateUniversity",
+                deliverType:"2", // 2 for drone
+                pickUpGeoX:"37.7227669",
+                pickUpGeoY:"-122.4767213",
+                putDownGeoX:"-122.4517272",
+                putDownGeoY:"37.77526539999999"},
+            {stationName:"SanFranciscoStateUniversity",
+                deliverType:"1",
+                totalTime:"90",
+                distance:"2344",
+                pickUpGeoX:"37.7227669",
+                pickUpGeoY:"-122.4767213",
+                putDownGeoX:"-122.4517272",
+                putDownGeoY:"37.77526539999999"}]
+        console.log("hihihiihh")
+        this.fetchData(json);
+
+    }
+    fetchData = route => {
+        //get route data from Map component
+        axios.post("/Dispatch/getPrice", route)
+            .then(response => {
+                console.log("Get response from Jing jie", response);
+                this.setState({
+                    options: response.data,
+                    isLoading: false
+                })
+            })
+            .catch(error => {
+                console.log('err in fetch satellite ->', error.message);
+                this.setState({
+                    isLoading: false
+                })
+            })
     }
     onChange(index){
         this.setState({
@@ -33,7 +81,7 @@ class Recommendation extends Component {
                 transitionAppearTimeout={400}
                 transitionEnterTimeout={400}>
             <div className="recommendation-list-box">
-                {this.props.options.map((choice, index) => (
+                {this.state.options.map((choice, index) => (
                     <label key={index}>
                         <input type="radio"
                                name="options"

@@ -1,8 +1,10 @@
 package com.dispatch.controller;
 
 import com.dispatch.dao.StationDao;
+import com.dispatch.entity.Price;
 import com.dispatch.entity.Route;
 import com.dispatch.entity.Station;
+import com.dispatch.entity.User;
 import com.dispatch.service.PriceService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +41,10 @@ public class RouteController {
 
     // Version 1. Simple return the price by mapping to an entity
     // need construction
-    @RequestMapping(value = "/getPrice", method = RequestMethod.GET)
+    @RequestMapping(value = "/getPrice", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ArrayList<String>> getPrice(@RequestBody List<Route> inputs) throws Exception {
+    public ResponseEntity<ArrayList<Price>> getPrice(@RequestBody List<Route> inputs) throws Exception {
+//    public ResponseEntity<ArrayList<String>> getPrice(@RequestBody List<Route> inputs) throws Exception {
         ArrayList<String> jsonArray = new ArrayList<>();
         double MIN_PRICE = 1000000000.0;
         double MIN_TIME = 1000000000.0; //TBD
@@ -79,25 +82,31 @@ public class RouteController {
             }
 
         }
-
+        ArrayList<Price> list = new ArrayList<>();
         // loop over twice
         for (Route input: inputs) {
-            Map<String, String> toReturn = new HashMap<>();
-            toReturn.put("price", String.valueOf(input.price));
-            toReturn.put("time", String.valueOf(input.time));
-            toReturn.put("tag1", null);
-            toReturn.put("tag2", null);
+            Price temp = new Price(input.price, null, null, String.valueOf(input.time));
+
+//            Map<String, String> toReturn = new HashMap<>();
+//            toReturn.put("price", String.valueOf(input.price));
+//            toReturn.put("time", String.valueOf(input.time));
+//            toReturn.put("tag1", null);
+//            toReturn.put("tag2", null);
             if (input.time == MIN_TIME) {
-                toReturn.put("tag1", "Fastest");
+//                toReturn.put("tag1", "Fastest");
+                temp.tag1 = "Fastest";
             }
             if (input.price == MIN_PRICE) {
-                toReturn.put("tag2", "Cheapest");
+//                toReturn.put("tag2", "Cheapest");
+                temp.tag2 = "Cheapest";
             }
-            String json = new ObjectMapper().writeValueAsString(toReturn);
-            jsonArray.add(json);
+//            String json = new ObjectMapper().writeValueAsString(toReturn);
+//            jsonArray.add(json);
+            list.add(temp);
         }
 
-        return new ResponseEntity<ArrayList<String>>(jsonArray, HttpStatus.OK);
+
+        return new ResponseEntity<ArrayList<Price>>(list, HttpStatus.OK);
     }
 
 //    @RequestMapping(value = "/getRoute", method = RequestMethod.POST)
