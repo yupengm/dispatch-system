@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import UserInput from "./UserInput";
 import Map from"./Map"
+import LeftSideForm from "./LeftSideForm";
+import { withRouter } from "react-router-dom";
 import UserAddress from "./UserAddress";
 import axios from 'axios';
 import Login from "./Login";
@@ -13,6 +15,8 @@ class Main extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            pickup:null,
+            deliver: null,
             steps : 1,
             size: "",
             weight: "",
@@ -28,6 +32,8 @@ class Main extends Component {
         }
     }
 
+    // handleAddress = ()=>{
+
     handleSteps = ()=> {
         this.setState(prevState=>{
             return{
@@ -36,61 +42,38 @@ class Main extends Component {
         })
     }
 
-    handleChange=(values)=> {
-        console.log(values)
-        const {name, value} = values
-        this.setState({
-            size : values.size,
-            weight: values.weight,
-            value:values.value
-        })
-        console.log(this.state)
-    }
-
-    _prev = ()=> {
-        let currentStep = this.state.steps
-        // If the current step is 2 or 3, then subtract one on "previous" button click
-        currentStep = currentStep <= 1? 1: currentStep - 1
-        this.setState({
-            steps: currentStep
-        })
-    }
-
-    get previousButton(){
-        let currentStep = this.state.steps;
-        // If the current step is not 1, then render the "previous" button
-        if(currentStep !==1){
-            return (
-                <button
-                    className="ant-btn ant-btn-primary"
-                    type="button" onClick={this._prev}>
-                    Previous
-                </button>
-            )
-        }
-        // ...else return nothing
-        return null;
-    }
-
-    // showRoute = (selected) => {
+    // setPickup = () =>{
     //     this.setState({
-    //         route: selected
+    //         pick
     //     })
     // }
 
+
     addressValidate = (target, destination) => {
-        axios.get('http://localhost:8080/Dispatch/addressValidation', {
-            params:{
-                pickup_address: target,
-                deliver_address: destination,
-            }
+        this.setState({
+            pickup:target,
+            deliver:destination
         })
-            .then(response => {
+
+        axios({
+            method: 'post',
+            url: '/Dispatch/addressValidation',
+            data: {
+                pickup_address: target.address1A,
+                pickup_city: target.city,
+                pickup_zip: target.zipadd,
+                deliver_address: destination.address1A,
+                deliver_city: destination.city,
+                deliver_zip: destination.zipadd
+            }
+        }).then(response => {
                 console.log(response);
                 console.log(response.data);
                 this.setState({
-                    origin: {lat: response.data.pickUpGeoLocationX, lng: response.data.pickUpGeoLocationY},
-                    dropOff: {lat: response.data.putDownGeoLocationX, lng: response.data.putDownGeoLocationY},
+                    // pickup: target,
+                    // deliver: destination,
+                    origin: {lat: parseFloat(response.data.pickUpGeoLocationX), lng: parseFloat(response.data.pickUpGeoLocationY)},
+                    dropOff: {lat: parseFloat(response.data.putDownGeoLocationX), lng: parseFloat(response.data.putDownGeoLocationY)},
                 });
             }).catch(error => {
                 if (error.status === "477"){
@@ -138,14 +121,21 @@ class Main extends Component {
 
         return (
             <div className='main'>
-                <div className="left-side">
+
 
                     <Register />
 
-                    <UserAddress curr_step={steps}
+
+                 <LeftSideForm
+                                curr_step={steps}
                                  setSteps={this.handleSteps}
                                  showAddress={this.addressValidate}
-                    />
+                                 value = {this.state}/>
+
+                    {/*<UserAddress curr_step={steps}*/}
+                    {/*             setSteps={this.handleSteps}*/}
+                    {/*             showAddress={this.addressValidate}*/}
+                    {/*/>*/}
 
                     <UserInput curr_step={steps}
                                 setSteps={this.handleSteps}
@@ -159,9 +149,16 @@ class Main extends Component {
 
                     {this.previousButton}
 
-                </div>
                 <div>
-                    <Map des={this.state.dropOff} origin={this.state.origin} station={this.state.station} />
+                    {/*<Map route={[{lat: 37.78741078914182, lng: -122.43674218604595}, {lat: 37.776290, lng: -122.431323}, {lat: 37.757936, lng: -122.409895} ]}*/}
+                    {/*     drone={[]}*/}
+                    {/*     origin={this.state.origin} des={this.state.dropOff} station={this.state.station}*/}
+                    {/*/>*/}
+                    <Map route={[{lat: 37.78741078914182, lng: -122.43674218604595}, this.state.origin, this.state.dropOff ]}
+                         drone={[]}
+                         stations={[{lat: 37.78741078914182, lng: -122.43674218604595},{lat: 37.74575075621106, lng: -122.43330895872147},{lat: 37.76475172762295, lng: -122.48394906175754}]}
+                         origin={this.state.origin} des={this.state.dropOff} station={this.state.station}
+                    />
                 </div>
             </div>
         );

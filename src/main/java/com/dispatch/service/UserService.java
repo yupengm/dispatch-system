@@ -37,7 +37,7 @@ public class UserService {
             } else {
                 loginResponse.put("message","Wrong password");
                 String json = new ObjectMapper().writeValueAsString(loginResponse);
-                return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<String>(json, HttpStatus.UNAUTHORIZED);
             }
     }
 

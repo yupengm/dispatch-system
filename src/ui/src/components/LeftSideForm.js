@@ -9,6 +9,7 @@ import Confirmation from "./Confirmation";
 import Tracking from "./Tracking";
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import { withRouter } from "react-router-dom";
+import {List} from 'antd'
 
 class LeftSideForm extends Component {
     constructor(props) {
@@ -22,7 +23,9 @@ class LeftSideForm extends Component {
             features: [],
             value: 0,
             destination: "",
-            target:""
+            target:"",
+            options:[["1","option1"],["2","option2"],["3","option3"]],
+            selectedOption:""
         }
     }
 
@@ -95,9 +98,14 @@ class LeftSideForm extends Component {
             target: target
         }))
     }
-
+    selected = (selectedOption) => {
+        console.log()
+        this.setState({
+            selectedOption: selectedOption
+        })
+    }
     render() {
-        const {steps} = this.state
+        const {steps, options} = this.state
         return (
             <div className="left-side">
 
@@ -106,7 +114,9 @@ class LeftSideForm extends Component {
 
                 <UserAddress curr_step={steps}
                              setSteps={this.handleSteps}
-                             showPoints = {this.setPoints}
+                             showAddress = {this.props.showAddress}
+                             pickup = {this.props.value.pickup}
+                             deliver = {this.props.value.deliver}
                 />
 
 
@@ -127,6 +137,8 @@ class LeftSideForm extends Component {
                                 setSteps={this.handleSteps}
                                 gotoLogin={this.gotoLogin}
                                 goback={this._prev}
+                                options={options}
+                                changeFn={this.selected}
                 />
 
                 <Login curr_step={steps}
