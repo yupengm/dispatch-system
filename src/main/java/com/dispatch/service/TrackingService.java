@@ -28,9 +28,49 @@ public class TrackingService {
     public ResponseEntity<String> trackOrder(int orderId) throws JsonProcessingException {
         Order order = orderDao.getOrderByOrderId(orderId);
         Map<String, String> toReturn = new HashMap<>();
+        int status = getStatus(order.getStartTime(),order.getTimeFromStationToPickUpAddress(),
+                order.getTimeFromPickUpAddressToPutDownAddress());
+        int timeInterval = -1; // means delivered
+        int TimeElapsed = -1; // means delivered
+        if (status == 0) {
+            TimeElapsed = getTimeElapsed(order.getStartTime());
+            timeInterval = order.getTimeFromStationToPickUpAddress();
+        } else if (status == 1) {
+            TimeElapsed = getTimeElapsed(order.getStartTime()) - order.getTimeFromStationToPickUpAddress();
+            timeInterval = order.getTimeFromPickUpAddressToPutDownAddress();
+        }
+        int type = order.getRoute().getDeliverType();
+        if (type == 1 && timeInterval != -1) {
+            double scale = getScale(TimeElapsed, timeInterval);
+            toReturn.put("currentRelativeLocation",String.valueOf(scale));
+        } else if (type == 2 && timeInterval != -1) {
+            double[] currentXY = trackDrone(TimeElapsed,timeInterval,
+                        order.getRoute().getPickUpGeoX(),
+                        order.getRoute().getPickUpGeoY(),
+                        order.getRoute().getPutDownGeoX(),
+                        order.getRoute().getPutDownGeoY());
+            toReturn.put("currentLng",String.valueOf(currentXY[0]));
+            toReturn.put("currentLat",String.valueOf(currentXY[1]));
+
+        }
+
+        toReturn.put("status",String.valueOf(status));
+        toReturn.put("orderNumber",String.valueOf(order.getId()));
+        toReturn.put("email", order.getUser().getEmailId());
+        toReturn.put("price", String.valueOf(order.getRoute().getPrice()));
+        toReturn.put("station", String.valueOf(order.getStation().getName()));
+        toReturn.put("type", String.valueOf(type));
+        toReturn.put("weight", String.valueOf(order.getBox().getWeight()));
+        toReturn.put("RoutePoly", String.valueOf(order.getRoute().getRoutePoly()));
+//        toReturn.put("PickUpAddress",String.valueOf(order.getPickUpAddress()));//TODO
+//        toReturn.put("PutDownAddress",String.valueOf(order.getPutDownAddress())); //TODO
+        toReturn.put("StartTime",String.valueOf(order.getStartTime()));
+        toReturn.put("EndTime",String.valueOf(order.getEndTime()));
+
+        String json = new ObjectMapper().writeValueAsString(toReturn);
+        return new ResponseEntity<String>(json, HttpStatus.OK);
 
 //        toReturn.put("status", getStatus(order.getStartTime(), order.getStartTime(),order.getEndTime())); //TODO
-        return getStringResponseEntity(order, toReturn);
     }
 
     // when save order, use getNowTime to save a String type time
@@ -66,6 +106,33 @@ public class TrackingService {
 //            return "Completed";
             return 2;
         }
+    }
+
+    private double[] trackDrone(int timeElapsed, int timeInterval, double geoLocation1X, double
+                                geoLocation1Y, double geoLocation2X, double
+            geoLocation2Y) {
+        double scale = getScale(timeElapsed, timeInterval);
+        double diffY = geoLocation2Y - geoLocation1Y;
+        double diffX = geoLocation2X - geoLocation1X;
+        double[] currentLocationXY = {geoLocation1X + diffX * scale, geoLocation1Y + diffY * scale};
+        return currentLocationXY;
+    }
+
+    private int getTimeElapsed(String fromTime) {
+        Instant start = Instant.parse(fromTime + "z");
+        Instant now = Instant.parse(this.getNowTime() + "z");
+        //        Instant start = Instant.parse("2015-01-29T18:00:00.0z");
+        //        +z to parse as standard
+        Duration timeElapsed = Duration.between(start, now);
+        return (int) (timeElapsed.toMillis()/1000);
+    }
+
+    private double getScale(int timeElapsed , int timeInterval) {
+        double timeElapsedinSec = (double) (timeElapsed);
+        double timeIntervalSec = (double) (timeInterval);
+        double scaleLong = timeElapsedinSec / timeIntervalSec;
+        double scale = Math.round(scaleLong * 100.0) / 100.0;
+        return scale;
     }
 
     //test

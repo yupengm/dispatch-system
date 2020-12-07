@@ -24,6 +24,7 @@ class LeftSideForm extends Component {
             value: 0,
             destination: "",
             target:"",
+            routes:[["1","option1"],["2","option2"],["3","option3"]],
             selectedOption:""
         }
     }
@@ -137,6 +138,7 @@ class LeftSideForm extends Component {
                                 setSteps={this.handleSteps}
                                 gotoLogin={this.gotoLogin}
                                 goback={this._prev}
+                                routes={this.state.routes}
                                 changeFn={this.selected}
                 />
 

@@ -16,13 +16,37 @@ class Recommendation extends Component {
     }
     //use didMount lifecycle to fetch route data from Main
     componentDidMount() {
-        this.fetchData(this.props.route);
+        const json = [{stationName:"SanFranciscoStateUniversity",
+            deliverType:"1", // 1 for robot
+            totalTime:"24",
+            distance:"25.3",
+            pickUpGeoX:"37.7227669",
+            pickUpGeoY:"-122.4767213",
+            putDownGeoX:"-122.4517272",
+            putDownGeoY:"37.77526539999999"},
+            {stationName:"SanFranciscoStateUniversity",
+                deliverType:"2", // 2 for drone
+                pickUpGeoX:"37.7227669",
+                pickUpGeoY:"-122.4767213",
+                putDownGeoX:"-122.4517272",
+                putDownGeoY:"37.77526539999999"},
+            {stationName:"SanFranciscoStateUniversity",
+                deliverType:"1",
+                totalTime:"90",
+                distance:"2344",
+                pickUpGeoX:"37.7227669",
+                pickUpGeoY:"-122.4767213",
+                putDownGeoX:"-122.4517272",
+                putDownGeoY:"37.77526539999999"}]
+        console.log("hihihiihh")
+        this.fetchData(json);
+
     }
     fetchData = route => {
         //get route data from Map component
-        axios.post("./getPrice", { route })
+        axios.post("/Dispatch/getPrice", route)
             .then(response => {
-                console.log(response);
+                console.log("Get response from Jing jie", response);
                 this.setState({
                     options: response.data,
                     isLoading: false
@@ -61,19 +85,20 @@ class Recommendation extends Component {
             <div className="recommendation-list-box">
                 {this.state.options.map((choice, index) => (
                     <label key={index}>
-                        <input type="radio"
-                               name="options"
-                               value={choice}
-                               key={index}
-                               checked={this.state.checked === index}
-                               onChange={this.onChange.bind(this, index)} /> Option {index + 1}
-                        <List
-                            bordered
-                            dataSource={choice}
-                            renderItem={item => <List.Item>{item}</List.Item>}
-                            size = "small"
-                        />
-                        <br />
+                        Xiao ge hao shuai!!!!!
+                        {/*<input type="radio"*/}
+                        {/*       name="options"*/}
+                        {/*       value={choice}*/}
+                        {/*       key={index}*/}
+                        {/*       checked={this.state.checked === index}*/}
+                        {/*       onChange={this.onChange.bind(this, index)} /> Option {index + 1}*/}
+                        {/*<List*/}
+                        {/*    bordered*/}
+                        {/*    dataSource={choice}*/}
+                        {/*    renderItem={item => <List.Item>{item}</List.Item>}*/}
+                        {/*    size = "small"*/}
+                        {/*/>*/}
+                        {/*<br />*/}
                     </label>
                 ))}
 
