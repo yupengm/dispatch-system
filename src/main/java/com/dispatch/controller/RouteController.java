@@ -84,7 +84,7 @@ public class RouteController {
         ArrayList<Price> list = new ArrayList<>();
         // loop over twice
         for (Route input: inputs) {
-            Price temp = new Price(input.price, null, null, String.valueOf(input.totalTime));
+            Price temp = new Price(input.price, null, null, String.valueOf(input.totalTime), String.valueOf(input.getDistance()), String.valueOf(input.getDeliverType()), String.valueOf(input.getStationName()));
 
 //            Map<String, String> toReturn = new HashMap<>();
 //            toReturn.put("price", String.valueOf(input.price));
