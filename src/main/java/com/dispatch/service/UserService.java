@@ -37,7 +37,7 @@ public class UserService {
             } else {
                 loginResponse.put("message","Wrong password");
                 String json = new ObjectMapper().writeValueAsString(loginResponse);
-                return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<String>(json, HttpStatus.UNAUTHORIZED);
             }
     }
 
@@ -48,11 +48,22 @@ public class UserService {
             addUserResponse.put("message","sign up success");
             String json = new ObjectMapper().writeValueAsString(addUserResponse);
             return new ResponseEntity<String>(json, HttpStatus.OK);
-        } catch (Exception e) {
+        } catch (IllegalAccessException e) {
             addUserResponse.put("message","Add customer failed.");
             String json = new ObjectMapper().writeValueAsString(addUserResponse);
             return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
         }
+
+//        boolean isSuccess = userDao.addUser(user);
+//        if (isSuccess) {
+//            addUserResponse.put("message","sign up success");
+//            String json = new ObjectMapper().writeValueAsString(addUserResponse);
+//            return new ResponseEntity<String>(json, HttpStatus.OK);
+//        } else {
+//            addUserResponse.put("message","Add customer failed.");
+//            String json = new ObjectMapper().writeValueAsString(addUserResponse);
+//            return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
+//        }
 
     }
 

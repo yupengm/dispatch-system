@@ -11,7 +11,7 @@ public class UserDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void addUser(User user){
+    public void addUser(User user) throws IllegalAccessException{
         Session session = null;
 
         try {
@@ -23,12 +23,34 @@ public class UserDao {
         } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();
+            throw new IllegalAccessException("Add user failed.");
         } finally {
             if (session != null) {
                 session.close();
             }
         }
     }
+
+//    public boolean addUser(User user) {
+//        Session session = null;
+//        boolean isSuccuess = false;
+//
+//        try {
+//            session = sessionFactory.openSession();
+//            session.beginTransaction();
+//            session.save(user);
+//            session.getTransaction().commit();
+//            isSuccuess = true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            session.getTransaction().rollback();
+//        } finally {
+//            if (session != null) {
+//                session.close();
+//            }
+//            return isSuccuess;
+//        }
+//    }
 
     public User getUserByEmailId(String emailId){
         try (Session session = sessionFactory.openSession()) {

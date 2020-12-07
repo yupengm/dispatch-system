@@ -13,5 +13,23 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://laijobproject.curn8ohpuukh.us-east-2.rds.amazonaws.com:3306/Dispatch</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="jdbc:mysql://localhost:3306/jdbc:mysql://laiproject-instance.cctzp1m6kuqr.us-east-1.rds.amazonaws.com:3306/ecommerce?createDatabaseIfNotExist=true&amp;serverTimezone=UTC" uuid="c723af34-0655-4f95-b301-f0690a37c905">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/jdbc:mysql://laiproject-instance.cctzp1m6kuqr.us-east-1.rds.amazonaws.com:3306/ecommerce?createDatabaseIfNotExist=true&amp;serverTimezone=UTC</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="jdbc:mysql://localhost:3306/jdbc:mysql://laiproject-instance.cctzp1m6kuqr.us-east-1.rds.amazonaws.com:3306/dispatch?createDatabaseIfNotExist=true&amp;serverTimezone=UTC" uuid="c70d810a-bc91-4e3c-a33f-323486fa8167">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/jdbc:mysql://laiproject-instance.cctzp1m6kuqr.us-east-1.rds.amazonaws.com:3306/dispatch?createDatabaseIfNotExist=true&amp;serverTimezone=UTC</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="dispatch@laiproject-instance.cctzp1m6kuqr.us-east-1.rds.amazonaws.com" uuid="7f727c28-7dbb-44f4-969a-80248687ac6e">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://laiproject-instance.cctzp1m6kuqr.us-east-1.rds.amazonaws.com:3306/dispatch</jdbc-url>
+    </data-source>
   </component>
 </project>

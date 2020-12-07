@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Input, Tooltip, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete,} from 'antd';
+import {Form, Input, Tooltip, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete, InputNumber,} from 'antd';
 import axios from 'axios';
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
@@ -15,21 +15,49 @@ class RegisterForm extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        this.props.gotoLogin()
+
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                const params = {
-                    "emailId": "1111@gmail.com",
-                    "password": "123123",
-                    "firstName": "Christopher",
-                    "lastName": "Nolan",
-                    "phone": "1234567890"
+                axios({
+                    method: 'post',
+                    url: '/Dispatch/signup',
+                    data: {
+                        email: "11113@gmail.com",
+                        password: "123123",
+                        first_name: "Christopher",
+                        last_name: "Nolan",
+                        phone_number: "1234567890"
                     }
-
-                    let res = axios.post('Dispatch/signup', params);
-
-                    // console.log(res.data);
+                }).then((response) => {
+                    console.log(response);
+                    this.props.gotoLogin()
+                }, (error) => {
+                    console.log("MY ERROR IS: "+error.response.status +"oh yeah");
+                    if(error.response.status == 401){
+                        this.setState({
+                            isError : "Password combination is not correct"
+                        })
+                    } else if (error.response.status == 400){
+                        // this.state.isError = "User does not exist"
+                        this.setState({
+                            isError : "User does not exist"
+                        })
+                    }
+                    //Error pending
+                });
+                // const params = {
+                //     "emailId": "1111@gmail.com",
+                //     "password": "123123",
+                //     "firstName": "Christopher",
+                //     "lastName": "Nolan",
+                //     "phone": "1234567890"
+                //     }
+                //
+                //     let res = axios.post('Dispatch/signup', params);
+                //
+                //     // console.log(res.data);
+                // this.props.gotoLogin()
                 }
 
         });
@@ -123,18 +151,11 @@ class RegisterForm extends Component {
                 <Form.Item
                     name="email"
                     label="E-mail"
-                    rules={[
-                        {
-                            type: 'email',
-                            message: 'The input is not valid E-mail!',
-                        },
-                        {
-                            required: true,
-                            message: 'Please input your E-mail!',
-                        },
-                    ]}
                 >
-                    <Input />
+                    {getFieldDecorator('email',
+                        {rules: [{required: true, message: 'Please input your E-mail!'}]}
+                    )(<Input />)}
+
                 </Form.Item>
 
                 <Form.Item

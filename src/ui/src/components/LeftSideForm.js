@@ -114,7 +114,9 @@ class LeftSideForm extends Component {
 
                 <UserAddress curr_step={steps}
                              setSteps={this.handleSteps}
-                             showPoints = {this.setPoints}
+                             showAddress = {this.props.showAddress}
+                             pickup = {this.props.value.pickup}
+                             deliver = {this.props.value.deliver}
                 />
 
 
