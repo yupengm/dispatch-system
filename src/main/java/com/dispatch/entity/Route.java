@@ -2,17 +2,18 @@ package com.dispatch.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 
 
 @Entity
 @Table(name = "route")
 public class Route implements Serializable {
     private static final long serialVersionUID = 2991531852204068105L;
-
-    public double time;
-
-    public String message = null;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,30 +23,28 @@ public class Route implements Serializable {
 
     private double totalTime;
 
-    private String route;
+    private double price;
 
     private int deliverType;
 
-    public String stationName;
+    private double pickUpGeoX;
+
+    private double pickUpGeoY;
+
+    private double putDownGeoX;
+
+    private double putDownGeoY;
+
+    private String routePoly;
+
+    private String stationName;
+
+    private String message;
+
 
     @OneToOne(mappedBy = "route")
     private Order order;
 
-//    @OneToOne
-//    private PickUpAddress pickUpAddress;
-//
-//    @OneToOne
-//    private PutDownAddress putDownAddress;
-
-    public double pickUpGeoX;
-
-    public double pickUpGeoY;
-
-    public double putDownGeoX;
-
-    public double putDownGeoY;
-
-    public double price;
 
     public int getId() {
         return id;
@@ -71,12 +70,76 @@ public class Route implements Serializable {
         this.totalTime = totalTime;
     }
 
-    public String getRoute() {
-        return route;
+    public double getPrice() {
+        return price;
     }
 
-    public void setRoute(String route) {
-        this.route = route;
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getDeliverType() {
+        return deliverType;
+    }
+
+    public void setDeliverType(int deliverType) {
+        this.deliverType = deliverType;
+    }
+
+    public double getPickUpGeoX() {
+        return pickUpGeoX;
+    }
+
+    public void setPickUpGeoX(double pickUpGeoX) {
+        this.pickUpGeoX = pickUpGeoX;
+    }
+
+    public double getPickUpGeoY() {
+        return pickUpGeoY;
+    }
+
+    public void setPickUpGeoY(double pickUpGeoY) {
+        this.pickUpGeoY = pickUpGeoY;
+    }
+
+    public double getPutDownGeoX() {
+        return putDownGeoX;
+    }
+
+    public void setPutDownGeoX(double putDownGeoX) {
+        this.putDownGeoX = putDownGeoX;
+    }
+
+    public double getPutDownGeoY() {
+        return putDownGeoY;
+    }
+
+    public void setPutDownGeoY(double putDownGeoY) {
+        this.putDownGeoY = putDownGeoY;
+    }
+
+    public String getRoutePoly() {
+        return routePoly;
+    }
+
+    public void setRoutePoly(String route) {
+        this.routePoly = route;
+    }
+
+    public String getStationName() {
+        return stationName;
+    }
+
+    public void setStationName(String stationName) {
+        this.stationName = stationName;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public Order getOrder() {
@@ -86,38 +149,4 @@ public class Route implements Serializable {
     public void setOrder(Order order) {
         this.order = order;
     }
-
-    public void setDeliverType(int deliverType) { this.deliverType = deliverType;}
-
-    public int getDeliverType() {
-        return this.deliverType;
-    }
-
-//    public void setStation(Station station) { this.station = station;}
-//
-//    public Station getStation() {return this.station;}
-
-    public double getPickUpGeoX() {return this.pickUpGeoX;}
-
-    public void sePickUpGeoX(double pickUpGeoX) {this.pickUpGeoX = pickUpGeoX;}
-
-    public double getpickUpGeoY() {return this.pickUpGeoY;}
-
-    public void sepickUpGeoY(double pickUpGeoY) {this.pickUpGeoY = pickUpGeoY;}
-
-    public double getPutDownGeoX() {return this.putDownGeoX;}
-
-    public void sePutDownGeoX(double putDownGeoX) {this.putDownGeoX = putDownGeoX;}
-
-    public double getPutDownGeoY() {return this.putDownGeoY;}
-
-    public void sePutDownGeoY(double putDownGeoY) {this.putDownGeoY = putDownGeoY;}
-
-//    public void setPickUpAddress(PickUpAddress pickUpAddress) { this.pickUpAddress = pickUpAddress;}
-//
-//    public PickUpAddress getPickUpAddress() {return this.pickUpAddress;}
-//
-//    public void setPutDownAddress(PutDownAddress putDownAddress) { this.putDownAddress = putDownAddress;}
-//
-//    public PutDownAddress getPutDownAddress() {return this.putDownAddress;}
 }
