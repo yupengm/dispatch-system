@@ -1,28 +1,28 @@
 import React, {Component} from 'react';
 import {Form, Icon, Input, Button,Checkbox} from 'antd';
-import axios from 'axios';
+// import axios from 'axios';
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
 class LoginForm extends Component {
     handleSubmit = e => {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-
-                axios({
-                            method: 'get',
-                            url: '/Dispatch/login',
-                            data: {
-                            email:  "1111@gmail.com",
-                            password:  "123123"
-                            }
-                        }).then((response) => {
-                            console.log(response);
-                        }, (error) => {
-                            console.log(error);
-                        });
-                }
-        });
+        // this.props.form.validateFields((err, values) => {
+        //     if (!err) {
+        //
+        //         axios({
+        //                     method: 'get',
+        //                     url: '/Dispatch/login',
+        //                     data: {
+        //                     email:  "1111@gmail.com",
+        //                     password:  "123123"
+        //                     }
+        //                 }).then((response) => {
+        //                     console.log(response);
+        //                 }, (error) => {
+        //                     console.log(error);
+        //                 });
+        //         }
+        // });
     };
 
     render() {

@@ -35,6 +35,15 @@ class RegisterForm extends Component {
         });
     };
 
+    compareToFirstPassword = (rule, value, callback) => {
+        const { form } = this.props;
+        if (value && value !== form.getFieldValue('password')) {
+            callback('Two passwords that you enter is inconsistent!');
+        } else {
+            callback();
+        }
+    };
+
     normFile = e => {
         console.log('Upload event:', e);
         if (Array.isArray(e)) {
@@ -120,109 +129,84 @@ class RegisterForm extends Component {
 
             <Form{...formItemLayout} className="register" onSubmit={this.handleSubmit}>
 
-                <Form.Item
-                    name="email"
-                    label="E-mail"
-                    rules={[
-                        {
-                            type: 'email',
-                            message: 'The input is not valid E-mail!',
-                        },
-                        {
-                            required: true,
-                            message: 'Please input your E-mail!',
-                        },
-                    ]}
-                >
-                    <Input />
-                </Form.Item>
-
-                <Form.Item
-                    name="password"
-                    label="Password"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your password!',
-                        },
-                    ]}
-                    hasFeedback
-                >
-                    <Input.Password />
-                </Form.Item>
-
-                <Form.Item
-                    name="confirm"
-                    label="Confirm Password"
-                    dependencies={['password']}
-                    hasFeedback
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please confirm your password!',
-                        },
-                        ({ getFieldValue }) => ({
-                            validator(rule, value) {
-                                if (!value || getFieldValue('password') === value) {
-                                    return Promise.resolve();
-                                }
-
-                                return Promise.reject('The two passwords that you entered do not match!');
+                <Form.Item label="E-mail" hasFeedback>
+                    {getFieldDecorator('email', {
+                        rules: [
+                            {
+                                type: 'email',
+                                message: 'The input is not valid E-mail!',
                             },
-                        }),
-                    ]}
-                >
-                    <Input.Password />
+                            {
+                                required: true,
+                                message: 'Please input your E-mail!',
+                            },
+                        ],
+                    })(<Input />)}
                 </Form.Item>
 
-                <Form.Item
-                    name="First Name"
-                    label={
-                        <span>Firstname</span>
-                    }
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your first name!',
-                            whitespace: true,
-                        },
-                    ]}
-                >
-                    <Input />
+
+                <Form.Item label="Password" hasFeedback>
+                    {getFieldDecorator('password', {
+                        rules: [
+                            {
+                                required: true,
+                                message: 'Please input your password!',
+                            },
+                        ],
+                    })(<Input.Password />)}
                 </Form.Item>
 
-                <Form.Item
-                    name="Last Name"
-                    label={
-                        <span>Lastname</span>
-                    }
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your last name!',
-                            whitespace: true,
-                        },
-                    ]}
-                >
-                    <Input />
+                <Form.Item label="Confirm Password" hasFeedback>
+                    {getFieldDecorator('confirm', {
+                        rules: [
+                            {
+                                required: true,
+                                message: 'Please confirm your password!',
+                            },
+                            {
+                                validator: this.compareToFirstPassword,
+                            },
+                        ],
+                    })(<Input.Password />)}
                 </Form.Item>
 
-                <Form.Item
-                    name="phone"
-                    label="Phone Number"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your phone number!',
-                        },
-                    ]}
-                >
-                    <Input
-                        addonBefore={prefixSelector}
-                        style={{
-                            width: '100%',
-                        }}
-                    />
+
+                <Form.Item label="First Name" hasFeedback>
+                    {getFieldDecorator('first name', {
+                        rules: [
+                            {
+                                required: true,
+                                message: 'Please input your first name!',
+                                whitespace: true,
+                            },
+                        ],
+                    }) (<Input />)}
+                </Form.Item>
+
+
+                <Form.Item label="Last Name" hasFeedback>
+                    {getFieldDecorator('last name', {
+                        rules: [
+                            {
+                                required: true,
+                                message: 'Please input your last name!',
+                                whitespace: true,
+                            },
+                        ],
+                    }) (<Input />)}
+                </Form.Item>
+
+                <Form.Item label="Phone Number" hasFeedback>
+                    {getFieldDecorator('phone', {
+                        rules: [
+                            {
+                                required: true,
+                                message: 'Please input your phone number!',
+                                whitespace: true,
+                            },
+                        ],
+
+                    }) (<Input addonBefore={prefixSelector} style={{width: '100%',}}/>)}
                 </Form.Item>
 
                 <Form.Item
