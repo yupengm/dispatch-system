@@ -83,19 +83,20 @@ class Recommendation extends Component {
             <div className="recommendation-list-box">
                 {this.state.options.map((choice, index) => (
                     <label key={index}>
-                        <input type="radio"
-                               name="options"
-                               value={choice}
-                               key={index}
-                               checked={this.state.checked === index}
-                               onChange={this.onChange.bind(this, index)} /> Option {index + 1}
-                        <List
-                            bordered
-                            dataSource={choice}
-                            renderItem={item => <List.Item>{item}</List.Item>}
-                            size = "small"
-                        />
-                        <br />
+                        Xiao ge hao shuai!!!!!
+                        {/*<input type="radio"*/}
+                        {/*       name="options"*/}
+                        {/*       value={choice}*/}
+                        {/*       key={index}*/}
+                        {/*       checked={this.state.checked === index}*/}
+                        {/*       onChange={this.onChange.bind(this, index)} /> Option {index + 1}*/}
+                        {/*<List*/}
+                        {/*    bordered*/}
+                        {/*    dataSource={choice}*/}
+                        {/*    renderItem={item => <List.Item>{item}</List.Item>}*/}
+                        {/*    size = "small"*/}
+                        {/*/>*/}
+                        {/*<br />*/}
                     </label>
                 ))}
 

@@ -84,14 +84,14 @@ public class RouteController {
         ArrayList<Price> list = new ArrayList<>();
         // loop over twice
         for (Route input: inputs) {
-            Price temp = new Price(input.price, null, null, String.valueOf(input.time));
+            Price temp = new Price(input.price, null, null, String.valueOf(input.totalTime));
 
 //            Map<String, String> toReturn = new HashMap<>();
 //            toReturn.put("price", String.valueOf(input.price));
 //            toReturn.put("time", String.valueOf(input.time));
 //            toReturn.put("tag1", null);
 //            toReturn.put("tag2", null);
-            if (input.time == MIN_TIME) {
+            if (input.totalTime == MIN_TIME) {
 //                toReturn.put("tag1", "Fastest");
                 temp.tag1 = "Fastest";
             }
