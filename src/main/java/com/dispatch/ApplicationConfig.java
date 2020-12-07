@@ -27,10 +27,13 @@ public class ApplicationConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        //        dataSource.setUrl("jdbc:mysql://dispatch.curn8ohpuukh.us-east-2.rds.amazonaws.com:3306/Dispatch?createDatabaseIfNotExist=true&serverTimezone=UTC");
         dataSource.setUrl("jdbc:mysql://laijobproject.curn8ohpuukh.us-east-2.rds.amazonaws.com:3306/Dispatch?createDatabaseIfNotExist=true&serverTimezone=UTC");
-//        dataSource.setUrl("jdbc:mysql://dispatch.curn8ohpuukh.us-east-2.rds.amazonaws.com:3306/Dispatch?createDatabaseIfNotExist=true&serverTimezone=UTC");
         dataSource.setUsername("admin");
         dataSource.setPassword("20MloveW");
+//        dataSource.setUrl("jdbc:mysql://laiproject-instance.cnwcffxp4rna.us-east-2.rds.amazonaws.com:3306/ecommerce?createDatabaseIfNotExist=true&serverTimezone=UTC");
+//        dataSource.setUsername("admin");
+//        dataSource.setPassword(".12345678");
         return dataSource;
     }
 
