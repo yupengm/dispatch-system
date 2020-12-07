@@ -24,7 +24,28 @@ class LeftSideForm extends Component {
             value: 0,
             destination: "",
             target:"",
-            routes:[["1","option1"],["2","option2"],["3","option3"]],
+            routes:[{stationName:"SanFranciscoStateUniversity",
+                deliverType:"1", // 1 for robot
+                totalTime:"24",
+                distance:"25.3",
+                pickUpGeoX:"37.7227669",
+                pickUpGeoY:"-122.4767213",
+                putDownGeoX:"-122.4517272",
+                putDownGeoY:"37.77526539999999"},
+                {stationName:"SanFranciscoStateUniversity",
+                    deliverType:"2", // 2 for drone
+                    pickUpGeoX:"37.7227669",
+                    pickUpGeoY:"-122.4767213",
+                    putDownGeoX:"-122.4517272",
+                    putDownGeoY:"37.77526539999999"},
+                {stationName:"SanFranciscoStateUniversity",
+                    deliverType:"1",
+                    totalTime:"90",
+                    distance:"2344",
+                    pickUpGeoX:"37.7227669",
+                    pickUpGeoY:"-122.4767213",
+                    putDownGeoX:"-122.4517272",
+                    putDownGeoY:"37.77526539999999"}],
             selectedOption:""
         }
     }
@@ -102,7 +123,7 @@ class LeftSideForm extends Component {
     selected = (selectedOption) => {
         console.log()
         this.setState({
-            selectedOption: selectedOption
+            selectedOption: this.state.routes[selectedOption],
         })
     }
 
