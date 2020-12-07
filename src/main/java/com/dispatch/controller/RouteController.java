@@ -41,7 +41,9 @@ public class RouteController {
     // need construction
     @RequestMapping(value = "/getPrice", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ArrayList<String>> getPrice(@RequestBody List<Route> inputs) throws Exception {
+
+    public ResponseEntity<ArrayList<PriceService.Price>> getPrice(@RequestBody List<Route> inputs) throws Exception {
+
         ArrayList<String> jsonArray = new ArrayList<>();
         double MIN_PRICE = 1000000000.0;
         double MIN_TIME = 1000000000.0; //TBD
@@ -79,39 +81,20 @@ public class RouteController {
 
         }
 
-        // loop over twice
+        ArrayList<PriceService.Price> toReturn = new ArrayList<>();
+        // loop over twice to put tage on
         for (Route input: inputs) {
-            Map<String, String> toReturn = new HashMap<>();
-            toReturn.put("price", String.valueOf(input.getPrice()));
-            toReturn.put("time", String.valueOf(input.getTotalTime()));
-            toReturn.put("tag1", null);
-            toReturn.put("tag2", null);
+            PriceService.Price temp = new PriceService.Price(input.getPrice(), null,
+                    null, String.valueOf(input.getTotalTime()));
             if (input.getTotalTime() == MIN_TIME) {
-                toReturn.put("tag1", "Fastest");
+                temp.tag1 = "Fastest";
             }
             if (input.getPrice() == MIN_PRICE) {
-                toReturn.put("tag2", "Cheapest");
+                temp.tag2 = "Cheapeast";
             }
-            String json = new ObjectMapper().writeValueAsString(toReturn);
-            jsonArray.add(json);
+            toReturn.add(temp);
         }
 
-        return new ResponseEntity<ArrayList<String>>(jsonArray, HttpStatus.OK);
+        return new ResponseEntity<ArrayList<PriceService.Price>>(toReturn, HttpStatus.OK);
     }
-
-//    @RequestMapping(value = "/getRoute", method = RequestMethod.POST)
-//    public JSONObject getRoute(@RequestBody) {
-//
-//        int[] methodCode;
-//        double[] distance;
-//        String[] deliverTime;
-//
-//        double[] price = new double[6];
-//        for (int i = 0; i < 6; i++) {
-//            price[i] = routeService.priceCalulator(distance[i], methodCode[i]);
-//        }
-//        // sorting price[]
-//
-//        return
-
 }
