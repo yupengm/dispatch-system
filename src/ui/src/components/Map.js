@@ -185,9 +185,26 @@ export class MapContainer extends Component {
             console.log(this.props.route)
             if (prevProps.route !== this.props.route) {
                 this.forceUpdate()
-                this.handleRobot(this.state.mapProps, this.state.map)
+                // this.handleRobot(this.state.mapProps, this.state.map)
                 this.calculateRoute(this.state.map)
-                this.handleDrone(this.state.mapProps, this.state.map)
+                // this.handleDrone(this.state.mapProps, this.state.map)
+                let res = this.decode("cjseFblhjVEM@SJEFADGFSEMC[gALd@pHb@lGnAzRdAzO`@xGFx@L^X^pBfBJFXPRFxG{@bD_@VAZBH@NDPRv@^j@Rt@Lj@DZA`AItDi@vCY~Dg@bKmAhBSb@GBd@PnCHhAb@`HNbCx@tLb@dHdAzOp@hKCT?\@NRpDhA|Pj@tIPtCFLFz@JjCNlJThNFtEuJXD|A@ZrJYh@CLBZLTPVd@H\Bh@M~DSnDEtAD|APhCLdFJlGB^Nt@Tb@V\NN`@V\HNBr@DNCbAc@jB{@lD{Aj@Op@KdDQdAKtAa@dAg@fAs@b@UXKh@KrBItBIfIUjDKhCObJe@na@mAx{@iChL[lGKvIYdL[|CCvJUz@IfPg@lFQtBEhGLjDL`FHjS`@xLZ^?FVBJH\JpAOrOOrLElA{@bAu@|@WXICG?QJIT?LQj@[\qBdCOBGAKBEDCBUc@a@o@o@aAS_@ESBo@FgCE_ACk@Cm@Cm@EMCAKCAIUkBEYS{ACk@BiJ~@J")
+                console.log(res)
+                let points = res.map((p)=>{
+                    return{
+                        lat: p.latitude,
+                        lng: p.longitude
+                    }
+                })
+                const polyline = new google.maps.Polyline({
+                    strokeColor: "#9500ff",
+                    strokeOpacity: 0.5,
+                    strokeWeight: 5,
+                });
+
+                polyline.setPath(points);
+
+                polyline.setMap(this.state.map);
                 // this.handleMapReady();
                 // this.setState({
                 //     mapCenter :{
@@ -201,6 +218,8 @@ export class MapContainer extends Component {
 
         }
     }
+
+
 
     // shouldComponentUpdate(nextProps, nextState, nextContext) {
     //     if(this.props.route!=nextProps.route){
@@ -233,6 +252,74 @@ export class MapContainer extends Component {
             })
             .catch(error => console.error('Error', error));
     };
+
+    decode = (encoded)=>{
+
+        // array that holds the points
+
+        var points=[ ]
+        var index = 0, len = encoded.length;
+        var lat = 0, lng = 0;
+        while (index < len) {
+            var b, shift = 0, result = 0;
+            do {
+
+                b = encoded.charAt(index++).charCodeAt(0) - 63;//finds ascii                                                                                    //and substract it by 63
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+
+
+            var dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lat += dlat;
+            shift = 0;
+            result = 0;
+            do {
+                b = encoded.charAt(index++).charCodeAt(0) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            var dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lng += dlng;
+
+            points.push({latitude:( lat / 1E5),longitude:( lng / 1E5)})
+
+        }
+        return points
+    }
+
+
+    // initialize= () => {
+    //     var myLatlng = new google.maps.LatLng(37.773972, -122.431297);
+    //     var myOptions = {
+    //         zoom: 8,
+    //         center: myLatlng,
+    //         mapTypeId: google.maps.MapTypeId.ROADMAP
+    //     }
+    //     // var map = new google.maps.Map(document.getElementById("map"), myOptions);
+    //     console.log(google.maps)
+    //     var decodedPath = google.maps.geometry.encoding.decodePath("cjseFblhjVEM@SJEFADGFSEMC[gALd@pHb@lGnAzRdAzO`@xGFx@L^X^pBfBJFXPRFxG{@bD_@VAZBH@NDPRv@^j@Rt@Lj@DZA`AItDi@vCY~Dg@bKmAhBSb@GBd@PnCHhAb@`HNbCx@tLb@dHdAzOp@hKCT?\@NRpDhA|Pj@tIPtCFLFz@JjCNlJThNFtEuJXD|A@ZrJYh@CLBZLTPVd@H\Bh@M~DSnDEtAD|APhCLdFJlGB^Nt@Tb@V\NN`@V\HNBr@DNCbAc@jB{@lD{Aj@Op@KdDQdAKtAa@dAg@fAs@b@UXKh@KrBItBIfIUjDKhCObJe@na@mAx{@iChL[lGKvIYdL[|CCvJUz@IfPg@lFQtBEhGLjDL`FHjS`@xLZ^?FVBJH\JpAOrOOrLElA{@bAu@|@WXICG?QJIT?LQj@[\qBdCOBGAKBEDCBUc@a@o@o@aAS_@ESBo@FgCE_ACk@Cm@Cm@EMCAKCAIUkBEYS{ACk@BiJ~@J");
+    //     var decodedLevels = this.decodeLevels("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+    //
+    //     var setRegion = new google.maps.Polyline({
+    //         path: decodedPath,
+    //         levels: decodedLevels,
+    //         strokeColor: "#FF0000",
+    //         strokeOpacity: 1.0,
+    //         strokeWeight: 2,
+    //         map: this.state.map
+    //     });
+    // }
+    //
+    // decodeLevels = (encodedLevelsString)=> {
+    //     var decodedLevels = [];
+    //
+    //     for (var i = 0; i < encodedLevelsString.length; ++i) {
+    //         var level = encodedLevelsString.charCodeAt(i) - 63;
+    //         decodedLevels.push(level);
+    //     }
+    //     return decodedLevels;
+    // }
 
     render() {
         // const polyCoords = [ ];
