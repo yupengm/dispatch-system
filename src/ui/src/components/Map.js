@@ -64,17 +64,25 @@ export class MapContainer extends Component {
     }
 
     calculateRoute(map){
-        let stations = this.props.stations
+        let stations = this.props.stations.map((station)=>{
+            return {
+                lat: station.geoLocationY,
+                lng: station.geoLocationX
+            }
+        })
+        console.log(stations)
         let directionsService = new google.maps.DirectionsService();
         const waypoints = stations.map(item => {
             return {
-                location: {lat: item.lat, lng: item.lng},
+                location: {lat: parseFloat(item.lat), lng: parseFloat(item.lng)},
                 stopover: true
             };
         });
+        console.log(waypoints, this.props.origin, this.props.des, "parameters")
         console.log("I am hereeeeeeeeee!")
         let res = []
         for(let i = 0; i < waypoints.length; i++){
+
             directionsService.route(
                 {
                     origin: this.props.origin,
@@ -89,16 +97,20 @@ export class MapContainer extends Component {
                             time: response.routes[0].legs[0].duration.value +
                                 response.routes[0].legs[1].duration.value, // seconds
                             distance: response.routes[0].legs[0].distance.value +
-                                response.routes[0].legs[1].distance.value // meters
+                                response.routes[0].legs[1].distance.value, // meters
+                            tag: 1
                         }
+                        console.log(cur, "hererere")
                         res.push(cur)
                     } else {
                         window.alert("Directions request failed due to " + status);
                     }
                 }
-            );
+            )
         }
-
+        this.props.getTimeAndDistance(res)
+        // setTimeout(function(){ this.props.organizeRoute(res) }, 3000);
+        // this.props.organizeRoute(res)
         console.log(res)
 
     }
@@ -168,10 +180,15 @@ export class MapContainer extends Component {
 
 
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    async componentDidUpdate(prevProps, prevState, snapshot) {
         console.log(1)
         const {des} = this.props;
         const {origin} = this.props;
+
+        if (prevProps.stations !== this.props.stations && this.props.stations.length!=0){
+            console.log(this.props.stations)
+            await this.calculateRoute(this.state.map)
+        }
 
         if (prevProps.des !== this.props.des || prevProps.origin !== this.props.origin) {
             console.log(2)
@@ -179,32 +196,33 @@ export class MapContainer extends Component {
             this.setState({destination: des})
             this.setState({origin: origin})
             console.log(des)
-            // this.locatePoint();
+            this.locatePoint();
 
 
             console.log(this.props.route)
             if (prevProps.route !== this.props.route) {
-                this.forceUpdate()
-                // this.handleRobot(this.state.mapProps, this.state.map)
-                this.calculateRoute(this.state.map)
-                // this.handleDrone(this.state.mapProps, this.state.map)
-                let res = this.decode("cjseFblhjVEM@SJEFADGFSEMC[gALd@pHb@lGnAzRdAzO`@xGFx@L^X^pBfBJFXPRFxG{@bD_@VAZBH@NDPRv@^j@Rt@Lj@DZA`AItDi@vCY~Dg@bKmAhBSb@GBd@PnCHhAb@`HNbCx@tLb@dHdAzOp@hKCT?\@NRpDhA|Pj@tIPtCFLFz@JjCNlJThNFtEuJXD|A@ZrJYh@CLBZLTPVd@H\Bh@M~DSnDEtAD|APhCLdFJlGB^Nt@Tb@V\NN`@V\HNBr@DNCbAc@jB{@lD{Aj@Op@KdDQdAKtAa@dAg@fAs@b@UXKh@KrBItBIfIUjDKhCObJe@na@mAx{@iChL[lGKvIYdL[|CCvJUz@IfPg@lFQtBEhGLjDL`FHjS`@xLZ^?FVBJH\JpAOrOOrLElA{@bAu@|@WXICG?QJIT?LQj@[\qBdCOBGAKBEDCBUc@a@o@o@aAS_@ESBo@FgCE_ACk@Cm@Cm@EMCAKCAIUkBEYS{ACk@BiJ~@J")
-                console.log(res)
-                let points = res.map((p)=>{
-                    return{
-                        lat: p.latitude,
-                        lng: p.longitude
-                    }
-                })
-                const polyline = new google.maps.Polyline({
-                    strokeColor: "#9500ff",
-                    strokeOpacity: 0.5,
-                    strokeWeight: 5,
-                });
 
-                polyline.setPath(points);
+                // this.handleRobot(this.state.mapProps, this.state.map) // test draw line api
+                // this.calculateRoute(this.state.map) // test route options
+                // this.handleDrone(this.state.mapProps, this.state.map) // test draw drone api
 
-                polyline.setMap(this.state.map);
+                // let res = this.decode("cjseFblhjVEM@SJEFADGFSEMC[gALd@pHb@lGnAzRdAzO`@xGFx@L^X^pBfBJFXPRFxG{@bD_@VAZBH@NDPRv@^j@Rt@Lj@DZA`AItDi@vCY~Dg@bKmAhBSb@GBd@PnCHhAb@`HNbCx@tLb@dHdAzOp@hKCT?\@NRpDhA|Pj@tIPtCFLFz@JjCNlJThNFtEuJXD|A@ZrJYh@CLBZLTPVd@H\Bh@M~DSnDEtAD|APhCLdFJlGB^Nt@Tb@V\NN`@V\HNBr@DNCbAc@jB{@lD{Aj@Op@KdDQdAKtAa@dAg@fAs@b@UXKh@KrBItBIfIUjDKhCObJe@na@mAx{@iChL[lGKvIYdL[|CCvJUz@IfPg@lFQtBEhGLjDL`FHjS`@xLZ^?FVBJH\JpAOrOOrLElA{@bAu@|@WXICG?QJIT?LQj@[\qBdCOBGAKBEDCBUc@a@o@o@aAS_@ESBo@FgCE_ACk@Cm@Cm@EMCAKCAIUkBEYS{ACk@BiJ~@J")
+                // console.log(res)
+                // let points = res.map((p)=>{
+                //     return{
+                //         lat: p.latitude,
+                //         lng: p.longitude
+                //     }
+                // })
+                // const polyline = new google.maps.Polyline({
+                //     strokeColor: "#9500ff",
+                //     strokeOpacity: 0.5,
+                //     strokeWeight: 5,
+                // });
+                //
+                // polyline.setPath(points);
+                //
+                // polyline.setMap(this.state.map);
                 // this.handleMapReady();
                 // this.setState({
                 //     mapCenter :{
@@ -215,7 +233,6 @@ export class MapContainer extends Component {
                 // })
 
             }
-
         }
     }
 
@@ -253,6 +270,26 @@ export class MapContainer extends Component {
             .catch(error => console.error('Error', error));
     };
 
+    getTrackingPath= (polyCode, map) =>{
+        let res = this.decode("cjseFblhjVEM@SJEFADGFSEMC[gALd@pHb@lGnAzRdAzO`@xGFx@L^X^pBfBJFXPRFxG{@bD_@VAZBH@NDPRv@^j@Rt@Lj@DZA`AItDi@vCY~Dg@bKmAhBSb@GBd@PnCHhAb@`HNbCx@tLb@dHdAzOp@hKCT?\@NRpDhA|Pj@tIPtCFLFz@JjCNlJThNFtEuJXD|A@ZrJYh@CLBZLTPVd@H\Bh@M~DSnDEtAD|APhCLdFJlGB^Nt@Tb@V\NN`@V\HNBr@DNCbAc@jB{@lD{Aj@Op@KdDQdAKtAa@dAg@fAs@b@UXKh@KrBItBIfIUjDKhCObJe@na@mAx{@iChL[lGKvIYdL[|CCvJUz@IfPg@lFQtBEhGLjDL`FHjS`@xLZ^?FVBJH\JpAOrOOrLElA{@bAu@|@WXICG?QJIT?LQj@[\qBdCOBGAKBEDCBUc@a@o@o@aAS_@ESBo@FgCE_ACk@Cm@Cm@EMCAKCAIUkBEYS{ACk@BiJ~@J")
+        console.log(res)
+        let points = res.map((p)=>{
+            return{
+                lat: p.latitude,
+                lng: p.longitude
+            }
+        })
+        const polyline = new google.maps.Polyline({
+            strokeColor: "#9500ff",
+            strokeOpacity: 0.5,
+            strokeWeight: 5,
+        });
+
+        polyline.setPath(points);
+
+        polyline.setMap(map);
+    }
+
     decode = (encoded)=>{
 
         // array that holds the points
@@ -289,37 +326,6 @@ export class MapContainer extends Component {
     }
 
 
-    // initialize= () => {
-    //     var myLatlng = new google.maps.LatLng(37.773972, -122.431297);
-    //     var myOptions = {
-    //         zoom: 8,
-    //         center: myLatlng,
-    //         mapTypeId: google.maps.MapTypeId.ROADMAP
-    //     }
-    //     // var map = new google.maps.Map(document.getElementById("map"), myOptions);
-    //     console.log(google.maps)
-    //     var decodedPath = google.maps.geometry.encoding.decodePath("cjseFblhjVEM@SJEFADGFSEMC[gALd@pHb@lGnAzRdAzO`@xGFx@L^X^pBfBJFXPRFxG{@bD_@VAZBH@NDPRv@^j@Rt@Lj@DZA`AItDi@vCY~Dg@bKmAhBSb@GBd@PnCHhAb@`HNbCx@tLb@dHdAzOp@hKCT?\@NRpDhA|Pj@tIPtCFLFz@JjCNlJThNFtEuJXD|A@ZrJYh@CLBZLTPVd@H\Bh@M~DSnDEtAD|APhCLdFJlGB^Nt@Tb@V\NN`@V\HNBr@DNCbAc@jB{@lD{Aj@Op@KdDQdAKtAa@dAg@fAs@b@UXKh@KrBItBIfIUjDKhCObJe@na@mAx{@iChL[lGKvIYdL[|CCvJUz@IfPg@lFQtBEhGLjDL`FHjS`@xLZ^?FVBJH\JpAOrOOrLElA{@bAu@|@WXICG?QJIT?LQj@[\qBdCOBGAKBEDCBUc@a@o@o@aAS_@ESBo@FgCE_ACk@Cm@Cm@EMCAKCAIUkBEYS{ACk@BiJ~@J");
-    //     var decodedLevels = this.decodeLevels("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-    //
-    //     var setRegion = new google.maps.Polyline({
-    //         path: decodedPath,
-    //         levels: decodedLevels,
-    //         strokeColor: "#FF0000",
-    //         strokeOpacity: 1.0,
-    //         strokeWeight: 2,
-    //         map: this.state.map
-    //     });
-    // }
-    //
-    // decodeLevels = (encodedLevelsString)=> {
-    //     var decodedLevels = [];
-    //
-    //     for (var i = 0; i < encodedLevelsString.length; ++i) {
-    //         var level = encodedLevelsString.charCodeAt(i) - 63;
-    //         decodedLevels.push(level);
-    //     }
-    //     return decodedLevels;
-    // }
 
     render() {
         // const polyCoords = [ ];
@@ -338,26 +344,26 @@ export class MapContainer extends Component {
                         lat: this.state.mapCenter.lat,
                         lng: this.state.mapCenter.lng
                     }}
-                    onReady={this.handleRobot}
-                    onDragend={this.handleChange}
+                    // onReady={this.handleRobot}
+                    // onDragend={this.handleChange}
                     // onCenter_changed={this.handleRobot}
                 >
 
-                    {/*{*/}
-                    {/*    this.state.origin != null ? <Marker*/}
-                    {/*        position={{*/}
-                    {/*            lat: this.state.origin.lat,*/}
-                    {/*            lng: this.state.origin.lng*/}
-                    {/*        }}/> : <div></div>*/}
-                    {/*}*/}
+                    {
+                        this.state.origin != null ? <Marker
+                            position={{
+                                lat: this.state.origin.lat,
+                                lng: this.state.origin.lng
+                            }}/> : <div></div>
+                    }
 
-                    {/*{*/}
-                    {/*    this.state.destination != null ? <Marker*/}
-                    {/*        position={{*/}
-                    {/*            lat: this.state.destination.lat,*/}
-                    {/*            lng: this.state.destination.lng*/}
-                    {/*        }}/> : <div></div>*/}
-                    {/*}*/}
+                    {
+                        this.state.destination != null ? <Marker
+                            position={{
+                                lat: this.state.destination.lat,
+                                lng: this.state.destination.lng
+                            }}/> : <div></div>
+                    }
 
 
 

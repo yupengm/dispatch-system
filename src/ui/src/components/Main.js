@@ -28,7 +28,10 @@ class Main extends Component {
             dropOff: {lat: null, lng: null},
             station: null,
             route: null,
-            routeList: []
+            routeList: [],
+            stations:[],
+            timeAndDistance:[],
+            routes: []
         }
     }
 
@@ -48,6 +51,48 @@ class Main extends Component {
     //     })
     // }
 
+    getListOfStations = (stations)=>{
+        let mystations = []
+        mystations.push(stations)
+        this.setState({
+            stations: mystations
+        })
+        console.log(this.state.stations)
+    }
+
+    getTimeAndDistance = (data) => {
+        console.log(data)
+
+            this.setState({
+                timeAndDistance: data,
+            })
+        // this.organizeRoute()
+    }
+
+    organizeRoute = (data) => {
+        //gather all info
+        console.log(data.length, "data de length")
+        console.log(data)
+        let routesOptions = []
+        for (let i = 0; i < data.length; i++) {
+            let datainfo = {
+                stationName: this.state.stations[i].stationName,
+                deliverType: this.state.stations[i].methodCode, // 1 for robot
+                totalTime: data[i].time,
+                distance: data[i].distance,
+                pickUpGeoX: this.state.origin.lat,
+                pickUpGeoY: this.state.origin.lng,
+                putDownGeoX: this.state.dropOff.lat,
+                putDownGeoY: this.state.dropOff.lng
+            }
+            console.log(datainfo)
+            routesOptions.push(datainfo)
+        }
+        console.log(routesOptions)
+        this.setState({
+            routesOptions:routesOptions
+        })
+    }
 
     addressValidate = (target, destination) => {
         this.setState({
@@ -128,7 +173,12 @@ class Main extends Component {
                                 curr_step={steps}
                                  setSteps={this.handleSteps}
                                  showAddress={this.addressValidate}
-                                 value = {this.state}/>
+                                 value = {this.state}
+                                getListOfStations={this.getListOfStations}
+                                organizeRoute={this.organizeRoute}
+                                stations={this.state.stations}
+                                timeAndDistance={this.state.timeAndDistance}
+                                />
 
                     {/*<UserAddress curr_step={steps}*/}
                     {/*             setSteps={this.handleSteps}*/}
@@ -154,7 +204,9 @@ class Main extends Component {
                     {/*/>*/}
                     <Map route={[{lat: 37.78741078914182, lng: -122.43674218604595}, this.state.origin, this.state.dropOff ]}
                          drone={[{lat: 37.78741078914182, lng: -122.43674218604595}, this.state.origin, this.state.dropOff]}
-                         stations={[{lat: 37.78741078914182, lng: -122.43674218604595},{lat: 37.74575075621106, lng: -122.43330895872147},{lat: 37.76475172762295, lng: -122.48394906175754}]}
+                         stations={this.state.stations}
+                         getTimeAndDistance={this.getTimeAndDistance}
+                         organizeRoute={this.organizeRoute}
                          origin={this.state.origin} des={this.state.dropOff} station={this.state.station}
                     />
                 </div>

@@ -50,6 +50,36 @@ class LeftSideForm extends Component {
         }
     }
 
+    componentDidMount() {
+        //gather all info
+        // console.log(this.props..length, "data de length")
+        console.log("component did from left side form")
+        if(this.props.timeAndDistance){
+            let data = this.props.timeAndDistance
+            console.log(data)
+            let routesOptions = []
+            for (let i = 0; i < data.length; i++) {
+                let datainfo = {
+                    stationName: this.props.stations[i].stationName,
+                    deliverType: this.props.stations[i].methodCode, // 1 for robot
+                    totalTime: data[i].time,
+                    distance: data[i].distance,
+                    pickUpGeoX: this.props.origin.lat,
+                    pickUpGeoY: this.props.origin.lng,
+                    putDownGeoX: this.props.dropOff.lat,
+                    putDownGeoY: this.props.dropOff.lng
+                }
+                console.log(datainfo)
+                routesOptions.push(datainfo)
+            }
+            console.log(routesOptions)
+            this.setState({
+                routes:routesOptions
+            })
+        }
+
+    }
+
     handleSteps = ()=> {
         this.setState(prevState=>{
             return{
@@ -129,6 +159,7 @@ class LeftSideForm extends Component {
 
     render() {
         const {steps, options} = this.state
+        console.log(this.props.timeAndDistance, this.props.stations)
         return (
             <div className="left-side">
 
@@ -151,6 +182,7 @@ class LeftSideForm extends Component {
                            height = {this.state.height}
                            feature={this.state.feature}
                            value={this.state.value}
+                           getListOfStations = {this.props.getListOfStations}
                            goback={this._prev}
                 />
 
@@ -161,6 +193,7 @@ class LeftSideForm extends Component {
                                 goback={this._prev}
                                 routes={this.state.routes}
                                 changeFn={this.selected}
+                                organizeRoute={this.props.organizeRoute}
                 />
 
                 <Login curr_step={steps}

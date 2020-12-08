@@ -52,7 +52,7 @@ class Recommendation extends Component {
     render() {
         if(this.props.curr_step != 3)
             return null
-        console.log(this.state.options);
+        // console.log(this.state.options);
         return (
             <CSSTransitionGroup
                 transitionName="location-cards"
