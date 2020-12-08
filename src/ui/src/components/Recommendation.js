@@ -67,9 +67,9 @@ class Recommendation extends Component {
                                value={choice}
                                key={index}
                                checked={this.state.checked === index}
-                               onChange={this.onChange.bind(this, index)} /> Option {index + 1}
+                               onChange={this.onChange.bind(this, index)} /> Option {index + 1} &nbsp; &nbsp; <span style={{ color: 'red' }}> {choice.tag1} &nbsp; &nbsp; {choice.tag2}</span>
                         <ul>
-                            <li>Delivery Type: {choice.type === '1' ? 'Drone' : 'Robot'}</li>
+                            <li>Delivery Type: {choice.type === '2' ? 'Drone' : 'Robot'}</li>
                             <li>Price: {choice.price}</li>
                             <li>Delivery Time: {choice.time}</li>
                             <li>Distance: {choice.distance}</li>

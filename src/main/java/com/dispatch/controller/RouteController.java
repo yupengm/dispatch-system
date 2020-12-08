@@ -55,7 +55,7 @@ public class RouteController {
             Station station = stationDao.getStationByName(input.getStationName());
 
             //get price in the following:
-            if (type == 2) {
+            if (type == 2) {// drone
                 double distance1 = priceService.distance(station.getLatitude(),station.getLongitude(),
                         input.getPickUpGeoX(), input.getPickUpGeoY());
                 double distance2 = priceService.distance(input.getPickUpGeoX(),input.getPickUpGeoY(),
@@ -65,7 +65,7 @@ public class RouteController {
                 double time = priceService.timeCalculator(distance);
                 input.setPrice(Math.round(price * 100.0) / 100.0);
                 input.setTotalTime(Math.round(time * 100.0) / 100.0);
-            } else if (type == 1) {
+            } else if (type == 1) { // robot
                 double price = priceService.priceCalculator(input.getDistance(), type);
                 input.setPrice(Math.round(price * 100.0) / 100.0);
             } else {
