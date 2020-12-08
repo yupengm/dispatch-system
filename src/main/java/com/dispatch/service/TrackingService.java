@@ -2,6 +2,8 @@ package com.dispatch.service;
 
 import com.dispatch.dao.OrderDao;
 import com.dispatch.entity.Order;
+import com.dispatch.external.GoogleMapPolylineDecoder;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.dispatch.service.OrderService.getStringResponseEntity;
@@ -42,17 +45,26 @@ public class TrackingService {
         int type = order.getRoute().getDeliverType();
         if (type == 1 && timeInterval != -1) {
             double scale = getScale(TimeElapsed, timeInterval);
-            toReturn.put("currentRelativeLocation",String.valueOf(scale));
+            GoogleMapPolylineDecoder decoder = new GoogleMapPolylineDecoder();
+            List<List<Double>> coordinates = decoder.decodePolyline(order.getRoute().getRoutePoly());
+            int index = (int) (Math.round(coordinates.size() * scale)) - 1;
+            toReturn.put("currentX",String.valueOf(coordinates.get(index).get(0)));
+            toReturn.put("currentY",String.valueOf(coordinates.get(index).get(1)));
         } else if (type == 2 && timeInterval != -1) {
             double[] currentXY = trackDrone(TimeElapsed,timeInterval,
                         order.getRoute().getPickUpGeoX(),
                         order.getRoute().getPickUpGeoY(),
                         order.getRoute().getPutDownGeoX(),
                         order.getRoute().getPutDownGeoY());
-            toReturn.put("currentLng",String.valueOf(currentXY[0]));
-            toReturn.put("currentLat",String.valueOf(currentXY[1]));
+            toReturn.put("currentX",String.valueOf(currentXY[0]));
+            toReturn.put("currentY",String.valueOf(currentXY[1]));
+            toReturn.put("PickUpAddressX",String.valueOf(order.getRoute().getPickUpGeoX()));
+            toReturn.put("PickUpAddressY",String.valueOf(order.getRoute().getPickUpGeoX()));
+            toReturn.put("PutDownAddressX",String.valueOf(order.getRoute().getPutDownGeoX()));
+            toReturn.put("PutDownAddressY",String.valueOf(order.getRoute().getPutDownGeoY()));
 
         }
+
 
         toReturn.put("status",String.valueOf(status));
         toReturn.put("orderNumber",String.valueOf(order.getId()));
@@ -100,7 +112,6 @@ public class TrackingService {
 
         } else if(timeElapsed.toMillis() < (time1+time2)*1000) {
 //            return "Shipping to destination";
-//            return 1;
             return 1;
         } else {
 //            return "Completed";
@@ -135,16 +146,4 @@ public class TrackingService {
         return scale;
     }
 
-    //test
-//    public static void main(String[] args) throws InterruptedException {
-//
-//        TrackingService a= new TrackingService();
-//
-//        String now = a.getNowTime();
-//        Thread.sleep(2000);
-//        System.out.println(a.getStatus(now,1,5)); // on the way pick up
-//        System.out.println(a.getStatus(now,3,5)); // sending
-//        Thread.sleep(2000);
-//        System.out.println(a.getStatus(now,1,2)); // complete
-//    }
 }

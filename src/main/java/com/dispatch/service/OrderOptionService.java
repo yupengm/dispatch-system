@@ -1,13 +1,9 @@
 package com.dispatch.service;
 import com.dispatch.external.GoogleMapClient;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONObject;
 import com.dispatch.dao.StationDao;
 import com.dispatch.entity.Station;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +18,12 @@ public class OrderOptionService {
     @Autowired
     private StationDao stationDao;
 
-    public ResponseEntity<String> availabilityCheck(int size, double weight, String[] feature) throws JsonProcessingException {
-        Map<String, String> toReturn = new HashMap<>();
+    public ResponseEntity<ArrayList<StationAvailability>> availabilityCheck(int size, double weight, String[] feature) throws JsonProcessingException {
+
+        ArrayList<StationAvailability> toReturn = new ArrayList<>();
+
         List<Station> stations = stationDao.getAllStations();
         for (Station station : stations) {
-            JSONObject stationInfo = new JSONObject();
             int methodCode = 0;
             if (isDroneApplicable(size, weight, feature)){
                 if (station.getDroneAvailable() >= 1 && station.getRobotAvailable() >= 1) {
@@ -44,13 +41,26 @@ public class OrderOptionService {
                 }
             }
 
-            toReturn.put("stationName", station.getName());
-            toReturn.put("methodCode", String.valueOf(methodCode));
-            toReturn.put("geoLocationX", String.valueOf(station.getLatitude()));
-            toReturn.put("geoLocationY", String.valueOf(station.getLongitude()));
+//            toReturn.put("stationName", station.getName());
+//            toReturn.put("methodCode", String.valueOf(methodCode));
+//            toReturn.put("geoLocationX", String.valueOf(station.getLatitude()));
+//            toReturn.put("geoLocationY", String.valueOf(station.getLongitude()));
+
+//            final ObjectMapper mapper = new ObjectMapper();
+//            mapper.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
+//            mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, false);
+//            String json = mapper.writeValueAsString(toReturn);
+//            jsonArray.add(json);
+            StationAvailability toAdd = new StationAvailability(station.getName(), methodCode,
+                    station.getLatitude(), station.getLongitude());
+
+//            toReturn.put("stationName", station.getName());
+//            toReturn.put("methodCode", String.valueOf(methodCode));
+//            toReturn.put("geoLocationX", String.valueOf(station.getLatitude()));
+//            toReturn.put("geoLocationY", String.valueOf(station.getLongitude()));
+            toReturn.add(toAdd);
         }
-        String json = new ObjectMapper().writeValueAsString(toReturn);
-        return new ResponseEntity<String>(json, HttpStatus.OK);
+        return new ResponseEntity<ArrayList<StationAvailability>>(toReturn, HttpStatus.OK);
     }
 
 
@@ -63,6 +73,21 @@ public class OrderOptionService {
         } else {
             return true;
         }
+    }
+
+    public class StationAvailability {
+        public StationAvailability(String stationName, int methodCode,
+                                   double geoLocationX, double geoLocationY)  {
+            this.stationName = stationName;
+            this.methodCode = methodCode;
+            this.geoLocationX = geoLocationX;
+            this.geoLocationY = geoLocationY;
+        }
+
+        public String stationName;
+        public int methodCode;
+        public double geoLocationX;
+        public double geoLocationY;
     }
 
 
