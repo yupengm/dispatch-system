@@ -64,10 +64,11 @@ export class MapContainer extends Component {
     }
 
     calculateRoute(map){
-        let stations = this.props.stations.map((station)=>{
+        console.log(this.props.stations)
+        var stations = this.props.stations[0].map((station)=>{
             return {
-                lat: station.geoLocationY,
-                lng: station.geoLocationX
+                lat: station.geoLocationX,
+                lng: station.geoLocationY
             }
         })
         console.log(stations)
@@ -93,27 +94,32 @@ export class MapContainer extends Component {
                 (response, status) => {
                     if (status === "OK") {
                         console.log('route', response)
-                        let cur = {
+                        const cur = {
                             time: response.routes[0].legs[0].duration.value +
                                 response.routes[0].legs[1].duration.value, // seconds
                             distance: response.routes[0].legs[0].distance.value +
                                 response.routes[0].legs[1].distance.value, // meters
                             tag: 1
                         }
-                        console.log(cur, "hererere")
+                        console.log(cur)
                         res.push(cur)
+
+                        console.log(res.length, "hererere")
                     } else {
                         window.alert("Directions request failed due to " + status);
                     }
                 }
-            )
+            ).then((result)=>{
+                console.log(result)
+            })
         }
         this.props.getTimeAndDistance(res)
         // setTimeout(function(){ this.props.organizeRoute(res) }, 3000);
         // this.props.organizeRoute(res)
         console.log(res)
-
+        console.log(res.length)
     }
+
 
 //  points is an array with three points(station, origin, destination)
     calculateAndDisplayRoute(map) {
@@ -180,14 +186,14 @@ export class MapContainer extends Component {
 
 
 
-    async componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
         console.log(1)
         const {des} = this.props;
         const {origin} = this.props;
 
         if (prevProps.stations !== this.props.stations && this.props.stations.length!=0){
             console.log(this.props.stations)
-            await this.calculateRoute(this.state.map)
+            this.calculateRoute(this.state.map)
         }
 
         if (prevProps.des !== this.props.des || prevProps.origin !== this.props.origin) {

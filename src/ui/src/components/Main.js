@@ -178,6 +178,8 @@ class Main extends Component {
                                 organizeRoute={this.organizeRoute}
                                 stations={this.state.stations}
                                 timeAndDistance={this.state.timeAndDistance}
+                                origin={this.props.origin}
+                                dropOff={this.props.dropOff}
                                 />
 
                     {/*<UserAddress curr_step={steps}*/}

@@ -50,35 +50,38 @@ class LeftSideForm extends Component {
         }
     }
 
-    componentDidMount() {
+    componentDidUpdate() {
         //gather all info
         // console.log(this.props..length, "data de length")
-        console.log("component did from left side form")
-        if(this.props.timeAndDistance){
-            let data = this.props.timeAndDistance
-            console.log(data)
-            let routesOptions = []
-            for (let i = 0; i < data.length; i++) {
-                let datainfo = {
-                    stationName: this.props.stations[i].stationName,
-                    deliverType: this.props.stations[i].methodCode, // 1 for robot
-                    totalTime: data[i].time,
-                    distance: data[i].distance,
-                    pickUpGeoX: this.props.origin.lat,
-                    pickUpGeoY: this.props.origin.lng,
-                    putDownGeoX: this.props.dropOff.lat,
-                    putDownGeoY: this.props.dropOff.lng
-                }
-                console.log(datainfo)
-                routesOptions.push(datainfo)
-            }
-            console.log(routesOptions)
-            this.setState({
-                routes:routesOptions
-            })
-        }
+        console.log("component did from left side form", this.props.timeAndDistance)
+        // if(this.props.timeAndDistance){
 
+        let data = this.props.timeAndDistance
+        console.log(data)
+        console.log(data.length)
+        let routesOptions = []
+        for (let i = 0; i < data.length; i++) {
+            let datainfo = {
+                stationName: this.props.stations[i].stationName,
+                deliverType: this.props.stations[i].methodCode, // 1 for robot
+                totalTime: data[i].time,
+                distance: data[i].distance,
+                pickUpGeoX: this.props.origin.lat,
+                pickUpGeoY: this.props.origin.lng,
+                putDownGeoX: this.props.dropOff.lat,
+                putDownGeoY: this.props.dropOff.lng
+            }
+            console.log(datainfo)
+            routesOptions.push(datainfo)
+        }
+        console.log(routesOptions)
+        // this.setState({
+        //     routes:routesOptions
+        // })
+        // }
     }
+
+
 
     handleSteps = ()=> {
         this.setState(prevState=>{
