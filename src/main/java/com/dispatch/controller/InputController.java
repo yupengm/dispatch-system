@@ -2,7 +2,8 @@ package com.dispatch.controller;
 
 import com.dispatch.entity.Box;
 import com.dispatch.service.OrderOptionService;
-import com.dispatch.service.OrderOptionService.StationAvailability;
+
+import com.dispatch.tempEntity.StationAvailability;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class InputController {
 
     @RequestMapping(value = "/input", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ArrayList<OrderOptionService.StationAvailability>> userInput(@RequestBody Box box, BindingResult result) throws JsonProcessingException {
+    public ResponseEntity<ArrayList<StationAvailability>> userInput(@RequestBody Box box, BindingResult result) throws JsonProcessingException {
         if (result.hasErrors()) {
             return null;
         }
