@@ -4,7 +4,6 @@ import com.dispatch.dao.StationDao;
 import com.dispatch.entity.Route;
 import com.dispatch.entity.Station;
 import com.dispatch.service.PriceService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class RouteController {
@@ -85,7 +82,11 @@ public class RouteController {
         // loop over twice to put tage on
         for (Route input: inputs) {
             PriceService.Price temp = new PriceService.Price(input.getPrice(), null,
-                    null, String.valueOf(input.getTotalTime()));
+                    null, String.valueOf(input.getTotalTime()),
+                    String.valueOf(input.getDistance()),
+                    String.valueOf(input.getDeliverType()),
+                    String.valueOf(input.getStationName()));
+
             if (input.getTotalTime() == MIN_TIME) {
                 temp.tag1 = "Fastest";
             }
