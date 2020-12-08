@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import com.dispatch.tempEntity.Price;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class RouteController {
     @RequestMapping(value = "/getPrice", method = RequestMethod.POST)
     @ResponseBody
 
-    public ResponseEntity<ArrayList<PriceService.Price>> getPrice(@RequestBody List<Route> inputs) throws Exception {
+    public ResponseEntity<ArrayList<Price>> getPrice(@RequestBody List<Route> inputs) throws Exception {
 
         ArrayList<String> jsonArray = new ArrayList<>();
         double MIN_PRICE = 1000000000.0;
@@ -78,10 +79,10 @@ public class RouteController {
 
         }
 
-        ArrayList<PriceService.Price> toReturn = new ArrayList<>();
+        ArrayList<Price> toReturn = new ArrayList<>();
         // loop over twice to put tage on
         for (Route input: inputs) {
-            PriceService.Price temp = new PriceService.Price(input.getPrice(), null,
+            Price temp = new Price(input.getPrice(), null,
                     null, String.valueOf(input.getTotalTime()),
                     String.valueOf(input.getDistance()),
                     String.valueOf(input.getDeliverType()),
@@ -96,6 +97,6 @@ public class RouteController {
             toReturn.add(temp);
         }
 
-        return new ResponseEntity<ArrayList<PriceService.Price>>(toReturn, HttpStatus.OK);
+        return new ResponseEntity<ArrayList<Price>>(toReturn, HttpStatus.OK);
     }
 }
