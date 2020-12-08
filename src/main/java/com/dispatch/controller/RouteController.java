@@ -43,8 +43,9 @@ public class RouteController {
     // need construction
     @RequestMapping(value = "/getPrice", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ArrayList<Price>> getPrice(@RequestBody List<Route> inputs) throws Exception {
-//    public ResponseEntity<ArrayList<String>> getPrice(@RequestBody List<Route> inputs) throws Exception {
+
+    public ResponseEntity<ArrayList<PriceService.Price>> getPrice(@RequestBody List<Route> inputs) throws Exception {
+
         ArrayList<String> jsonArray = new ArrayList<>();
         double MIN_PRICE = 1000000000.0;
         double MIN_TIME = 1000000000.0; //TBD
@@ -81,46 +82,21 @@ public class RouteController {
             }
 
         }
-        ArrayList<Price> list = new ArrayList<>();
-        // loop over twice
-        for (Route input: inputs) {
-            Price temp = new Price(input.price, null, null, String.valueOf(input.totalTime), String.valueOf(input.getDistance()), String.valueOf(input.getDeliverType()), String.valueOf(input.getStationName()));
 
-//            Map<String, String> toReturn = new HashMap<>();
-//            toReturn.put("price", String.valueOf(input.price));
-//            toReturn.put("time", String.valueOf(input.time));
-//            toReturn.put("tag1", null);
-//            toReturn.put("tag2", null);
-            if (input.totalTime == MIN_TIME) {
-//                toReturn.put("tag1", "Fastest");
+        ArrayList<PriceService.Price> toReturn = new ArrayList<>();
+        // loop over twice to put tage on
+        for (Route input: inputs) {
+            PriceService.Price temp = new PriceService.Price(input.getPrice(), null,
+                    null, String.valueOf(input.getTotalTime()));
+            if (input.getTotalTime() == MIN_TIME) {
                 temp.tag1 = "Fastest";
             }
-            if (input.price == MIN_PRICE) {
-//                toReturn.put("tag2", "Cheapest");
-                temp.tag2 = "Cheapest";
+            if (input.getPrice() == MIN_PRICE) {
+                temp.tag2 = "Cheapeast";
             }
-//            String json = new ObjectMapper().writeValueAsString(toReturn);
-//            jsonArray.add(json);
-            list.add(temp);
+            toReturn.add(temp);
         }
 
-
-        return new ResponseEntity<ArrayList<Price>>(list, HttpStatus.OK);
+        return new ResponseEntity<ArrayList<PriceService.Price>>(toReturn, HttpStatus.OK);
     }
-
-//    @RequestMapping(value = "/getRoute", method = RequestMethod.POST)
-//    public JSONObject getRoute(@RequestBody) {
-//
-//        int[] methodCode;
-//        double[] distance;
-//        String[] deliverTime;
-//
-//        double[] price = new double[6];
-//        for (int i = 0; i < 6; i++) {
-//            price[i] = routeService.priceCalulator(distance[i], methodCode[i]);
-//        }
-//        // sorting price[]
-//
-//        return
-
 }
