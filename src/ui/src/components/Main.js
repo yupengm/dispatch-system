@@ -113,8 +113,6 @@ class Main extends Component {
         return routeList
     }
 
-
-
     render(){
         const {steps, destination, target} = this.state
         const {station1, station2, station3} = this.state

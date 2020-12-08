@@ -17,7 +17,6 @@ class WelcomePage extends Component {
 //            isLoading: false,
         }
     }
-
     handleRedirect = ()=>{
         this.props.history.push("/package")
     }
