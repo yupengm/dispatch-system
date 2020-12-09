@@ -32,7 +32,8 @@ class Main extends Component {
             stations:[],
             timeAndDistance:[],
             routeOptions:[],
-            routes: []
+            routes: [],
+            drawDroneOrRobot:-1
         }
     }
 
@@ -70,7 +71,10 @@ class Main extends Component {
             station:{
                 lat: userOption[0].geoLocationX,
                 lng: userOption[0].geoLocationY
-            }
+            },
+            // set drawing Drone
+            // drawDrone:userOption
+            drawDroneOrRobot: option.deliverType == 2 ? 1 : 0
         })
     }
 
@@ -262,6 +266,7 @@ class Main extends Component {
                     {/*/>*/}
                     <Map route={[this.state.station, this.state.origin, this.state.dropOff ]}
                          drone={[this.state.station, this.state.origin, this.state.dropOff]}
+                         drawDroneOrRobot={this.state.drawDroneOrRobot}
                          stations={this.state.stations}
                          getTimeAndDistance={this.getTimeAndDistance}
                          organizeRoute={this.organizeRoute}

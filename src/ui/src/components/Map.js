@@ -59,6 +59,14 @@ export class MapContainer extends Component {
             this.state.polyline.setMap(null)
             this.state.polyline = null
         }
+        let directionsService = this.state.directionsService;
+        let directionsDisplay = this.state.directionsDisplay;
+        if(directionsService != null || directionsDisplay != null){
+            directionsService = null
+            directionsDisplay.setMap(null)
+            directionsDisplay = null
+        }
+
         const polyline = new google.maps.Polyline({
             strokeColor: "#9500ff",
             strokeOpacity: 0.5,
@@ -150,6 +158,12 @@ export class MapContainer extends Component {
             console.log("At least one point is null")
         } else {
             console.log(data);
+            if(this.state.polyline!= null){
+                this.state.polyline.setMap(null)
+                this.state.polyline = null
+            }
+
+
             let directionsService = this.state.directionsService;
             let directionsDisplay = this.state.directionsDisplay;
             if(directionsService != null || directionsDisplay != null){
@@ -222,8 +236,13 @@ export class MapContainer extends Component {
             this.setState({
                 showMarkers: false
             })
-            this.handleRobot(this.state.mapProps, this.state.map)
-            this.handleDrone(this.state.mapProps, this.state.map) // test draw drone api
+            if(this.props.drawDroneOrRobot == 1){
+                this.handleDrone(this.state.mapProps, this.state.map) // test draw drone api
+            } else if(this.props.drawDroneOrRobot == 0){
+                this.handleRobot(this.state.mapProps, this.state.map)
+            }
+            // this.handleDrone(this.state.mapProps, this.state.map)
+            // this.handleRobot(this.state.mapProps, this.state.map)
         }
 
         if (prevProps.des !== this.props.des || prevProps.origin !== this.props.origin) {
