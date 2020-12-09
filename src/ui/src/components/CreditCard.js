@@ -1,5 +1,5 @@
-import  React, {Component} from 'react';
-import {Form, Input, Button,} from 'antd';
+import React, {Component} from 'react';
+import {Form, Input, Button, Icon,} from 'antd';
 import axios from 'axios';
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
@@ -7,47 +7,32 @@ class CreditCardForm extends Component {
     handleSubmit = e => {
         e.preventDefault();
         this.props.setSteps()
-        axios({
-            method: 'post',
-            url: '/Dispatch/pay',
-            data: {
-                card_number: "1234567812345678",
-                expire_date: "07/2025",
-                CVV: "123",
-                name_on_card: "Christopher Nolan"
-            }
-        }).then((response) => {
-            console.log(response);
-        }, (error) => {
-            console.log(error);
-        });
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                // this.props.setSteps()
+                this.props.setSteps()
                 // const params = {
                 //     "card_number": "1234567812345678",
                 //     "expire_date": "07/2025",
                 //     "CVV": "123",
                 //     "name_on_card": "Christopher Nolan"
                 // }
-                // let res = axios.post('./Dispatch/pay', params);
+                // let res = axios.post('./Dispatch/CreditCard', params);
                 // console.log(res.data);
-
-                // axios({
-                //     method: 'post',
-                //     url: '/Dispatch/pay',
-                //     data: {
-                //         card_number: "1234567812345678",
-                //         expire_date: "07/2025",
-                //         CVV: "123",
-                //         name_on_card: "Christopher Nolan"
-                //     }
-                // }).then((response) => {
-                //     console.log(response);
-                // }, (error) => {
-                //     console.log(error);
-                // });
+                axios({
+                    method: 'post',
+                    url: '/Dispatch/pay',
+                    data: {
+                        card_number: "1234567812345678",
+                        expire_date: "07/2025",
+                        CVV: "123",
+                        name_on_card: "Christopher Nolan"
+                    }
+                }).then((response) => {
+                    console.log(response);
+                }, (error) => {
+                    console.log(error);
+                });
                 this.props.setSteps()
             }
         });
@@ -66,7 +51,6 @@ class CreditCardForm extends Component {
             return null
 
         const { getFieldDecorator } = this.props.form;
-        console.log(this.props)
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -102,41 +86,45 @@ class CreditCardForm extends Component {
                     <Form.Item label="Please fill in your payment method for this order"/>
                     <Form.Item label="Card Number" hasFeedback>
                         {getFieldDecorator('card number', {
-                            initialValue: 'XXXX XXXX XXXX XXXX',
                             rules: [
-                                {
-                                    type: 'card number',
-                                    message: 'The input is not valid card number!',
-                                },
                                 {
                                     required: true,
                                     message: 'Please input your card number!',
-                                },
+                                }
                             ],
-                        })(<Input />)}
+                        })(
+                            <Input
+                            placeholder="XXXX XXXX XXXX XXXX"
+                            />,
+                        )}
                     </Form.Item>
-
                     <Form.Item label="Expiration Date" hasFeedback>
                         {getFieldDecorator('date', {
-                            initialValue: 'MM/YY',
                             rules: [
                                 {
                                     required: true,
-                                    message: 'Please input your card number!',
+                                    message: 'Please input expiration date!',
                                 },
                             ],
-                        })(<Input />)}
+                        })(
+                            <Input
+                                placeholder="MM/YY"
+                            />,
+                        )}
                     </Form.Item>
                     <Form.Item label="Security Code" hasFeedback>
                         {getFieldDecorator('code', {
-                            initialValue: '123',
                             rules: [
                                 {
                                     required: true,
                                     message: 'Please input your security code!',
                                 },
                             ],
-                        })(<Input />)}
+                        })(
+                            <Input
+                                placeholder="123"
+                            />,
+                        )}
                     </Form.Item>
                     <Form.Item label="Cardholder Name" hasFeedback>
                         {getFieldDecorator('name', {
@@ -146,7 +134,11 @@ class CreditCardForm extends Component {
                                     message: 'Please input your security code!',
                                 },
                             ],
-                        })(<Input />)}
+                        })(
+                            <Input
+                                // placeholder="First Name Last Name"
+                            />,
+                        )}
                     </Form.Item>
                     <Form.Item {...tailFormItemLayout}>
                         <Button type="primary" htmlType="submit">

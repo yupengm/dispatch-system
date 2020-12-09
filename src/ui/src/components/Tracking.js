@@ -14,8 +14,6 @@ class Tracking extends Component {
 
         if(this.props.curr_step != 6)
             return null
-        /*const satList = this.props.satInfo ? this.props.satInfo.above : [];
-        const { isLoad } = this.props;*/
 
         // axios.get(url)
         //      .then(response => {
@@ -42,13 +40,13 @@ class Tracking extends Component {
         const data = [
             {
                 key: '1',
-                category: 'User ID',
-                information: "john@gmail.com",
+                category: 'Order Number',
+                information: 123456,
             },
             {
                 key: '2',
-                category: 'Order Number',
-                information: 123456,
+                category: 'Price',
+                information: '$40',
             },
             {
                 key: '3',
@@ -57,13 +55,13 @@ class Tracking extends Component {
             },
             {
                 key: '4',
-                category: 'Deliver Time',
-                information: '14:00 today',
+                category: 'User ID',
+                information: "john@gmail.com",
             },
             {
                 key: '5',
-                category: 'Package Information',
-                information: 'Small, 5 lbs, No lithium battery, 50 USD',
+                category: 'Station',
+                information: "2",
             },
             {
                 key: '6',
@@ -71,24 +69,39 @@ class Tracking extends Component {
                 information: 'Drone 1',
             },
             {
+                key: '6',
+                category: 'Deliver Time',
+                information: '14:00 today',
+            },
+            {
                 key: '7',
-                category: 'Price',
-                information: '$40',
+                category: 'Size',
+                information: '60',
             },
             {
                 key: '8',
+                category: 'Weight',
+                information: '12',
+            },
+            {
+                key: '9',
+                category: 'Feature',
+                information: 'Liquid',
+            },
+            {
+                key: '10',
                 category: 'Travel Distance',
                 information: '10 miles',
             },
             {
-                key: '9',
-                category: 'Order generated time',
-                information: '11/10/2020 11:00am',
+                key: '11',
+                category: 'Pick Up Location',
+                information: 'location A',
             },
             {
-                key: '10',
-                category: 'Order out for delivery time',
-                information: '11/10/2020  12:00pm',
+                key: '12',
+                category: 'Put Down Location',
+                information: 'location B',
             },
         ];
         return (
