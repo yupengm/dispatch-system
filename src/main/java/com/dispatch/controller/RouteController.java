@@ -63,6 +63,7 @@ public class RouteController {
                 double price = priceService.priceCalculator(distance, type);
                 double time = priceService.timeCalculator(distance);
                 input.setPrice(Math.round(price * 100.0) / 100.0);
+                input.setDistance(distance);
                 input.setTotalTime(Math.round(time * 100.0) / 100.0);
                 input.setDistance(distance);
             } else if (type == 1) {
