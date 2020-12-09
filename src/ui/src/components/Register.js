@@ -23,11 +23,11 @@ class RegisterForm extends Component {
                     method: 'post',
                     url: '/Dispatch/signup',
                     data: {
-                        email: "11113@gmail.com",
-                        password: "123123",
-                        first_name: "Christopher",
-                        last_name: "Nolan",
-                        phone_number: "1234567890"
+                        email: values.email,
+                        password: values.password,
+                        first_name: values.first_name,
+                        last_name: values.last_name,
+                        phone_number: values.phone
                     }
                 }).then((response) => {
                     console.log(response);
@@ -191,7 +191,7 @@ class RegisterForm extends Component {
 
 
                     <Form.Item label="First Name" hasFeedback>
-                        {getFieldDecorator('first name', {
+                        {getFieldDecorator('first_name', {
                             rules: [
                                 {
                                     required: true,
@@ -204,7 +204,7 @@ class RegisterForm extends Component {
 
 
                     <Form.Item label="Last Name" hasFeedback>
-                        {getFieldDecorator('last name', {
+                        {getFieldDecorator('last_name', {
                             rules: [
                                 {
                                     required: true,

@@ -26,7 +26,8 @@ export class MapContainer extends Component {
             directionsDisplay:null,
             directionsService:null,
             polyline: null,
-            res:[]
+            res:[],
+            markers: []
         }
         this.handleRobot = this.handleRobot.bind(this);
         this.handleDrone = this.handleDrone.bind(this);
@@ -72,6 +73,48 @@ export class MapContainer extends Component {
             strokeOpacity: 0.5,
             strokeWeight: 5,
         });
+        // var marker = this.state.marker
+        // if(marker!=null){
+        //     marker.setMap(null)
+        //     marker = null
+        // }
+
+
+        let markers = this.state.markers
+        for (let i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+
+        for (let i = 0; i < this.props.drone.length; i++) {
+            const marker = new google.maps.Marker({
+                position: new google.maps.LatLng(this.props.drone[i].lat, this.props.drone[i].lng),
+                map: map,
+                label: String.fromCharCode(65+i)
+            });
+            markers.push(marker)
+        }
+
+        this.setState({
+            markers: markers
+        })
+
+        // const marker1 = new google.maps.Marker()
+        // const marker2 = new google.maps.Marker()
+        // const marker3 = new google.maps.Marker()
+        // const station = new google.maps.LatLng(this.props.drone[0].lat,this.props.drone[0].lng)
+        // const origin = new google.maps.LatLng(this.props.drone[1].lat,this.props.drone[1].lng)
+        // const dest = new google.maps.LatLng(this.props.drone[2].lat,this.props.drone[2].lng)
+        // let data = this.props.drone.map((dr)=>{
+        //     return {lat: dr.lat, lng: dr.lng}
+        // })
+        // console.log(data)
+        // marker1.setPosition(data)
+        // marker2.setPosition(origin)
+        // marker3.setPosition(dest)
+        // marker1.setMap(data)
+        // marker2.setMap(map)
+        // marker3.setMap(map)
+
         console.log('drawPolyline', map);
         polyline.setPath(this.props.drone);
         console.log('drawPolyline', polyline);
@@ -161,6 +204,11 @@ export class MapContainer extends Component {
             if(this.state.polyline!= null){
                 this.state.polyline.setMap(null)
                 this.state.polyline = null
+            }
+
+            let markers = this.state.markers
+            for (let i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
             }
 
 
