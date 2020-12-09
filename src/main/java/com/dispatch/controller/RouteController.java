@@ -4,7 +4,6 @@ import com.dispatch.dao.StationDao;
 import com.dispatch.entity.Price;
 import com.dispatch.entity.Route;
 import com.dispatch.entity.Station;
-import com.dispatch.entity.User;
 import com.dispatch.service.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.dispatch.tempEntity.Price;
 
 import java.util.ArrayList;
 import java.util.List;
