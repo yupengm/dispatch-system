@@ -4,6 +4,8 @@ import com.dispatch.entity.Box;
 import com.dispatch.service.OrderOptionService;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.dispatch.service.OrderOptionService.StationAvailability;
+
+import com.dispatch.tempEntity.StationAvailability;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ public class InputController {
 
     @RequestMapping(value = "/input", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ArrayList<OrderOptionService.StationAvailability>> userInput(@RequestBody Box box, BindingResult result) throws JsonProcessingException {
+    public ResponseEntity<ArrayList<StationAvailability>> userInput(@RequestBody Box box, BindingResult result) throws JsonProcessingException {
         if (result.hasErrors()) {
             return null;
         }
