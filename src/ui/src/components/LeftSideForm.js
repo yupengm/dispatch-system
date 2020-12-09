@@ -199,14 +199,25 @@ class LeftSideForm extends Component {
                 <Login curr_step={steps}
                        loggedin={this.loggedin}
                        gotoRegister={this.gotoRegister}
+                       authenticate={this.props.authenticate}
                 />
 
                 <CreditCard curr_step={steps}
-                          setSteps={this.handleSteps}
+                            setSteps={this.handleSteps}
+                            order={this.props.order}
                 />
 
                 <Confirmation curr_step={steps}
-                          setSteps={this.handleSteps}
+                              setSteps={this.handleSteps}
+                              order_number={this.props.order_number}
+                              order_route={this.props.order_route}
+                              length={this.state.length}
+                              width ={this.state.width}
+                              height = {this.state.height}
+                              weight={this.props.weight}
+                              deliver={this.props.deliver}
+                              pickup={this.props.pickup}
+                              user={this.props.user}
                 />
 
                 <Tracking curr_step={steps}

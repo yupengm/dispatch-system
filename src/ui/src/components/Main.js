@@ -15,6 +15,7 @@ class Main extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            user:null,
             pickup:null,
             deliver: null,
             steps : 1,
@@ -33,8 +34,45 @@ class Main extends Component {
             timeAndDistance:[],
             routeOptions:[],
             routes: [],
-            drawDroneOrRobot:-1
+            drawDroneOrRobot:-1,
+            order_route:null,
+            order_payment:null,
+            order_number:null
         }
+    }
+
+    order = (order_info) =>{
+        this.setState({
+            order_payment: order_info
+        })
+        let request = {
+            emailId: this.state.user,
+            box:{
+                weight: this.state.weight,
+                size: this.state.size
+            },
+            route: this.state.order_route,
+            payment:order_info
+        }
+
+        axios({
+            method: 'post',
+            url: '/Dispatch/submit_order',
+            data: request
+        }).then((response) => {
+            console.log(request,"&",response);
+            this.setState({
+                order_number: response.data.OrderNumber
+            })
+        }, (error) => {
+            console.log(error);
+        });
+    }
+
+    authenticate= (user_email)=>{
+        this.setState({
+            user: user_email
+        })
     }
 
     handleRoute = (data) =>{
@@ -52,13 +90,20 @@ class Main extends Component {
     }
 
     selected = (selectedOption) => {
-        console.log(this.state.routeOptions[selectedOption])
+        let data = this.state.routeOptions[selectedOption]
+        console.log(data)
+        let order_route = {
+            ...data,
+            price: this.state.routes[selectedOption].price,
+            routePoly:"sdf"
+        }
         this.setState({
             selectedOption: this.state.routeOptions[selectedOption],
+            order_route:order_route
         })
 
         //draw the route
-        let data = this.state.routeOptions[selectedOption]
+
         this.getOptionFromUser(data)
     }
 
@@ -67,6 +112,8 @@ class Main extends Component {
             return station.stationName == option.stationName
         })
         console.log(userOption, this.state.stations)
+
+
         this.setState({
             station:{
                 lat: userOption[0].geoLocationX,
@@ -78,11 +125,13 @@ class Main extends Component {
         })
     }
 
-    getListOfStations = (stations)=>{
+    getListOfStations = (stations, weight, size)=>{
         let mystations = []
         mystations.push(stations)
         this.setState({
-            stations: mystations
+            stations: mystations,
+            weight:weight,
+            size:size
         })
         console.log(this.state.stations)
     }
@@ -240,6 +289,15 @@ class Main extends Component {
                                 selected={this.selected}
                                 routes={this.state.routes}
                                 routeOptions={this.state.routeOptions}
+                                authenticate={this.authenticate}
+                                order={this.order}
+                                order_number={this.state.order_number}
+                                order_route={this.state.order_route}
+                                size={this.state.size}
+                                weight={this.state.weight}
+                                pickup={this.state.pickup}
+                                deliver={this.state.deliver}
+                                user={this.state.user}
                                 />
 
                     {/*<UserAddress curr_step={steps}*/}

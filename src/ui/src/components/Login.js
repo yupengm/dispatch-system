@@ -39,6 +39,7 @@ class LoginForm extends Component {
                     data: data
                 }).then((response) => {
                     console.log(response);
+                    this.props.authenticate(data.email)
                     this.props.loggedin()
                 }, (error) => {
                     this.setState({
