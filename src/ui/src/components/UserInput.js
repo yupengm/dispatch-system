@@ -34,6 +34,7 @@ class UserInputForm extends Component{
                 }).then((response) => {
                     console.log(response.data)
                     this.props.getListOfStations(response.data)
+                    this.props.getListOfStationsFromLeftSideForm(response.data)
                     this.props.setSteps()
                 }, (error) => {
 

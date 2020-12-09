@@ -11,6 +11,7 @@ export class MapContainer extends Component {
             // showingInfoWindow: false,
             // activeMarker: {},
             // selectedPlace: {},
+            showMarkers: true,
             mapCenter: {lat: 37.763880, lng: -122.446083},
             zoom: 13,
             station1: {lat: 37.78741078914182, lng: -122.43674218604595},
@@ -23,7 +24,9 @@ export class MapContainer extends Component {
             mapProps: null,
             map: null,
             directionsDisplay:null,
-            directionsService:null
+            directionsService:null,
+            polyline: null,
+            res:[]
         }
         this.handleRobot = this.handleRobot.bind(this);
         this.handleDrone = this.handleDrone.bind(this);
@@ -52,6 +55,10 @@ export class MapContainer extends Component {
     }
 
     drawPolyline (map) {
+        if(this.state.polyline!=null){
+            this.state.polyline.setMap(null)
+            this.state.polyline = null
+        }
         const polyline = new google.maps.Polyline({
             strokeColor: "#9500ff",
             strokeOpacity: 0.5,
@@ -61,17 +68,22 @@ export class MapContainer extends Component {
         polyline.setPath(this.props.drone);
         console.log('drawPolyline', polyline);
         polyline.setMap(map);
+        this.setState({
+            polyline:polyline
+        })
     }
 
-    calculateRoute(map){
-        console.log(this.props.stations)
+    async calculateRoute(map){
+        this.setState({
+            res:[]
+        })
         var stations = this.props.stations[0].map((station)=>{
             return {
                 lat: station.geoLocationX,
                 lng: station.geoLocationY
             }
         })
-        console.log(stations)
+
         let directionsService = new google.maps.DirectionsService();
         const waypoints = stations.map(item => {
             return {
@@ -84,7 +96,7 @@ export class MapContainer extends Component {
         let res = []
         for(let i = 0; i < waypoints.length; i++){
 
-            directionsService.route(
+            await directionsService.route(
                 {
                     origin: this.props.origin,
                     destination: this.props.des,
@@ -102,29 +114,39 @@ export class MapContainer extends Component {
                             tag: 1
                         }
                         console.log(cur)
-                        res.push(cur)
+                        // res.push(cur)
+                        this.saveData(cur)
 
                         console.log(res.length, "hererere")
                     } else {
                         window.alert("Directions request failed due to " + status);
                     }
                 }
-            ).then((result)=>{
-                console.log(result)
-            })
+            )
+
         }
-        this.props.getTimeAndDistance(res)
+        // this.props.getTimeAndDistance(res)
         // setTimeout(function(){ this.props.organizeRoute(res) }, 3000);
         // this.props.organizeRoute(res)
         console.log(res)
         console.log(res.length)
     }
 
+    saveData=(cur)=>{
+        this.setState((prev)=>{
+            res: prev.res.push(cur)
+        })
+        console.log(this.state.res)
+        if(this.state.res.length == this.props.stations[0].length){
+            this.props.getTimeAndDistance(this.state.res)
+        }
+    }
+
 
 //  points is an array with three points(station, origin, destination)
     calculateAndDisplayRoute(map) {
         const data = this.props.route;
-        if(data[0].lat==null || data[1].lat==null || data[2].lat== null){
+        if(data[0]==null || data[1].lat==null || data[2].lat== null){
             console.log("At least one point is null")
         } else {
             console.log(data);
@@ -190,10 +212,18 @@ export class MapContainer extends Component {
         console.log(1)
         const {des} = this.props;
         const {origin} = this.props;
-
+        console.log(this.props.route)
         if (prevProps.stations !== this.props.stations && this.props.stations.length!=0){
             console.log(this.props.stations)
             this.calculateRoute(this.state.map)
+        }
+
+        if(prevProps.route[0] !== this.props.route[0]){
+            this.setState({
+                showMarkers: false
+            })
+            this.handleRobot(this.state.mapProps, this.state.map)
+            this.handleDrone(this.state.mapProps, this.state.map) // test draw drone api
         }
 
         if (prevProps.des !== this.props.des || prevProps.origin !== this.props.origin) {
@@ -204,11 +234,11 @@ export class MapContainer extends Component {
             console.log(des)
             this.locatePoint();
 
-
-            console.log(this.props.route)
-            if (prevProps.route !== this.props.route) {
-
-                // this.handleRobot(this.state.mapProps, this.state.map) // test draw line api
+            //
+            // console.log(this.props.route)
+            // if (prevProps.route !== this.props.route) {
+            //
+            //     this.handleRobot(this.state.mapProps, this.state.map) // test draw line api
                 // this.calculateRoute(this.state.map) // test route options
                 // this.handleDrone(this.state.mapProps, this.state.map) // test draw drone api
 
@@ -238,7 +268,7 @@ export class MapContainer extends Component {
                     // handleRobot:this.handleRobot
                 // })
 
-            }
+            // }
         }
     }
 
@@ -350,13 +380,13 @@ export class MapContainer extends Component {
                         lat: this.state.mapCenter.lat,
                         lng: this.state.mapCenter.lng
                     }}
-                    // onReady={this.handleRobot}
+                    onReady={this.handleRobot}
                     // onDragend={this.handleChange}
                     // onCenter_changed={this.handleRobot}
                 >
 
                     {
-                        this.state.origin != null ? <Marker
+                        this.state.origin!=null && this.state.showMarkers == true ? <Marker
                             position={{
                                 lat: this.state.origin.lat,
                                 lng: this.state.origin.lng
@@ -364,7 +394,7 @@ export class MapContainer extends Component {
                     }
 
                     {
-                        this.state.destination != null ? <Marker
+                        this.state.origin!=null && this.state.showMarkers == true ? <Marker
                             position={{
                                 lat: this.state.destination.lat,
                                 lng: this.state.destination.lng

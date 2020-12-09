@@ -31,11 +31,16 @@ class Main extends Component {
             routeList: [],
             stations:[],
             timeAndDistance:[],
+            routeOptions:[],
             routes: []
         }
     }
 
-    // handleAddress = ()=>{
+    handleRoute = (data) =>{
+        this.setState({
+            routes: data
+        })
+    }
 
     handleSteps = ()=> {
         this.setState(prevState=>{
@@ -45,11 +50,29 @@ class Main extends Component {
         })
     }
 
-    // setPickup = () =>{
-    //     this.setState({
-    //         pick
-    //     })
-    // }
+    selected = (selectedOption) => {
+        console.log(this.state.routeOptions[selectedOption])
+        this.setState({
+            selectedOption: this.state.routeOptions[selectedOption],
+        })
+
+        //draw the route
+        let data = this.state.routeOptions[selectedOption]
+        this.getOptionFromUser(data)
+    }
+
+    getOptionFromUser = (option) =>{
+        let userOption = this.state.stations[0].filter( station=>{
+            return station.stationName == option.stationName
+        })
+        console.log(userOption, this.state.stations)
+        this.setState({
+            station:{
+                lat: userOption[0].geoLocationX,
+                lng: userOption[0].geoLocationY
+            }
+        })
+    }
 
     getListOfStations = (stations)=>{
         let mystations = []
@@ -66,7 +89,7 @@ class Main extends Component {
             this.setState({
                 timeAndDistance: data,
             })
-        // this.organizeRoute()
+        this.organizeRoute(data)
     }
 
     organizeRoute = (data) => {
@@ -75,23 +98,53 @@ class Main extends Component {
         console.log(data)
         let routesOptions = []
         for (let i = 0; i < data.length; i++) {
-            let datainfo = {
-                stationName: this.state.stations[i].stationName,
-                deliverType: this.state.stations[i].methodCode, // 1 for robot
-                totalTime: data[i].time,
-                distance: data[i].distance,
+            const datainfo = {
+                stationName: this.state.stations[0][i].stationName,
+                deliverType: this.state.stations[0][i].methodCode, // 1 for robot
+                totalTime: (data[i].time/60).toFixed(2),
+                distance: (data[i].distance/1000).toFixed(2),
                 pickUpGeoX: this.state.origin.lat,
                 pickUpGeoY: this.state.origin.lng,
                 putDownGeoX: this.state.dropOff.lat,
                 putDownGeoY: this.state.dropOff.lng
             }
+            if(this.state.stations[0][i].methodCode == 1){
+                routesOptions.push(datainfo)
+            } else if(this.state.stations[0][i].methodCode == 2){
+                routesOptions.push(datainfo)
+            } else if(this.state.stations[0][i].methodCode ==3){
+                datainfo.deliverType = 1
+                routesOptions.push(datainfo)
+                const datainfo2 = {...datainfo}
+                datainfo2.deliverType = 2
+                routesOptions.push(datainfo2)
+            } else {
+                continue
+            }
+
             console.log(datainfo)
-            routesOptions.push(datainfo)
+
         }
         console.log(routesOptions)
         this.setState({
-            routesOptions:routesOptions
+            routeOptions:routesOptions
         })
+
+        this.fetchData(routesOptions)
+    }
+
+    fetchData = route => {
+        //get route data from Map component
+        axios.post("/Dispatch/getPrice", route)
+            .then(response => {
+                console.log("Get response from backend", response);
+                this.setState({
+                    routes: response.data,//response is Price object
+                })
+            })
+            .catch(error => {
+                console.log('err in fetch options ->', error.message);
+            })
     }
 
     addressValidate = (target, destination) => {
@@ -178,8 +231,11 @@ class Main extends Component {
                                 organizeRoute={this.organizeRoute}
                                 stations={this.state.stations}
                                 timeAndDistance={this.state.timeAndDistance}
-                                origin={this.props.origin}
-                                dropOff={this.props.dropOff}
+                                origin={this.state.origin}
+                                dropOff={this.state.dropOff}
+                                selected={this.selected}
+                                routes={this.state.routes}
+                                routeOptions={this.state.routeOptions}
                                 />
 
                     {/*<UserAddress curr_step={steps}*/}
@@ -204,8 +260,8 @@ class Main extends Component {
                     {/*     drone={[]}*/}
                     {/*     origin={this.state.origin} des={this.state.dropOff} station={this.state.station}*/}
                     {/*/>*/}
-                    <Map route={[{lat: 37.78741078914182, lng: -122.43674218604595}, this.state.origin, this.state.dropOff ]}
-                         drone={[{lat: 37.78741078914182, lng: -122.43674218604595}, this.state.origin, this.state.dropOff]}
+                    <Map route={[this.state.station, this.state.origin, this.state.dropOff ]}
+                         drone={[this.state.station, this.state.origin, this.state.dropOff]}
                          stations={this.state.stations}
                          getTimeAndDistance={this.getTimeAndDistance}
                          organizeRoute={this.organizeRoute}

@@ -24,61 +24,52 @@ class LeftSideForm extends Component {
             value: 0,
             destination: "",
             target:"",
-            routes:[{stationName:"SanFranciscoStateUniversity",
-                deliverType:"1", // 1 for robot
-                totalTime:"24",
-                distance:"25.3",
-                pickUpGeoX:"37.7227669",
-                pickUpGeoY:"-122.4767213",
-                putDownGeoX:"-122.4517272",
-                putDownGeoY:"37.77526539999999"},
-                {stationName:"SanFranciscoStateUniversity",
-                    deliverType:"2", // 2 for drone
-                    pickUpGeoX:"37.7227669",
-                    pickUpGeoY:"-122.4767213",
-                    putDownGeoX:"-122.4517272",
-                    putDownGeoY:"37.77526539999999"},
-                {stationName:"SanFranciscoStateUniversity",
-                    deliverType:"1",
-                    totalTime:"90",
-                    distance:"2344",
-                    pickUpGeoX:"37.7227669",
-                    pickUpGeoY:"-122.4767213",
-                    putDownGeoX:"-122.4517272",
-                    putDownGeoY:"37.77526539999999"}],
+            routes:[],
+            stations:[],
             selectedOption:""
         }
     }
 
-    componentDidUpdate() {
-        //gather all info
-        // console.log(this.props..length, "data de length")
-        console.log("component did from left side form", this.props.timeAndDistance)
-        // if(this.props.timeAndDistance){
+    getListOfStationsFromLeftSideForm = (stations)=>{
+        let mystations = []
+        mystations.push(stations)
+        this.setState({
+            stations: mystations
+        })
+        console.log(this.state.stations)
+    }
 
-        let data = this.props.timeAndDistance
-        console.log(data)
-        console.log(data.length)
-        let routesOptions = []
-        for (let i = 0; i < data.length; i++) {
-            let datainfo = {
-                stationName: this.props.stations[i].stationName,
-                deliverType: this.props.stations[i].methodCode, // 1 for robot
-                totalTime: data[i].time,
-                distance: data[i].distance,
-                pickUpGeoX: this.props.origin.lat,
-                pickUpGeoY: this.props.origin.lng,
-                putDownGeoX: this.props.dropOff.lat,
-                putDownGeoY: this.props.dropOff.lng
-            }
-            console.log(datainfo)
-            routesOptions.push(datainfo)
-        }
-        console.log(routesOptions)
-        // this.setState({
-        //     routes:routesOptions
-        // })
+    componentDidUpdate(prevProps, prevState, snapshot){
+        //gather all info
+
+        console.log("component did from left side form", this.props.timeAndDistance, this.state.stations[0])
+        //
+        // if(prevProps.timeAndDistance != this.props.timeAndDistance) {
+        //     let data = this.props.timeAndDistance
+        //     console.log(data)
+        //     console.log(data.length)
+        //     let routesOptions = []
+        //     for (let i = 0; i < data.length; i++) {
+        //         let datainfo = {
+        //             stationName: this.state.stations[0][i].stationName,
+        //             deliverType: this.state.stations[0][i].methodCode, // 1 for robot
+        //             totalTime: data[i].time,
+        //             distance: data[i].distance,
+        //             pickUpGeoX: this.props.origin.lat,
+        //             pickUpGeoY: this.props.origin.lng,
+        //             putDownGeoX: this.props.dropOff.lat,
+        //             putDownGeoY: this.props.dropOff.lng
+        //         }
+        //         console.log(datainfo)
+        //         routesOptions.push(datainfo)
+        //     }
+        //     console.log(routesOptions)
+        //     this.setState({
+        //         routes:routesOptions
+        //     })
+        //     this.props.handleRoute(routesOptions)
         // }
+
     }
 
 
@@ -153,12 +144,16 @@ class LeftSideForm extends Component {
         }))
     }
 
-    selected = (selectedOption) => {
-        console.log()
-        this.setState({
-            selectedOption: this.state.routes[selectedOption],
-        })
-    }
+    // selected = (selectedOption) => {
+    //     console.log(this.state.routes[selectedOption])
+    //     this.setState({
+    //         selectedOption: this.state.routes[selectedOption],
+    //     })
+    //
+    //     //draw the route
+    //     let data = this.state.routes[selectedOption]
+    //     this.props.getOptionFromUser(data)
+    // }
 
     render() {
         const {steps, options} = this.state
@@ -186,6 +181,7 @@ class LeftSideForm extends Component {
                            feature={this.state.feature}
                            value={this.state.value}
                            getListOfStations = {this.props.getListOfStations}
+                           getListOfStationsFromLeftSideForm = {this.getListOfStationsFromLeftSideForm}
                            goback={this._prev}
                 />
 
@@ -194,8 +190,9 @@ class LeftSideForm extends Component {
                                 setSteps={this.handleSteps}
                                 gotoLogin={this.gotoLogin}
                                 goback={this._prev}
-                                routes={this.state.routes}
-                                changeFn={this.selected}
+                                routeOptions={this.props.routeOptions}
+                                routes={this.props.routes}
+                                changeFn={this.props.selected}
                                 organizeRoute={this.props.organizeRoute}
                 />
 
