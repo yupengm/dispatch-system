@@ -4,9 +4,7 @@ import com.dispatch.dao.StationDao;
 import com.dispatch.entity.Price;
 import com.dispatch.entity.Route;
 import com.dispatch.entity.Station;
-import com.dispatch.entity.User;
 import com.dispatch.service.PriceService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class RouteController {
@@ -43,8 +40,10 @@ public class RouteController {
     // need construction
     @RequestMapping(value = "/getPrice", method = RequestMethod.POST)
     @ResponseBody
+
     public ResponseEntity<ArrayList<Price>> getPrice(@RequestBody List<Route> inputs) throws Exception {
-//    public ResponseEntity<ArrayList<String>> getPrice(@RequestBody List<Route> inputs) throws Exception {
+        DecimalFormat df = new DecimalFormat("#.##");
+
         ArrayList<String> jsonArray = new ArrayList<>();
         double MIN_PRICE = 1000000000.0;
         double MIN_TIME = 1000000000.0; //TBD
@@ -64,8 +63,10 @@ public class RouteController {
                 double price = priceService.priceCalculator(distance, type);
                 double time = priceService.timeCalculator(distance);
                 input.setPrice(Math.round(price * 100.0) / 100.0);
+                input.setDistance(distance);
                 input.setTotalTime(Math.round(time * 100.0) / 100.0);
-            } else if (type == 1) { // robot
+                input.setDistance(distance);
+            } else if (type == 1) {//drone
                 double price = priceService.priceCalculator(input.getDistance(), type);
                 input.setPrice(Math.round(price * 100.0) / 100.0);
             } else {
@@ -81,46 +82,25 @@ public class RouteController {
             }
 
         }
-        ArrayList<Price> list = new ArrayList<>();
-        // loop over twice
-        for (Route input: inputs) {
-            Price temp = new Price(input.price, null, null, String.valueOf(input.totalTime), String.valueOf(input.getDistance()), String.valueOf(input.getDeliverType()), String.valueOf(input.getStationName()));
 
-//            Map<String, String> toReturn = new HashMap<>();
-//            toReturn.put("price", String.valueOf(input.price));
-//            toReturn.put("time", String.valueOf(input.time));
-//            toReturn.put("tag1", null);
-//            toReturn.put("tag2", null);
-            if (input.totalTime == MIN_TIME) {
-//                toReturn.put("tag1", "Fastest");
+        ArrayList<Price> toReturn = new ArrayList<>();
+        // loop over twice to put tage on
+        for (Route input: inputs) {
+            Price temp = new Price(input.getPrice(), null,
+                    null, String.valueOf(input.getTotalTime()),
+                    String.valueOf(df.format(input.getDistance())),
+                    String.valueOf(input.getDeliverType()),
+                    String.valueOf(input.getStationName()));
+
+            if (input.getTotalTime() == MIN_TIME) {
                 temp.tag1 = "Fastest";
             }
-            if (input.price == MIN_PRICE) {
-//                toReturn.put("tag2", "Cheapest");
-                temp.tag2 = "Cheapest";
+            if (input.getPrice() == MIN_PRICE) {
+                temp.tag2 = "Cheapeast";
             }
-//            String json = new ObjectMapper().writeValueAsString(toReturn);
-//            jsonArray.add(json);
-            list.add(temp);
+            toReturn.add(temp);
         }
 
-
-        return new ResponseEntity<ArrayList<Price>>(list, HttpStatus.OK);
+        return new ResponseEntity<ArrayList<Price>>(toReturn, HttpStatus.OK);
     }
-
-//    @RequestMapping(value = "/getRoute", method = RequestMethod.POST)
-//    public JSONObject getRoute(@RequestBody) {
-//
-//        int[] methodCode;
-//        double[] distance;
-//        String[] deliverTime;
-//
-//        double[] price = new double[6];
-//        for (int i = 0; i < 6; i++) {
-//            price[i] = routeService.priceCalulator(distance[i], methodCode[i]);
-//        }
-//        // sorting price[]
-//
-//        return
-
 }

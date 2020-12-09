@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Radio, Input, Button, List} from 'antd';
+import {Radio, Input, Button, List, Spin} from 'antd';
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 import axios from 'axios';
 
@@ -11,32 +11,43 @@ class Recommendation extends Component {
         this.state = {
             checked: -1,
             options:[],
-            isLoading: false,
+            isLoading: true,
         }
     }
     //use didMount lifecycle to fetch route data from Main
     componentDidMount() {
         //this.fetchData(json);
-        this.fetchData(this.props.routes);
+        // console.log(this.props.routes)
+        // this.fetchData(this.props.routes);
 
     }
-    fetchData = route => {
-        //get route data from Map component
-        axios.post("/Dispatch/getPrice", route)
-            .then(response => {
-                console.log("Get response from backend", response);
-                this.setState({
-                    options: response.data,//response is Price object
-                    isLoading: false
-                })
-            })
-            .catch(error => {
-                console.log('err in fetch options ->', error.message);
-                this.setState({
-                    isLoading: false
-                })
-            })
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        // if(prevProps.routes!=this.props.routes){
+        //     this.fetchData(this.props.routes)
+        // }
     }
+
+    // fetchData = route => {
+    //     this.setState({
+    //         isLoading: true
+    //     })
+    //     //get route data from Map component
+    //     axios.post("/Dispatch/getPrice", route)
+    //         .then(response => {
+    //             console.log("Get response from backend", response);
+    //             this.setState({
+    //                 options: response.data,//response is Price object
+    //                 isLoading: false
+    //             })
+    //         })
+    //         .catch(error => {
+    //             console.log('err in fetch options ->', error.message);
+    //             this.setState({
+    //                 isLoading: true
+    //             })
+    //         })
+    // }
     onChange(index){
         this.setState({
             checked: index,
@@ -52,7 +63,13 @@ class Recommendation extends Component {
     render() {
         if(this.props.curr_step != 3)
             return null
-        console.log(this.state.options);
+        console.log(this.props.routeOptions);
+        if(this.props.routes.length == 0)
+            return (
+                <div className="spin-box" id="loading">
+                    <Spin tip="Loading..." size="large"/>
+                </div>
+            )
         return (
             <CSSTransitionGroup
                 transitionName="location-cards"
@@ -60,7 +77,7 @@ class Recommendation extends Component {
                 transitionAppearTimeout={400}
                 transitionEnterTimeout={400}>
             <div className="recommendation-list-box">
-                {this.state.options.map((choice, index) => (
+                {this.props.routes.map((choice, index) => (
                     <label key={index}>
                         <input type="radio"
                                name="options"
@@ -69,10 +86,10 @@ class Recommendation extends Component {
                                checked={this.state.checked === index}
                                onChange={this.onChange.bind(this, index)} /> Option {index + 1} &nbsp; &nbsp; <span style={{ color: 'red' }}> {choice.tag1} &nbsp; &nbsp;</span> <span style={{ color: 'red' }}> {choice.tag2} &nbsp; &nbsp;</span>
                         <ul>
-                            <li>Delivery Type: {choice.type === '2' ? 'Drone' : 'Robot'}</li>
+                            <li>Delivery Type: {this.props.routeOptions[index].deliverType === 2 ? 'Drone' : 'Robot'}</li>
                             <li>Price: {choice.price}</li>
-                            <li>Delivery Time: {choice.time}</li>
-                            <li>Distance: {choice.distance}</li>
+                            <li>Delivery Time: {(choice.time)} Mins</li>
+                            <li>Distance: {(choice.distance)} Km</li>
                         </ul>
                         <br />
                     </label>

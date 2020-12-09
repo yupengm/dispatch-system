@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import  React, {Component} from 'react';
 import {Form, Input, Button,} from 'antd';
 import axios from 'axios';
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
@@ -7,21 +7,48 @@ class CreditCardForm extends Component {
     handleSubmit = e => {
         e.preventDefault();
         this.props.setSteps()
+        axios({
+            method: 'post',
+            url: '/Dispatch/pay',
+            data: {
+                card_number: "1234567812345678",
+                expire_date: "07/2025",
+                CVV: "123",
+                name_on_card: "Christopher Nolan"
+            }
+        }).then((response) => {
+            console.log(response);
+        }, (error) => {
+            console.log(error);
+        });
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-
-                this.props.setSteps()
-
-            const params = {
-                "card_number": "1234567812345678",
-                "expire_date": "07/2025",
-                "CVV": "123",
-                "name_on_card": "Christopher Nolan"
-            }
-                let res = axios.post('./Dispatch/CreditCard', params);
+                // this.props.setSteps()
+                // const params = {
+                //     "card_number": "1234567812345678",
+                //     "expire_date": "07/2025",
+                //     "CVV": "123",
+                //     "name_on_card": "Christopher Nolan"
+                // }
+                // let res = axios.post('./Dispatch/pay', params);
                 // console.log(res.data);
 
+                // axios({
+                //     method: 'post',
+                //     url: '/Dispatch/pay',
+                //     data: {
+                //         card_number: "1234567812345678",
+                //         expire_date: "07/2025",
+                //         CVV: "123",
+                //         name_on_card: "Christopher Nolan"
+                //     }
+                // }).then((response) => {
+                //     console.log(response);
+                // }, (error) => {
+                //     console.log(error);
+                // });
+                this.props.setSteps()
             }
         });
     };
@@ -39,6 +66,7 @@ class CreditCardForm extends Component {
             return null
 
         const { getFieldDecorator } = this.props.form;
+        console.log(this.props)
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -100,7 +128,7 @@ class CreditCardForm extends Component {
                         })(<Input />)}
                     </Form.Item>
                     <Form.Item label="Security Code" hasFeedback>
-                        {getFieldDecorator('date', {
+                        {getFieldDecorator('code', {
                             initialValue: '123',
                             rules: [
                                 {
