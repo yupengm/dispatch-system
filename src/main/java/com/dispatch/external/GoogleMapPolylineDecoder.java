@@ -60,7 +60,8 @@ public class GoogleMapPolylineDecoder {
     }
 
     public static void main (String[] args){
-        String url = "azljFjss{S?oA?kB";
+//        String url = "azljFjss{S?oA?kB";
+        String url = "cgqeFt_djVvAlB~@pAh@s@jA_B|BaDx@hAdArAR[v@cAf@s@jIaLnGuINWJ_AD_@XoAl@qAtAeCf@_AxA{BdAwA|@uAXUTMf@[h@Sn@Kf@EfAGPCRIHGPAh@Cr@C~CQtCIr@@z@D|@JlAZ|@X`ClApBbA~@Zj@Lz@Jt@@~@CbAOjA]j@Yp@c@nAkAlAeBnAoBh@s@hAiAx@i@ZOtAa@v@MfG[dH[lACtB@dBNhAN~EdAvK`C`H~AfE|@zCr@fA`@|@`@fAn@|AjAzDzCbAp@pAr@^PlAb@nCp@~@LrBP~AF^NT?|CEjCCp@@xARRDbA\\xAx@n@f@z@v@l@p@v@jAl@dArAbDNXFFLHVn@nAxCz@rBlAbDp@~Bj@vCL~@RbCFhCC`L@`CDfBDjAP`Cv@lKNlHG`CCf@M`CMhBcB|NOdCIlC@zBFdBR`C\\`CpA|Hz@zEbAjFrB`Jv@~CR~@lBpG`ClHHXj@vAp@xAl@hAx@tAj@t@l@v@`BhB`BzAvAlAdBhAxAv@pB~@hDjA~Cr@xC`@zBPdH`@hH`@lBLt@HhB`@lA`@rAn@`@V`An@jAhAfBpB|@dA|BtCHf@Rb@jAfBvBbD\\r@Ph@ZrA\\|@vA|B~@lADh@?ZFLCF?n@DPBH?x@?`D?jFBrPEvEEn@M`@Kb@[j@q@dAe@~@c@rAQx@MvACrAD|FB~DEfB_@tD]jDCxA@lFExAKf@YfA}@~Ca@nAcAlCwAnD[hAUvAEj@ErA?rABvGOtNKnMGdDAJEz@SVEDMBaAHy@AmDKmBEuCC_D?iGBeT@s@CKGGEKU?UFWdCwCXYF?FAJKFQAQIMOGKBKJc@{@aAyAS[EQH_EMwCEy@GEKC]mCGi@OsA@mH@gAJ?NBb@Fc@GOCK?AfA?VC~C@tBNrAd@vDJBFDBJNdEI~DDPtAtBb@z@CHAF?B?D]b@o@t@wBjCs@^_Cs@}FkB{Bq@q@CW@y@Ru@d@cAv@wAhAkBxAc@b@_@n@Sp@Kn@[xA[MsAi@q@Sg@E{KZ}GRAg@Cy@OkJW{NIcJKcFEaFG}HBqDuKXwLZgCJ_LZmHLuJZiM^i_@fAac@nAsJV_CLgEV_DP}Sn@gAFk@Hc@Pm@ZyA~@aA^s@Pu@J_BFmAHq@HwAb@sErBc@RQHy@Ta@BSCe@KYOUWUYM[Om@Ca@SgKI{BQqCAaA@{@JyABk@RaF@q@C_@Oo@S_@IISOSG[Gm@@MsHOgIOcKEkCKkCG{@FOSwCEs@C[q@}J]mFq@kKAi@MaAeAiPSeDk@_I[cF";
         GoogleMapPolylineDecoder g = new GoogleMapPolylineDecoder();
         List<List<Double>> output= g.decodePolyline(url);
 

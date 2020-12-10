@@ -3,6 +3,7 @@ import com.dispatch.dao.OrderDao;
 import com.dispatch.dao.StationDao;
 import com.dispatch.dao.UserDao;
 import com.dispatch.entity.Order;
+import com.dispatch.entity.Route;
 import com.dispatch.entity.Station;
 import com.dispatch.entity.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -32,7 +33,10 @@ public class OrderService {
     @Autowired
     private StationDao stationDao;
 
-    public ResponseEntity<String> addOrder(Order order) throws JsonProcessingException {
+    @Autowired
+    private PriceService priceService;
+
+    public ResponseEntity<String> addOrder(Order order) throws Exception {
         // TODO: String emailId = order.getEmail();
         // User user = userDao.getUserbyId(emailId);
         // order.setUser(user);
@@ -47,7 +51,21 @@ public class OrderService {
         Station station = stationDao.getStationByName(stationName);
         order.setStation(station);
 
+        // set time1 and time2 for drone.
+        if (order.getRoute().getDeliverType() == 2) {
+            Route route = order.getRoute();
+            double distance1 = priceService.distance(station.getLatitude(),station.getLongitude(),
+                    route.getPickUpGeoX(), route.getPickUpGeoY());
+            double distance2 = priceService.distance(route.getPickUpGeoX(),route.getPickUpGeoY(),
+                    route.getPickUpGeoX(),route.getPickUpGeoY());
+            int time1 = (int) priceService.timeCalculator(distance1);
+            int time2 = (int) priceService.timeCalculator(distance2);
+            order.setTimeFromStationToPickUpAddress(time1);
+            order.setTimeFromPickUpAddressToPutDownAddress(time2);
+        }
+
         Map<String, String> toReturn = new HashMap<>();
+
 
         try {
             order.setStartTime(LocalDateTime.now().toString());
