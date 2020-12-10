@@ -22,7 +22,7 @@ public class OrderSubmissionController {
     @RequestMapping(value = "/submit_order", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> submitOrder(@RequestBody Order order,
-                                              BindingResult result) throws JsonProcessingException {
+                                              BindingResult result) throws Exception {
         if (result.hasErrors()) {
             return null;
         }
@@ -31,4 +31,3 @@ public class OrderSubmissionController {
 
 
 }
-

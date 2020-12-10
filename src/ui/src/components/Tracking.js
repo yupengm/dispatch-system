@@ -9,7 +9,8 @@ class Tracking extends Component {
     constructor() {
         super();
         this.state={
-            data:null
+            data:null,
+            onTrack:true
         }
     }
     componentDidMount() {
@@ -23,6 +24,10 @@ class Tracking extends Component {
             })
             .catch(error => {
                  console.log('err in fetch xxx -> ', error);
+                 this.setState({
+                     onTrack: false
+                 })
+                 // this.props.history.push("/home")
             })
     }
 
@@ -34,6 +39,19 @@ class Tracking extends Component {
 
         if(this.props.curr_step != 6)
             return null
+        if(this.state.onTrack==false)
+            return(
+                <div className="warning" id="text">
+                <div >
+                    Tracking number does not exist
+                </div>
+                    <br/>
+                <Button type="primary" htmlType="submit"
+                        onClick={this.handleRedirect}>
+                    Go back
+                </Button>
+                </div>
+            )
         if(this.state.data==null)
             return (
                 <div className="spin-box" id="loading">
@@ -81,7 +99,7 @@ class Tracking extends Component {
             {
                 key: '6',
                 category: 'Deliver Method',
-                information: this.state.data.type == 1 ? "Drone" : "Robot",
+                information: this.state.data.type == 2 ? "Drone" : "Robot",
             },
             {
                 key: '6',
