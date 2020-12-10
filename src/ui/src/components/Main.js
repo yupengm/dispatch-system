@@ -37,7 +37,9 @@ class Main extends Component {
             drawDroneOrRobot:-1,
             order_route:null,
             order_payment:null,
-            order_number:null
+            order_number:null,
+            poly:"",
+            inputPoly:""
         }
     }
 
@@ -54,7 +56,7 @@ class Main extends Component {
             route: this.state.order_route,
             payment:order_info
         }
-
+        console.log(request)
         axios({
             method: 'post',
             url: '/Dispatch/submit_order',
@@ -95,7 +97,7 @@ class Main extends Component {
         let order_route = {
             ...data,
             price: this.state.routes[selectedOption].price,
-            routePoly:"sdf"
+            routePoly: this.state.poly
         }
         this.setState({
             selectedOption: this.state.routeOptions[selectedOption],
@@ -122,6 +124,14 @@ class Main extends Component {
             // set drawing Drone
             // drawDrone:userOption
             drawDroneOrRobot: option.deliverType == 2 ? 1 : 0
+        })
+    }
+
+    optionSubmit = () => {
+        let route = this.state.order_route
+        route.routePoly = this.state.poly
+        this.setState({
+            order_route:route
         })
     }
 
@@ -264,8 +274,25 @@ class Main extends Component {
         return routeList
     }
 
+    addPoly = (poly)=>{
+        this.setState({
+            poly:poly
+        })
+        console.log(poly)
+    }
+
+    saveTracking = (data)=>{
+        this.setState({
+            // inputPoly: "cjseFblhjVEM@SJEFADGFSEMC[gALd@pHb@lGnAzRdAzO`@xGFx@L^X^pBfBJFXPRFxG{@bD_@VAZBH@NDPRv@^j@Rt@Lj@DZA`AItDi@vCY~Dg@bKmAhBSb@GBd@PnCHhAb@`HNbCx@tLb@dHdAzOp@hKCT?\\@NRpDhA|Pj@tIPtCFLFz@JjCNlJThNFtEuJXD|A@ZrJYh@CLBZLTPVd@H\\Bh@M~DSnDEtAD|APhCLdFJlGB^Nt@Tb@V\\NN`@V\\HNBr@DNCbAc@jB{@lD{Aj@Op@KdDQdAKtAa@dAg@fAs@b@UXKh@KrBItBIfIUjDKhCObJe@na@mAx{@iChL[lGKvIYdL[|CCvJUz@IfPg@lFQtBEhGLjDL`FHjS`@xLZ^?FVBJH\\JpAOrOOrLElA{@bAu@|@WXICG?QJIT?LQj@[\\qBdCOBGAKBEDCBUc@a@o@o@aAS_@ESBo@FgCE_ACk@Cm@Cm@EMCAKCAIUkBEYS{ACk@BiJ~@J"
+            inputPoly:"cgqeFt_djVvAlB~@pAh@s@jA_B|BaDx@hAdArAR[v@cAf@s@jIaLnGuINWJ_AD_@XoAl@qAtAeCf@_AxA{BdAwA|@uAXUTMf@[h@Sn@Kf@EfAGPCRIHGPAh@Cr@C~CQtCIr@@z@D|@JlAZ|@X`ClApBbA~@Zj@Lz@Jt@@~@CbAOjA]j@Yp@c@nAkAlAeBnAoBh@s@hAiAx@i@ZOtAa@v@MfG[dH[lACtB@dBNhAN~EdAvK`C`H~AfE|@zCr@fA`@|@`@fAn@|AjAzDzCbAp@pAr@^PlAb@nCp@~@LrBP~AF^NT?|CEjCCp@@xARRDbAxAx@n@f@z@v@l@p@v@jAl@dArAbDNXFFLHVn@nAxCz@rBlAbDp@~Bj@vCL~@RbCFhCC`L@`CDfBDjAP`Cv@lKNlHG`CCf@M`CMhBcB|NOdCIlC@zBFdBR`C"
+        })
+    }
+
     render(){
-        const {steps, destination, target} = this.state
+        const {destination, target} = this.state
+        const steps = this.props.location.state != undefined ? 6:1
+        const orderNum = this.props.location.state!=undefined ? this.props.location.state.orderNum : 0
+        // const inputPoly = this.props.location.state!=undefined ? this.props.location.state.inputPoly:""
         const {station1, station2, station3} = this.state
 
         return (
@@ -277,6 +304,7 @@ class Main extends Component {
 
                  <LeftSideForm
                                 curr_step={steps}
+                                orderNum={orderNum}
                                  setSteps={this.handleSteps}
                                  showAddress={this.addressValidate}
                                  value = {this.state}
@@ -291,6 +319,7 @@ class Main extends Component {
                                 routeOptions={this.state.routeOptions}
                                 authenticate={this.authenticate}
                                 order={this.order}
+                                optionSubmit={this.optionSubmit}
                                 order_number={this.state.order_number}
                                 order_route={this.state.order_route}
                                 size={this.state.size}
@@ -298,6 +327,7 @@ class Main extends Component {
                                 pickup={this.state.pickup}
                                 deliver={this.state.deliver}
                                 user={this.state.user}
+                                saveTracking={this.saveTracking}
                                 />
 
                     {/*<UserAddress curr_step={steps}*/}
@@ -329,6 +359,8 @@ class Main extends Component {
                          getTimeAndDistance={this.getTimeAndDistance}
                          organizeRoute={this.organizeRoute}
                          origin={this.state.origin} des={this.state.dropOff} station={this.state.station}
+                         polyline={this.state.inputPoly}
+                         addPoly={this.addPoly}
                     />
                 </div>
             </div>

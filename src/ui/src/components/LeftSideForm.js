@@ -15,7 +15,7 @@ class LeftSideForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            steps : 1,
+            steps : this.props.curr_step == 6 ? 6 : 1,
             length: 0,
             width: 0,
             height: 0,
@@ -194,6 +194,7 @@ class LeftSideForm extends Component {
                                 routes={this.props.routes}
                                 changeFn={this.props.selected}
                                 organizeRoute={this.props.organizeRoute}
+                                optionSubmit={this.props.optionSubmit}
                 />
 
                 <Login curr_step={steps}
@@ -222,6 +223,8 @@ class LeftSideForm extends Component {
 
                 <Tracking curr_step={steps}
                           setSteps={this.handleSteps}
+                          orderNum={this.props.orderNum}
+                          saveTracking={this.props.saveTracking}
                 />
 
                 <Register curr_step={steps}

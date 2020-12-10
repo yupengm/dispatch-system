@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Input, Button } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import backgroundImage from '../assets/images/SFBackground.jpeg';
-import { useHistory } from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 // import axios from 'axios';
 
 const { Search } = Input;
@@ -19,6 +19,10 @@ class WelcomePage extends Component {
     }
     handleRedirect = ()=>{
         this.props.history.push("/package")
+    }
+
+    track = () => {
+        this.props.history.push("/track")
     }
     // showTracking = trackingNum => {
     //     this.setState({
@@ -66,7 +70,14 @@ class WelcomePage extends Component {
             <div className='welcome' style={backgroundStyle}>
                 <div className='box'>
                     <div className='search'>
-                        <Search placeholder="Search Tracking Number" onSearch={onSearch} style={{ width: 400, margin: '0 10px', textAlign: 'center'}} size={ size } enterButton/>
+                        <Link to={{
+                            pathname:'/package',
+                            state:{
+                                steps : 6,
+                                orderNum: 69
+                        }}}>
+                        <Search placeholder="Search Tracking Number" onSearch={this.track} style={{ width: 400, margin: '0 10px', textAlign: 'center'}} size={ size } enterButton/>
+                        </Link>
                     </div>
                     <br/>
                     <div></div>
