@@ -30,7 +30,6 @@ public class Route implements Serializable {
 
     private double putDownGeoY;
 
-//    @Column(columnDefinition="TEXT")
     @Lob
     private String routePoly;
 
