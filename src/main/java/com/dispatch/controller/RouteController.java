@@ -4,6 +4,7 @@ import com.dispatch.dao.StationDao;
 import com.dispatch.entity.Route;
 import com.dispatch.entity.Station;
 import com.dispatch.service.PriceService;
+import com.dispatch.tempEntity.Price;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,80 +40,68 @@ public class RouteController {
 
     // Version 1. Simple return the price by mapping to an entity
     // need construction
-    @RequestMapping(value = "/getPrice", method = RequestMethod.GET)
+    @RequestMapping(value = "/getPrice", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ArrayList<String>> getPrice(@RequestBody List<Route> inputs) throws Exception {
+
+    public ResponseEntity<ArrayList<Price>> getPrice(@RequestBody List<Route> inputs) throws Exception {
+
         ArrayList<String> jsonArray = new ArrayList<>();
         double MIN_PRICE = 1000000000.0;
         double MIN_TIME = 1000000000.0; //TBD
-        double price = 10000000.0;
-        double time = 10000000.0;
 
         // loop over once for time and price, and their minimun
         for (Route input: inputs) {
             int type = input.getDeliverType();
-            Station station = stationDao.getStationByName(input.stationName);
+            Station station = stationDao.getStationByName(input.getStationName());
 
             //get price in the following:
             if (type == 2) {
                 double distance1 = priceService.distance(station.getLatitude(),station.getLongitude(),
-                        input.pickUpGeoX, input.pickUpGeoY);
-                double distance2 = priceService.distance(input.pickUpGeoX,input.pickUpGeoY,
-                        input.putDownGeoX,input.putDownGeoY);
-                input.price = priceService.priceCalculator(distance1 + distance2, type);
-                input.time = priceService.timeCalculator(distance1 + distance2);
-//                toReturn.put("price", String.valueOf(price));
+                        input.getPickUpGeoX(), input.getPickUpGeoY());
+                double distance2 = priceService.distance(input.getPickUpGeoX(),input.getPickUpGeoY(),
+                        input.getPickUpGeoX(),input.getPickUpGeoY());
+                double distance = distance1 + distance2;
+                double price = priceService.priceCalculator(distance, type);
+                double time = priceService.timeCalculator(distance);
+                input.setPrice(Math.round(price * 100.0) / 100.0);
+                input.setTotalTime(Math.round(time * 100.0) / 100.0);
             } else if (type == 1) {
-                input.price = priceService.priceCalculator(input.getDistance(), type);
-                input.time = input.getTotalTime();
-//                toReturn.put("price", String.valueOf(price));
+                double price = priceService.priceCalculator(input.getDistance(), type);
+                input.setPrice(Math.round(price * 100.0) / 100.0);
             } else {
-                input.message = "Wrong Deliver Type Provided.";
+                input.setMessage("Wrong Deliver Type Provided.");
             }
 
             // get lowest time and price
-            if (input.time <= MIN_TIME) {
-                MIN_TIME = input.time;
+            if (input.getTotalTime() <= MIN_TIME) {
+                MIN_TIME = input.getTotalTime();
             }
-            if (input.price <= MIN_PRICE) {
-                MIN_PRICE = input.price;
+            if (input.getPrice() <= MIN_PRICE) {
+                MIN_PRICE = input.getPrice();
             }
 
         }
 
-        // loop over twice
+        ArrayList<Price> toReturn = new ArrayList<>();
+        // loop over twice to put tage on
         for (Route input: inputs) {
-            Map<String, String> toReturn = new HashMap<>();
-            toReturn.put("price", String.valueOf(input.price));
-            toReturn.put("time", String.valueOf(input.time));
-            toReturn.put("tag1", null);
-            toReturn.put("tag2", null);
-            if (input.time == MIN_TIME) {
-                toReturn.put("tag1", "Fastest");
+            Price temp = new Price(input.getPrice(), null,
+                    null, String.valueOf(input.getTotalTime()),
+                    String.valueOf(input.getDistance()),
+                    String.valueOf(input.getDeliverType()),
+                    String.valueOf(input.getStationName()));
+
+            if (input.getTotalTime() == MIN_TIME) {
+                temp.tag1 = "Fastest";
             }
-            if (input.price == MIN_PRICE) {
-                toReturn.put("tag2", "Cheapest");
+            if (input.getPrice() == MIN_PRICE) {
+                temp.tag2 = "Cheapeast";
             }
-            String json = new ObjectMapper().writeValueAsString(toReturn);
-            jsonArray.add(json);
+            toReturn.add(temp);
         }
 
-        return new ResponseEntity<ArrayList<String>>(jsonArray, HttpStatus.OK);
+        return new ResponseEntity<ArrayList<Price>>(toReturn, HttpStatus.OK);
     }
 
-//    @RequestMapping(value = "/getRoute", method = RequestMethod.POST)
-//    public JSONObject getRoute(@RequestBody) {
-//
-//        int[] methodCode;
-//        double[] distance;
-//        String[] deliverTime;
-//
-//        double[] price = new double[6];
-//        for (int i = 0; i < 6; i++) {
-//            price[i] = routeService.priceCalulator(distance[i], methodCode[i]);
-//        }
-//        // sorting price[]
-//
-//        return
 
 }

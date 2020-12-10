@@ -24,16 +24,19 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @JsonProperty("email")
     private String emailId;
 
     private String startTime;
 
     private String endTime;
 
-    private String timeFromStationToPickUpAddress;
+    private int timeFromStationToPickUpAddress;
 
-    private String timeFromPickUpAddressToPutDownAddress;
+    private int timeFromPickUpAddressToPutDownAddress;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Payment payment;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Route route;
@@ -53,6 +56,13 @@ public class Order implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private PutDownAddress putDownAddress;
 
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
 
     public int getId() {
         return id;
@@ -60,14 +70,6 @@ public class Order implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getEmailId() {
-        return emailId;
-    }
-
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
     }
 
     public String getStartTime() {
@@ -86,19 +88,19 @@ public class Order implements Serializable {
         this.endTime = endTime;
     }
 
-    public String getTimeFromStationToPickUpAddress() {
+    public int getTimeFromStationToPickUpAddress() {
         return timeFromStationToPickUpAddress;
     }
 
-    public void setTimeFromStationToPickUpAddress(String timeFromStationToPickUpAddress) {
+    public void setTimeFromStationToPickUpAddress(int timeFromStationToPickUpAddress) {
         this.timeFromStationToPickUpAddress = timeFromStationToPickUpAddress;
     }
 
-    public String getTimeFromPickUpAddressToPutDownAddress() {
+    public int getTimeFromPickUpAddressToPutDownAddress() {
         return timeFromPickUpAddressToPutDownAddress;
     }
 
-    public void setTimeFromPickUpAddressToPutDownAddress(String timeFromPickUpAddressToPutDownAddress) {
+    public void setTimeFromPickUpAddressToPutDownAddress(int timeFromPickUpAddressToPutDownAddress) {
         this.timeFromPickUpAddressToPutDownAddress = timeFromPickUpAddressToPutDownAddress;
     }
 
@@ -148,5 +150,13 @@ public class Order implements Serializable {
 
     public void setPutDownAddress(PutDownAddress putDownAddress) {
         this.putDownAddress = putDownAddress;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 }

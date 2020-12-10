@@ -12,16 +12,17 @@ public class OrderDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void addOrder(Order order){
+    public void addOrder(Order order) throws IllegalAccessException {
         Session session = null;
         try{
             session = sessionFactory.openSession();
             session.beginTransaction();
-            session.save(order);  // add Oder, Box, Route, Station, PickUpAddress, PutDownAddress, Customer in database
+            session.saveOrUpdate(order);  // add Order, Box, Route, Station, PickUpAddress, PutDownAddress, Customer in database
             session.getTransaction().commit();
         } catch (Exception e){
             e.printStackTrace();
             session.getTransaction().rollback();
+            throw new IllegalAccessException("add order failed");
         } finally {
             if (session != null){
                 session.close();

@@ -39,9 +39,6 @@ public class User implements Serializable {
     private Set<PutDownAddress> putDownAddress;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Payment> payment;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Order> order;
 
 
@@ -99,14 +96,6 @@ public class User implements Serializable {
 
     public void setPutDownAddress(Set<PutDownAddress> putDownAddress) {
         this.putDownAddress = putDownAddress;
-    }
-
-    public Set<Payment> getPayment() {
-        return payment;
-    }
-
-    public void setPayment(Set<Payment> payment) {
-        this.payment = payment;
     }
 
     public Set<Order> getOrder() {
