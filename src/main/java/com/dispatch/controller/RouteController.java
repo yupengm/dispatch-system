@@ -1,7 +1,6 @@
 package com.dispatch.controller;
 
 import com.dispatch.dao.StationDao;
-import com.dispatch.entity.Price;
 import com.dispatch.entity.Route;
 import com.dispatch.entity.Station;
 import com.dispatch.service.PriceService;

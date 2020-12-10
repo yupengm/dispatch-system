@@ -57,9 +57,9 @@ public class OrderService {
             double distance1 = priceService.distance(station.getLatitude(),station.getLongitude(),
                     route.getPickUpGeoX(), route.getPickUpGeoY());
             double distance2 = priceService.distance(route.getPickUpGeoX(),route.getPickUpGeoY(),
-                    route.getPickUpGeoX(),route.getPickUpGeoY());
-            int time1 = (int) priceService.timeCalculator(distance1);
-            int time2 = (int) priceService.timeCalculator(distance2);
+                    route.getPutDownGeoX(),route.getPutDownGeoY());
+            int time1 = (int) priceService.timeCalculator(distance1) * 60;
+            int time2 = (int) priceService.timeCalculator(distance2) * 60;
             order.setTimeFromStationToPickUpAddress(time1);
             order.setTimeFromPickUpAddressToPutDownAddress(time2);
         }
@@ -84,7 +84,7 @@ public class OrderService {
         toReturn.put("OrderNumber",String.valueOf(order.getId()));
         toReturn.put("email", order.getUser().getEmailId());
         toReturn.put("price", String.valueOf(order.getRoute().getPrice()));
-        toReturn.put("station", String.valueOf(order.getStation().getName()));
+        toReturn.put("station", String.valueOf(order.getStation().getStationName()));
         toReturn.put("type", String.valueOf(order.getRoute().getDeliverType()));
         toReturn.put("weight", String.valueOf(order.getBox().getWeight()));
 //        toReturn.put("PickUpAddress",String.valueOf(order.getPickUpAddress()));//TODO
