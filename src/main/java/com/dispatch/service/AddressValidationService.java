@@ -23,6 +23,7 @@ public class AddressValidationService {
             toReturn.put("message", "Place NOT found.");
             String json = new ObjectMapper().writeValueAsString(toReturn);
             return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
+            // status 400
         }
 
         double[] pickUpGeoLocationXY = splitGeolocationXY(pickUplocationXYString);
@@ -38,7 +39,8 @@ public class AddressValidationService {
         } else {
             toReturn.put("message", "Out of service area");
             String json = new ObjectMapper().writeValueAsString(toReturn);
-            return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>(json, HttpStatus.SERVICE_UNAVAILABLE);
+            // status 503
         }
 
 

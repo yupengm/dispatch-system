@@ -2,12 +2,7 @@ package com.dispatch.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 
 
 @Entity
@@ -35,7 +30,8 @@ public class Route implements Serializable {
 
     private double putDownGeoY;
 
-    private String route;
+    @Lob
+    private String routePoly;
 
     private String stationName;
 
@@ -118,12 +114,12 @@ public class Route implements Serializable {
         this.putDownGeoY = putDownGeoY;
     }
 
-    public String getRoute() {
-        return route;
+    public String getRoutePoly() {
+        return routePoly;
     }
 
-    public void setRoute(String route) {
-        this.route = route;
+    public void setRoutePoly(String route) {
+        this.routePoly = route;
     }
 
     public String getStationName() {
