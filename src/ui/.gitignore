@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+#file
+/src/main/java/com/dispatch/ApplicationConfig.java
+
 # production
 /build
 
