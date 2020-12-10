@@ -1,13 +1,17 @@
 package com.dispatch.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 @Entity
@@ -16,9 +20,6 @@ public class User implements Serializable {
     private static final long serialVersionUID = 2652327633296064143L;
 
     @Id
-//    @Column(name="U_id", nullable = false)
-//    @GeneratedValue(generator="system-uuid")
-//    @GenericGenerator(name="system-uuid", strategy = "uuid")
     @JsonProperty("email")
     private String emailId;
 
@@ -43,21 +44,6 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Order> order;
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getEmailId() {
         return emailId;
@@ -73,6 +59,22 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPhone() {

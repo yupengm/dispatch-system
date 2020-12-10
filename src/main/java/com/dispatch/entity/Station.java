@@ -23,6 +23,7 @@ public class Station implements Serializable {
 
     private int robotAvailable;
 
+
     public String getName() {
         return name;
     }
@@ -62,5 +63,4 @@ public class Station implements Serializable {
     public void setRobotAvailable(int robotAvailable) {
         this.robotAvailable = robotAvailable;
     }
-
 }

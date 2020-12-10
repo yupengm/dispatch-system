@@ -1,3 +1,4 @@
+
 package com.dispatch.controller;
 
 import com.dispatch.entity.Order;
@@ -22,7 +23,7 @@ public class OrderSubmissionController {
     @RequestMapping(value = "/submit_order", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> submitOrder(@RequestBody Order order,
-                                              BindingResult result) throws Exception {
+                                              BindingResult result) throws JsonProcessingException {
         if (result.hasErrors()) {
             return null;
         }
@@ -31,4 +32,3 @@ public class OrderSubmissionController {
 
 
 }
-

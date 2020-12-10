@@ -35,7 +35,7 @@ public class Route implements Serializable {
 
     private double putDownGeoY;
 
-    private String routePoly;
+    private String route;
 
     private String stationName;
 
@@ -118,12 +118,12 @@ public class Route implements Serializable {
         this.putDownGeoY = putDownGeoY;
     }
 
-    public String getRoutePoly() {
-        return routePoly;
+    public String getRoute() {
+        return route;
     }
 
-    public void setRoutePoly(String route) {
-        this.routePoly = route;
+    public void setRoute(String route) {
+        this.route = route;
     }
 
     public String getStationName() {

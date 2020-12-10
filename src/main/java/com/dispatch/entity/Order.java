@@ -30,17 +30,13 @@ public class Order implements Serializable {
 
     private String endTime;
 
-    private int timeFromStationToPickUpAddress;
+    private String timeFromStationToPickUpAddress;
 
-    private int timeFromPickUpAddressToPutDownAddress;
+    private String timeFromPickUpAddressToPutDownAddress;
 
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Route route;
-
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Payment payment;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Box box;
@@ -90,19 +86,19 @@ public class Order implements Serializable {
         this.endTime = endTime;
     }
 
-    public int getTimeFromStationToPickUpAddress() {
+    public String getTimeFromStationToPickUpAddress() {
         return timeFromStationToPickUpAddress;
     }
 
-    public void setTimeFromStationToPickUpAddress(int timeFromStationToPickUpAddress) {
+    public void setTimeFromStationToPickUpAddress(String timeFromStationToPickUpAddress) {
         this.timeFromStationToPickUpAddress = timeFromStationToPickUpAddress;
     }
 
-    public int getTimeFromPickUpAddressToPutDownAddress() {
+    public String getTimeFromPickUpAddressToPutDownAddress() {
         return timeFromPickUpAddressToPutDownAddress;
     }
 
-    public void setTimeFromPickUpAddressToPutDownAddress(int timeFromPickUpAddressToPutDownAddress) {
+    public void setTimeFromPickUpAddressToPutDownAddress(String timeFromPickUpAddressToPutDownAddress) {
         this.timeFromPickUpAddressToPutDownAddress = timeFromPickUpAddressToPutDownAddress;
     }
 
@@ -153,13 +149,4 @@ public class Order implements Serializable {
     public void setPutDownAddress(PutDownAddress putDownAddress) {
         this.putDownAddress = putDownAddress;
     }
-
-    public Payment getPayment() {
-        return payment;
-    }
-
-    public void setPayment(Payment payment) {
-        this.payment = payment;
-    }
-
 }

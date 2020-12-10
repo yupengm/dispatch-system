@@ -1,6 +1,5 @@
 package com.dispatch.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.json.JSONObject;
 
 import com.dispatch.external.GoogleMapClient;
@@ -8,9 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -26,7 +23,6 @@ public class AddressValidationService {
             toReturn.put("message", "Place NOT found.");
             String json = new ObjectMapper().writeValueAsString(toReturn);
             return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
-            // status 400
         }
 
         double[] pickUpGeoLocationXY = splitGeolocationXY(pickUplocationXYString);
@@ -42,8 +38,7 @@ public class AddressValidationService {
         } else {
             toReturn.put("message", "Out of service area");
             String json = new ObjectMapper().writeValueAsString(toReturn);
-            return new ResponseEntity<String>(json, HttpStatus.SERVICE_UNAVAILABLE);
-            // status 503
+            return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
         }
 
 

@@ -1,8 +1,6 @@
 package com.dispatch.controller;
 
 import com.dispatch.service.AddressValidationService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,17 +8,19 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class LocationValidationController {
     @Autowired
     AddressValidationService addressValidationService;
 
-    @RequestMapping(value = "/addressValidation", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/addressValidation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<String> addressValidation(@RequestBody HashMap<String, String> requestData, BindingResult result) throws Exception {
         if (result.hasErrors()) {
@@ -49,4 +49,3 @@ public class LocationValidationController {
 //
 //        JSONObject pickup = addressValidationService.addressValidation(pickUpAddress);
 //        JSONObject deliver = addressValidationService.addressValidation(putDownAddress);
-

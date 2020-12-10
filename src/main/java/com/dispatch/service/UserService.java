@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.json.JSONObject;
 
 import com.dispatch.entity.User;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +26,6 @@ public class UserService {
             loginResponse.put("message","User NOT exist");
             String json = new ObjectMapper().writeValueAsString(loginResponse);
             return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
-            // status 400
         }
         String testPassword = user.getPassword();
         String truePassword = targetUser.getPassword();
@@ -38,8 +36,7 @@ public class UserService {
         } else {
             loginResponse.put("message","Wrong password");
             String json = new ObjectMapper().writeValueAsString(loginResponse);
-            return new ResponseEntity<String>(json, HttpStatus.UNAUTHORIZED);
-            // status 401
+            return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
         }
     }
 
