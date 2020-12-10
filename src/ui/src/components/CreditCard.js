@@ -1,26 +1,40 @@
 import React, {Component} from 'react';
-import {Form, Input, Button,} from 'antd';
+import {Form, Input, Button, Icon,} from 'antd';
 import axios from 'axios';
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
 class CreditCardForm extends Component {
     handleSubmit = e => {
         e.preventDefault();
-        this.props.setSteps()
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-
-                this.props.setSteps()
-
-            const params = {
-                "card_number": "1234567812345678",
-                "expire_date": "07/2025",
-                "CVV": "123",
-                "name_on_card": "Christopher Nolan"
-            }
-                let res = axios.post('./Dispatch/CreditCard', params);
+                // const params = {
+                //     "card_number": "1234567812345678",
+                //     "expire_date": "07/2025",
+                //     "CVV": "123",
+                //     "name_on_card": "Christopher Nolan"
+                // }
+                // let res = axios.post('./Dispatch/CreditCard', params);
                 // console.log(res.data);
+                let data = {
+                    card_number: "1234567812345678",
+                    expire_date: "07/2025",
+                    CVV: "123",
+                    name_on_card: "Christopher Nolan"
+                }
+
+                if(values.card_number!=undefined && values.code!=undefined && values.name!=undefined && values.date!=undefined){
+                    data = {
+                        card_number: values.card_number,
+                        expire_date: values.date,
+                        CVV: values.code,
+                        name_on_card: values.name
+                    }
+                }
+
+                this.props.order(data)
+                this.props.setSteps()
 
             }
         });
@@ -73,44 +87,48 @@ class CreditCardForm extends Component {
                 <Form {...formItemLayout} className='credit-card' onSubmit={this.handleSubmit}>
                     <Form.Item label="Please fill in your payment method for this order"/>
                     <Form.Item label="Card Number" hasFeedback>
-                        {getFieldDecorator('card number', {
-                            initialValue: 'XXXX XXXX XXXX XXXX',
-                            rules: [
-                                {
-                                    type: 'card number',
-                                    message: 'The input is not valid card number!',
-                                },
-                                {
-                                    required: true,
-                                    message: 'Please input your card number!',
-                                },
-                            ],
-                        })(<Input />)}
-                    </Form.Item>
-
-                    <Form.Item label="Expiration Date" hasFeedback>
-                        {getFieldDecorator('date', {
-                            initialValue: 'MM/YY',
+                        {getFieldDecorator('card_number', {
                             rules: [
                                 {
                                     required: true,
                                     message: 'Please input your card number!',
+                                }
+                            ],
+                        })(
+                            <Input
+                            placeholder="XXXX XXXX XXXX XXXX"
+                            />,
+                        )}
+                    </Form.Item>
+                    <Form.Item label="date" hasFeedback>
+                        {getFieldDecorator('date', {
+                            rules: [
+                                {
+                                    required: true,
+                                    message: 'Please input expiration date!',
                                 },
                             ],
-                        })(<Input />)}
+                        })(
+                            <Input
+                                placeholder="MM/YY"
+                            />,
+                        )}
                     </Form.Item>
-                    <Form.Item label="Security Code" hasFeedback>
-                        {getFieldDecorator('date', {
-                            initialValue: '123',
+                    <Form.Item label="code" hasFeedback>
+                        {getFieldDecorator('code', {
                             rules: [
                                 {
                                     required: true,
                                     message: 'Please input your security code!',
                                 },
                             ],
-                        })(<Input />)}
+                        })(
+                            <Input
+                                placeholder="123"
+                            />,
+                        )}
                     </Form.Item>
-                    <Form.Item label="Cardholder Name" hasFeedback>
+                    <Form.Item label="name" hasFeedback>
                         {getFieldDecorator('name', {
                             rules: [
                                 {
@@ -118,7 +136,11 @@ class CreditCardForm extends Component {
                                     message: 'Please input your security code!',
                                 },
                             ],
-                        })(<Input />)}
+                        })(
+                            <Input
+                                // placeholder="First Name Last Name"
+                            />,
+                        )}
                     </Form.Item>
                     <Form.Item {...tailFormItemLayout}>
                         <Button type="primary" htmlType="submit">

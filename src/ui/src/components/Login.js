@@ -4,28 +4,60 @@ import axios from 'axios';
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
 class LoginForm extends Component {
+    constructor() {
+        super();
+        // this.isError: false;
+        this.state = {
+            isError: "",
+            shake: false
+        }
+    }
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                const params = {
-                    email: "111@gmail.com",
-                    password: "10000"
-
+                this.setState({
+                    shake:false
+                })
+                let data = null
+                if(this.props.form.getFieldValue('username') == undefined){
+                    data = {
+                        email: "1111@gmail.com",
+                        password: "123123"
+                    }
+                } else {
+                    data = {
+                        email: this.props.form.getFieldValue('username'),
+                        password: this.props.form.getFieldValue('password')
+                    }
                 }
 
-                let res = axios.post("./login", params)
-                console.log(res)
-                console.log('Received values of form: ', values);
-                this.props.loggedin()
-                // const params = {
-                //         email:  "1111@gmail.com",
-                //         password:  "123123"
-                //     }
-                //
-                //     let res = axios.post("./Dispatch/login", params);
 
-                    // console.log(res.data);
+                axios({
+                    method: 'post',
+                    url: '/Dispatch/login',
+                    data: data
+                }).then((response) => {
+                    console.log(response);
+                    this.props.authenticate(data.email)
+                    this.props.loggedin()
+                }, (error) => {
+                    this.setState({
+                        shake:true
+                    })
+                    console.log("MY ERROR IS: "+error.response.status +"oh yeah");
+                    if(error.response.status == 401){
+                        this.setState({
+                            isError : "Password is not correct!"
+                        })
+                    } else if (error.response.status == 400){
+                        // this.state.isError = "User does not exist"
+                        this.setState({
+                            isError : "User does not exist!"
+                        })
+                    }
+                });
+
                 }
         });
     };
@@ -82,13 +114,16 @@ class LoginForm extends Component {
                         valuePropName: 'checked',
                         initialValue: true,
                     })(<Checkbox>Remember me</Checkbox>)}
-                    <a className="login-form-forgot" href="">
-                        Forgot password
-                    </a>
+                    {/*<a className="login-form-forgot" href="">*/}
+                    {/*    Forgot password*/}
+                    {/*</a>*/}
                     <Button type="primary" htmlType="submit" className="login-form-button">
                         Log in
                     </Button>
                     Or <a onClick={this.props.gotoRegister}>register now!</a>
+                    <div id="error" className={this.state.shake ? "shake": ""}>
+                        {this.state.isError}
+                    </div>
                 </Form.Item>
             </Form>
             </CSSTransitionGroup>

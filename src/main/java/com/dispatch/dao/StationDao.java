@@ -41,4 +41,13 @@ public class StationDao {
         }
         return stations;
     }
+
+    public Station getStationByName(String stationName){
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(Station.class, stationName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Form, Button, Input} from 'antd';
+import {Form, Button, Input, InputNumber} from 'antd';
 import 'antd/dist/antd.css';
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
+import axios from "axios";
 
-class UserAddress extends React.Component {
+class UserAddressForm extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -69,7 +70,39 @@ class UserAddress extends React.Component {
     sendInfo() {
         let target = this.state.address1A + ' ' + this.state.address2A + ', ' + this.state.cityA + ', ' + this.state.zipA;
         let destination = this.state.address1B + ' ' + this.state.address2B + ', ' + this.state.cityB + ', ' + this.state.zipB;
-        // this.props.showAddress(target, destination);
+        let target_val = {
+            address1A: this.state.address1A,
+            address2A: this.state.address2A,
+            city: this.state.cityA,
+            zipadd: this.state.zipA
+        }
+
+        let destination_val = {
+            address1A: this.state.address1B,
+            address2A: this.state.address2B,
+            city: this.state.cityB,
+            zipadd: this.state.zipB
+        }
+
+        // axios({
+        //     method: 'post',
+        //     url: '/Dispatch/addressValidation',
+        //     data: {
+        //         pickup_address: "2130 Fulton St",
+        //         pickup_city: "San Francisco",
+        //         pickup_zip: "94117",
+        //         deliver_address: "1600 Holloway Ave",
+        //         deliver_city: "San Francisco",
+        //         deliver_zip: "94132"
+        //     }
+        // }).then((response) => {
+        //     console.log(response.data);
+        //
+        // }, (error) => {
+        //     console.log(error);
+        // });
+        //
+        this.props.showAddress(target_val, destination_val);
         console.log(target);
         console.log(destination);
         this.props.setSteps();
@@ -80,6 +113,8 @@ class UserAddress extends React.Component {
             return null
         const formItemLayout = {labelCol: { span: 4 }, wrapperCol: { span: 14 }};
         const buttonItemLayout = {wrapperCol: { span: 14, offset: 4 }};
+        const { getFieldDecorator } = this.props.form;
+
         return (
             <CSSTransitionGroup
                 transitionName="location-cards"
@@ -92,43 +127,67 @@ class UserAddress extends React.Component {
                     <Form.Item label="Address Line 1" {...formItemLayout} required hasFeedback
                                validateStatus={this.state.emptyAdd1A ? "" : (this.state.addressMatch1A ? "success" : "error")}
                                id={this.state.emptyAdd1A ? "" : (this.state.addressMatch1A ? "success" : "error")} >
-                        <Input placeholder="Street Address" onChange={this.checkAddress1A} />
+                        {getFieldDecorator('pickupaddr1A',
+                            {initialValue : this.props.pickup == null ? "" : this.props.pickup.address1A}
+                        )(<Input placeholder="Street Address" onChange={this.checkAddress1A} />)}
                     </Form.Item>
                     <Form.Item label="Address Line 2" {...formItemLayout} hasFeedback
                                validateStatus={this.state.emptyAdd2A ? "" : (this.state.addressMatch2A ? "success" : "error")}
                                id={this.state.emptyAdd2A ? "" : (this.state.addressMatch2A ? "success" : "error")} >
-                        <Input placeholder="Street Address" onChange={this.checkAddress2A} />
+                        {getFieldDecorator('pickupaddr2A',
+                            {initialValue : this.props.pickup == null ? "" : this.props.pickup.address2A}
+                        )(<Input placeholder="Street Address" onChange={this.checkAddress2A} />)}
                     </Form.Item>
                     <Form.Item label="City" {...formItemLayout} required hasFeedback
                                validateStatus={this.state.emptyCityA ? "" : (this.state.cityMatchA ? "success" : "error")}
                                id={this.state.emptyCityA ? "" : (this.state.cityMatchA ? "success" : "error")}>
-                        <Input placeholder="San Francisco" onChange={this.checkCityA} />
+                        {getFieldDecorator('pickupcity',
+                            {initialValue : this.props.pickup == null ? "" : this.props.pickup.city}
+                        )(<Input placeholder="San Francisco" onChange={this.checkCityA} />)}
                     </Form.Item>
                     <Form.Item label="Zip Code" {...formItemLayout} required hasFeedback
                                validateStatus={this.state.emptyZipA ? "" : (this.state.zipMatchA ? "success" : "error")}
                                id={this.state.emptyZipA ? "" : (this.state.zipMatchA ? "success" : "error")} >
-                        <Input placeholder="Postal Code" onChange={this.checkZipA} />
+                        {getFieldDecorator('pickupzip',
+                            {initialValue : this.props.pickup == null ? "" : this.props.pickup.zipadd}
+                        )(<Input placeholder="Postal Code" onChange={this.checkZipA} />)}
+
+
+
+
                     </Form.Item>
                     <Form.Item label="Where should we deliver it to?"/>
                     <Form.Item label="Address Line 1" {...formItemLayout} required hasFeedback
                                validateStatus={this.state.emptyAdd1B ? "" : (this.state.addressMatch1B ? "success" : "error")}
                                id={this.state.emptyAdd1B ? "" : (this.state.addressMatch1B ? "success" : "error")} >
-                        <Input placeholder="Street Address" onChange={this.checkAddress1B} />
+                        {getFieldDecorator('deliveraddr1A',
+                            {initialValue : this.props.pickup == null ? "" : this.props.deliver.address1A}
+                        )(<Input placeholder="Street Address" onChange={this.checkAddress1B} />)}
                     </Form.Item>
                     <Form.Item label="Address Line 2" {...formItemLayout} hasFeedback
                                validateStatus={this.state.emptyAdd2B ? "" : (this.state.addressMatch2B ? "success" : "error")}
                                id={this.state.emptyAdd2B ? "" : (this.state.addressMatch2B ? "success" : "error")} >
-                        <Input placeholder="Street Address" onChange={this.checkAddress2B} />
+                        {getFieldDecorator('deliveraddr2A',
+                            {initialValue : this.props.pickup == null ? "" : this.props.deliver.address2A}
+                        )(<Input placeholder="Street Address" onChange={this.checkAddress2B} />)}
+
                     </Form.Item>
                     <Form.Item label="City" {...formItemLayout} required hasFeedback
                                validateStatus={this.state.emptyCityB ? "" : (this.state.cityMatchB ? "success" : "error")}
                                id={this.state.emptyCityB ? "" : (this.state.cityMatchB ? "success" : "error")}>
-                        <Input placeholder="San Francisco" onChange={this.checkCityB} />
+
+                        {getFieldDecorator('delivercity',
+                            {initialValue : this.props.pickup == null ? "" : this.props.deliver.city}
+                        )(<Input placeholder="San Francisco" onChange={this.checkCityB} />)}
                     </Form.Item>
+
                     <Form.Item label="Zip Code" {...formItemLayout} required hasFeedback
                                validateStatus={this.state.emptyZipB ? "" : (this.state.zipMatchB ? "success" : "error")}
                                id={this.state.emptyZipB ? "" : (this.state.zipMatchB ? "success" : "error")} >
-                        <Input placeholder="Postal Code" onChange={this.checkZipB} />
+                        {getFieldDecorator('deliverzip',
+                            {initialValue : this.props.pickup == null ? "" : this.props.deliver.zipadd}
+                        )(<Input placeholder="Postal Code" onChange={this.checkZipB} />)}
+
                     </Form.Item>
                     <Form.Item {...buttonItemLayout}>
                         {/*<Button type="primary" onClick={this.sendInfo} disabled={!((this.state.zipMatchA && this.state.addressMatch1A && (this.state.addressMatch2A||this.state.emptyAdd2A) && this.state.cityMatchA)*/}
@@ -142,4 +201,6 @@ class UserAddress extends React.Component {
         );
     }
 }
+
+const UserAddress = Form.create({name:'user-input'})(UserAddressForm);
 export default UserAddress;

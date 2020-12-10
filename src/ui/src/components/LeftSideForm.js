@@ -9,6 +9,7 @@ import Confirmation from "./Confirmation";
 import Tracking from "./Tracking";
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import { withRouter } from "react-router-dom";
+import {List} from 'antd'
 
 class LeftSideForm extends Component {
     constructor(props) {
@@ -22,9 +23,56 @@ class LeftSideForm extends Component {
             features: [],
             value: 0,
             destination: "",
-            target:""
+            target:"",
+            routes:[],
+            stations:[],
+            selectedOption:""
         }
     }
+
+    getListOfStationsFromLeftSideForm = (stations)=>{
+        let mystations = []
+        mystations.push(stations)
+        this.setState({
+            stations: mystations
+        })
+        console.log(this.state.stations)
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot){
+        //gather all info
+
+        console.log("component did from left side form", this.props.timeAndDistance, this.state.stations[0])
+        //
+        // if(prevProps.timeAndDistance != this.props.timeAndDistance) {
+        //     let data = this.props.timeAndDistance
+        //     console.log(data)
+        //     console.log(data.length)
+        //     let routesOptions = []
+        //     for (let i = 0; i < data.length; i++) {
+        //         let datainfo = {
+        //             stationName: this.state.stations[0][i].stationName,
+        //             deliverType: this.state.stations[0][i].methodCode, // 1 for robot
+        //             totalTime: data[i].time,
+        //             distance: data[i].distance,
+        //             pickUpGeoX: this.props.origin.lat,
+        //             pickUpGeoY: this.props.origin.lng,
+        //             putDownGeoX: this.props.dropOff.lat,
+        //             putDownGeoY: this.props.dropOff.lng
+        //         }
+        //         console.log(datainfo)
+        //         routesOptions.push(datainfo)
+        //     }
+        //     console.log(routesOptions)
+        //     this.setState({
+        //         routes:routesOptions
+        //     })
+        //     this.props.handleRoute(routesOptions)
+        // }
+
+    }
+
+
 
     handleSteps = ()=> {
         this.setState(prevState=>{
@@ -96,8 +144,20 @@ class LeftSideForm extends Component {
         }))
     }
 
+    // selected = (selectedOption) => {
+    //     console.log(this.state.routes[selectedOption])
+    //     this.setState({
+    //         selectedOption: this.state.routes[selectedOption],
+    //     })
+    //
+    //     //draw the route
+    //     let data = this.state.routes[selectedOption]
+    //     this.props.getOptionFromUser(data)
+    // }
+
     render() {
-        const {steps} = this.state
+        const {steps, options} = this.state
+        console.log(this.props.timeAndDistance, this.props.stations)
         return (
             <div className="left-side">
 
@@ -105,7 +165,9 @@ class LeftSideForm extends Component {
 
                 <UserAddress curr_step={steps}
                              setSteps={this.handleSteps}
-                             showPoints = {this.setPoints}
+                             showAddress = {this.props.showAddress}
+                             pickup = {this.props.value.pickup}
+                             deliver = {this.props.value.deliver}
                 />
 
 
@@ -118,6 +180,8 @@ class LeftSideForm extends Component {
                            height = {this.state.height}
                            feature={this.state.feature}
                            value={this.state.value}
+                           getListOfStations = {this.props.getListOfStations}
+                           getListOfStationsFromLeftSideForm = {this.getListOfStationsFromLeftSideForm}
                            goback={this._prev}
                 />
 
@@ -126,19 +190,34 @@ class LeftSideForm extends Component {
                                 setSteps={this.handleSteps}
                                 gotoLogin={this.gotoLogin}
                                 goback={this._prev}
+                                routeOptions={this.props.routeOptions}
+                                routes={this.props.routes}
+                                changeFn={this.props.selected}
+                                organizeRoute={this.props.organizeRoute}
                 />
 
                 <Login curr_step={steps}
                        loggedin={this.loggedin}
                        gotoRegister={this.gotoRegister}
+                       authenticate={this.props.authenticate}
                 />
 
                 <CreditCard curr_step={steps}
-                          setSteps={this.handleSteps}
+                            setSteps={this.handleSteps}
+                            order={this.props.order}
                 />
 
                 <Confirmation curr_step={steps}
-                          setSteps={this.handleSteps}
+                              setSteps={this.handleSteps}
+                              order_number={this.props.order_number}
+                              order_route={this.props.order_route}
+                              length={this.state.length}
+                              width ={this.state.width}
+                              height = {this.state.height}
+                              weight={this.props.weight}
+                              deliver={this.props.deliver}
+                              pickup={this.props.pickup}
+                              user={this.props.user}
                 />
 
                 <Tracking curr_step={steps}

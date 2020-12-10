@@ -1,62 +1,75 @@
 import React, {Component} from 'react';
-import {Radio, Input, Button, List} from 'antd';
+import {Radio, Input, Button, List, Spin} from 'antd';
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 import axios from 'axios';
 
+//didMount get the route data from map>main>leftSideForm
+//
 class Recommendation extends Component {
-    // axios.get(url)
-    //      .then(response => {
-    //            console.log(response.data)
+    constructor(props) {
+        super(props);
+        this.state = {
+            checked: -1,
+            options:[],
+            isLoading: true,
+        }
+    }
+    //use didMount lifecycle to fetch route data from Main
+    componentDidMount() {
+        //this.fetchData(json);
+        // console.log(this.props.routes)
+        // this.fetchData(this.props.routes);
+
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        // if(prevProps.routes!=this.props.routes){
+        //     this.fetchData(this.props.routes)
+        // }
+    }
+
+    // fetchData = route => {
+    //     this.setState({
+    //         isLoading: true
+    //     })
+    //     //get route data from Map component
+    //     axios.post("/Dispatch/getPrice", route)
+    //         .then(response => {
+    //             console.log("Get response from backend", response);
     //             this.setState({
-    //                 xxxInfo: response.data,
-    //                 isLoadingList: false
-    //     })
-    //     .catch(error => {
-    //          console.log('err in fetch xxx -> ', error);
-    //     })
-    state = {
-        value: 1,
-    };
-    onChange = e => {
-        console.log('radio checked', e.target.value);
+    //                 options: response.data,//response is Price object
+    //                 isLoading: false
+    //             })
+    //         })
+    //         .catch(error => {
+    //             console.log('err in fetch options ->', error.message);
+    //             this.setState({
+    //                 isLoading: true
+    //             })
+    //         })
+    // }
+    onChange(index){
         this.setState({
-            value: e.target.value,
+            checked: index,
         });
+        this.props.changeFn(index);
     };
-    const
-    data1 = [
-        'Drone 1  FASTEST!',
-        'Estimated Price :  $40',
-        'Estimate Deliver Time:   14:00 today',
-        'Estimated Travel Distance: 10 mi',
-    ];
-    data2 = [
-        'Robot 3   CHEAPEST!\n',
-        'Estimated Price : $10\n',
-        'Estimated Arrival Time: 17: 40 today\n',
-        'Estimated Travel Distance: 15 mi',
-    ];
-    data3 = [
-        'Drone 3',
-        'Estimated Price :  $45',
-        'Estimate Deliver Time:   15:00 today',
-        'Estimated Travel Distance: 10 mi',
-    ];
-    data4 = [
-        'Drone 3',
-        'Estimated Price :  $45',
-        'Estimate Deliver Time:   15:00 today',
-        'Estimated Travel Distance: 10 mi',
-        'Robot 1',
-        'Estimated Price :  $20',
-        'Estimate Deliver Time:   16:00 today',
-        'Estimated Travel Distance: 10 mi',
-    ];
+    // OnChange(e) {
+    //     console.log('selected option', e.target.value);
+    //     this.setState({
+    //         selectedOption: e.target.value
+    //     });
+    // }
     render() {
-
         if(this.props.curr_step != 3)
-            return null      
-
+            return null
+        console.log(this.props.routeOptions);
+        if(this.props.routes.length == 0)
+            return (
+                <div className="spin-box" id="loading">
+                    <Spin tip="Loading..." size="large"/>
+                </div>
+            )
         return (
             <CSSTransitionGroup
                 transitionName="location-cards"
@@ -64,67 +77,32 @@ class Recommendation extends Component {
                 transitionAppearTimeout={400}
                 transitionEnterTimeout={400}>
             <div className="recommendation-list-box">
-                <div>
-                    {/*dynamically passing in the options and create radio button for them*/}
-                    {
-                        this.props.options.map(function(complaintType) {
-                            return <label key={complaintType.id}>
-                                <input type="radio"
-                                       value={complaintType.id}
-                                       name="options"
-                                        key={complaintType.id}
-                                        onChange={this.onChange} />
-                                {complaintType.name}
-                            </label>
-                        }, this)}
-
-                        <input type="radio" value="OPTION A" name="options" onChange={this.onChange}/> Option A
-                        <List
-                            bordered
-                            dataSource={this.data1}
-                            renderItem={item => <List.Item>{item}</List.Item>}
-                            size = "small"
-                        />
-                </div>
-                <br/>
-                <div>
-                    <input type="radio" value="OPTION B" name="options" onChange={this.onChange}/> Option B
-                        <List
-                            bordered
-                            dataSource={this.data2}
-                            renderItem={item => <List.Item>{item}</List.Item>}
-                            size = "small"
-                        />
-                </div>
-                <br/>
-                <div>
-                    <input type="radio" value="OPTION C" name="options" onChange={this.onChange}/> Option C
-                        <List
-                            bordered
-                            dataSource={this.data3}
-                            renderItem={item => <List.Item>{item}</List.Item>}
-                            size = "small"
-                        />
-                </div>
-                <br/>
-                <div>
-                    <input type="radio" value="OPTION D" name="options" onChange={this.onChange}/> Option D
-                        <List
-                            bordered
-                            dataSource={this.data4}
-                            renderItem={item => <List.Item>{item}</List.Item>}
-                            size = "small"
-                        />
-                </div>
+                {this.props.routes.map((choice, index) => (
+                    <label key={index}>
+                        <input type="radio"
+                               name="options"
+                               value={choice}
+                               key={index}
+                               checked={this.state.checked === index}
+                               onChange={this.onChange.bind(this, index)} /> Option {index + 1} &nbsp; &nbsp; <span style={{ color: 'red' }}> {choice.tag1} &nbsp; &nbsp;</span> <span style={{ color: 'red' }}> {choice.tag2} &nbsp; &nbsp;</span>
+                        <ul>
+                            <li>Delivery Type: {this.props.routeOptions[index].deliverType === 2 ? 'Drone' : 'Robot'}</li>
+                            <li>Price: {choice.price}</li>
+                            <li>Delivery Time: {(choice.time)} Mins</li>
+                            <li>Distance: {(choice.distance)} Km</li>
+                        </ul>
+                        <br />
+                    </label>
+                    ))}
 
                 <div className="btn-container">
                     <Button type="primary" htmlType="submit" className="back-list-btn"
                         onClick={this.props.goback}>
                         Back
                     </Button>
-                    <Button type="primary" 
-                        htmlType="submit" 
-                        className="pay-list-btn" 
+                    <Button type="primary"
+                        htmlType="submit"
+                        className="pay-list-btn"
                         onClick={this.props.gotoLogin}>
                         Pay
                     </Button>

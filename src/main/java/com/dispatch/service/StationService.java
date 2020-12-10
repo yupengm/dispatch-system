@@ -25,10 +25,10 @@ public class StationService {
         station2.setName("UniversityOfSanFrancisco");
         station3.setName("BernalHeightsPark");
         station1.setLatitude(37.725012099170854);
-        station2.setLatitude(-122.47986516603898);
+        station2.setLatitude(37.74336758244373);
         station3.setLatitude(37.77659175985596);
         station1.setLongitude(-122.45072433249807);
-        station2.setLongitude(37.74336758244373);
+        station2.setLongitude(-122.47986516603898);
         station3.setLongitude(-122.41411171945718);
         station1.setDroneAvailable(10);
         station1.setRobotAvailable(13);
