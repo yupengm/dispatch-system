@@ -1,25 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-<<<<<<< Updated upstream
-    <data-source source="LOCAL" name="ecommerce@laijobproject.curn8ohpuukh.us-east-2.rds.amazonaws.com" uuid="09e0c60b-275d-4647-acc0-5066af8276ff">
+    <data-source source="LOCAL" name="@laiproject-instance.cnwcffxp4rna.us-east-2.rds.amazonaws.com" uuid="0e050828-77e6-4b71-a146-b33cd7397888">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://laijobproject.curn8ohpuukh.us-east-2.rds.amazonaws.com:3306/ecommerce</jdbc-url>
-    </data-source>
-    <data-source source="LOCAL" name="Dispatch@laijobproject.curn8ohpuukh.us-east-2.rds.amazonaws.com" uuid="91155c15-6618-4378-b084-a166c5975638">
-      <driver-ref>mysql.8</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://laijobproject.curn8ohpuukh.us-east-2.rds.amazonaws.com:3306/Dispatch</jdbc-url>
-=======
-    <data-source source="LOCAL" name="dispatch@laijobproject.curn8ohpuukh.us-east-2.rds.amazonaws.com" uuid="ab3bbed9-5861-463c-b0f5-a608e529233d">
-      <driver-ref>mysql.8</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://laijobproject.curn8ohpuukh.us-east-2.rds.amazonaws.com:3306/dispatch</jdbc-url>
->>>>>>> Stashed changes
+      <jdbc-url>jdbc:mysql://laiproject-instance.cnwcffxp4rna.us-east-2.rds.amazonaws.com:3306</jdbc-url>
     </data-source>
   </component>
 </project>

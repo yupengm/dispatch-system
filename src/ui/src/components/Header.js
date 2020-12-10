@@ -1,15 +1,9 @@
 import {Menu, Dropdown, Button} from "antd";
-<<<<<<< HEAD
-// import {DownOutlined} from '@ant-design/icons';
-import React, {Component} from 'react';
-import logo from '../assets/images/logo_propeller.svg';
-=======
 import {DownOutlined} from '@ant-design/icons';
 import React, {Component} from 'react';
-import logo from '../drawable/logo_propeller.svg';
->>>>>>> Oumeng
-
-
+// import {DownOutlined} from '@ant-design/icons';
+import logo from '../assets/images/logo_propeller.svg';
+import {Link} from "react-router-dom";
 
 class Header extends Component {
     state = {
@@ -36,22 +30,20 @@ class Header extends Component {
         return (
             <header>
                 <div className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <div className="App-user">
-                        <Button className="App-login">Login</Button>
-                        &nbsp; or &nbsp;
-                        <Button className="App-create">Create account</Button>
-                    </div>
+                    <Link to={"/home"} >
+                        <img src={logo} className="App-logo" alt="logo" />
+                    </Link>
+                    {/*<div className="App-user">*/}
+                    {/*    <Button className="App-login">Login</Button>*/}
+                    {/*    &nbsp; or &nbsp;*/}
+                    {/*    <Button className="App-create">Create account</Button>*/}
+                    {/*</div>*/}
                     <div className="App-user-login">
                         <p className="Greetings">Hi, username</p>
                         &nbsp;
                         <Dropdown overlay={menu}>
                             <a className="User-dropdown" onClick={e => e.preventDefault()}>
-<<<<<<< HEAD
-
-=======
                                 <DownOutlined />
->>>>>>> Oumeng
                             </a>
                         </Dropdown>
                     </div>

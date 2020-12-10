@@ -179,6 +179,7 @@
                     <uriEncoding>UTF-8</uriEncoding>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 </project>

@@ -1,0 +1,47 @@
+.login-form {
+    width:100%;
+    background-color: #fbfbfb;
+    border: 1px solid #d9d9d9;
+    padding: 10px 15px 0px 15px;
+    text-align:left;
+}
+.login-form-forgot {
+    float: right;
+}
+.login-form-button {
+    width: 100%;
+}
+
+.ant-form-item-control{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logininput{
+    /*width: 80%;*/
+}
+
+#error {
+    color :red;
+    font-size: 14px;
+}
+
+.shake {
+    animation: shake 0.5s;
+    animation-iteration-count: 1;
+}
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, 1px) rotate(0deg); }
+    20% { transform: translate(-3px, 1px) rotate(0deg); }
+    30% { transform: translate(3px, 1px) rotate(0deg); }
+    40% { transform: translate(1px, 1px) rotate(0deg); }
+    50% { transform: translate(-1px, 1px) rotate(0deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(0deg); }
+    80% { transform: translate(-1px, 1px) rotate(0deg); }
+    90% { transform: translate(1px, 1px) rotate(0deg); }
+    100% { transform: translate(1px, 1px) rotate(0deg); }
+}
