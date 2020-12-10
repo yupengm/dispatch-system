@@ -382,12 +382,34 @@ export class MapContainer extends Component {
     getTrackingPath= (polyCode, map) =>{
         let res = this.decode(polyCode)
         // console.log(res)
+
         let points = res.map((p)=>{
             return{
                 lat: p.latitude,
                 lng: p.longitude
             }
         })
+
+        let markers = []
+        for (let i = 0; i < 2; i++) {
+            let j = i
+            if(i==0)
+                j=0
+            else
+                j=points.length-1
+
+            const marker = new google.maps.Marker({
+                position: new google.maps.LatLng(points[j].lat, points[j].lng),
+                map: map,
+                label: String.fromCharCode(65+i)
+            });
+            markers.push(marker)
+        }
+
+        this.setState({
+            markers: markers
+        })
+
         const polyline = new google.maps.Polyline({
             strokeColor: "#9500ff",
             strokeOpacity: 0.5,
