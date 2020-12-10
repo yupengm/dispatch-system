@@ -22,6 +22,11 @@ class Recommendation extends Component {
 
     }
 
+    handleSubmit = () =>{
+        this.props.optionSubmit()
+        this.props.gotoLogin()
+    }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         // if(prevProps.routes!=this.props.routes){
         //     this.fetchData(this.props.routes)
@@ -103,7 +108,7 @@ class Recommendation extends Component {
                     <Button type="primary"
                         htmlType="submit"
                         className="pay-list-btn"
-                        onClick={this.props.gotoLogin}>
+                        onClick={this.handleSubmit}>
                         Pay
                     </Button>
                 </div>

@@ -15,7 +15,7 @@ class LeftSideForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            steps : 1,
+            steps : this.props.curr_step == 6 ? 6 : 1,
             length: 0,
             width: 0,
             height: 0,
@@ -194,23 +194,37 @@ class LeftSideForm extends Component {
                                 routes={this.props.routes}
                                 changeFn={this.props.selected}
                                 organizeRoute={this.props.organizeRoute}
+                                optionSubmit={this.props.optionSubmit}
                 />
 
                 <Login curr_step={steps}
                        loggedin={this.loggedin}
                        gotoRegister={this.gotoRegister}
+                       authenticate={this.props.authenticate}
                 />
 
                 <CreditCard curr_step={steps}
-                          setSteps={this.handleSteps}
+                            setSteps={this.handleSteps}
+                            order={this.props.order}
                 />
 
                 <Confirmation curr_step={steps}
-                          setSteps={this.handleSteps}
+                              setSteps={this.handleSteps}
+                              order_number={this.props.order_number}
+                              order_route={this.props.order_route}
+                              length={this.state.length}
+                              width ={this.state.width}
+                              height = {this.state.height}
+                              weight={this.props.weight}
+                              deliver={this.props.deliver}
+                              pickup={this.props.pickup}
+                              user={this.props.user}
                 />
 
                 <Tracking curr_step={steps}
                           setSteps={this.handleSteps}
+                          orderNum={this.props.orderNum}
+                          saveTracking={this.props.saveTracking}
                 />
 
                 <Register curr_step={steps}

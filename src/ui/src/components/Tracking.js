@@ -1,10 +1,30 @@
 import React, {Component} from 'react';
-import { List, Button } from 'antd';
+import {List, Button, Spin} from 'antd';
 import { Table } from 'antd';
 import { withRouter } from "react-router-dom";
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
+import axios from 'axios';
 
 class Tracking extends Component {
+    constructor() {
+        super();
+        this.state={
+            data:null
+        }
+    }
+    componentDidMount() {
+        axios.get('/Dispatch/tracking', { params: { id: this.props.orderNum } })
+             .then(response => {
+                 console.log(response)
+                 this.setState({
+                     data:response.data
+                 })
+                 this.props.saveTracking(response.data)
+            })
+            .catch(error => {
+                 console.log('err in fetch xxx -> ', error);
+            })
+    }
 
     handleRedirect = ()=>{
         this.props.history.push("/home")
@@ -14,19 +34,12 @@ class Tracking extends Component {
 
         if(this.props.curr_step != 6)
             return null
-        /*const satList = this.props.satInfo ? this.props.satInfo.above : [];
-        const { isLoad } = this.props;*/
-
-        // axios.get(url)
-        //      .then(response => {
-        //            console.log(response.data)
-        //             this.setState({
-        //                 xxxInfo: response.data,
-        //                 isLoadingList: false
-        //     })
-        //     .catch(error => {
-        //          console.log('err in fetch xxx -> ', error);
-        //     })
+        if(this.state.data==null)
+            return (
+                <div className="spin-box" id="loading">
+                    <Spin tip="Loading..." size="large"/>
+                </div>
+            )
 
         const columns = [
             {
@@ -42,54 +55,69 @@ class Tracking extends Component {
         const data = [
             {
                 key: '1',
-                category: 'User ID',
-                information: "john@gmail.com",
+                category: 'Order Number',
+                information: this.state.data.orderNumber,
             },
             {
                 key: '2',
-                category: 'Order Number',
-                information: 123456,
+                category: 'Price',
+                information: this.state.data.price + " Dollars",
             },
             {
                 key: '3',
                 category: 'Status',
-                information: 'Delivered',
+                information: this.state.data.status,
             },
             {
                 key: '4',
-                category: 'Deliver Time',
-                information: '14:00 today',
+                category: 'User ID',
+                information: this.state.data.email,
             },
             {
                 key: '5',
-                category: 'Package Information',
-                information: 'Small, 5 lbs, No lithium battery, 50 USD',
+                category: 'Station',
+                information: this.state.data.station,
             },
             {
                 key: '6',
                 category: 'Deliver Method',
-                information: 'Drone 1',
+                information: this.state.data.type == 1 ? "Drone" : "Robot",
             },
             {
-                key: '7',
-                category: 'Price',
-                information: '$40',
+                key: '6',
+                category: 'Deliver Time',
+                information: this.state.data.StartTime,
             },
+            // {
+            //     key: '7',
+            //     category: 'Size',
+            //     information: '60',
+            // },
             {
                 key: '8',
-                category: 'Travel Distance',
-                information: '10 miles',
+                category: 'Weight',
+                information: this.state.data.weight,
             },
-            {
-                key: '9',
-                category: 'Order generated time',
-                information: '11/10/2020 11:00am',
-            },
-            {
-                key: '10',
-                category: 'Order out for delivery time',
-                information: '11/10/2020  12:00pm',
-            },
+            // {
+            //     key: '9',
+            //     category: 'Feature',
+            //     information: 'Liquid',
+            // },
+            // {
+            //     key: '10',
+            //     category: 'Travel Distance',
+            //     information: '10 miles',
+            // },
+            // {
+            //     key: '11',
+            //     category: 'Pick Up Location',
+            //     information: 'location A',
+            // },
+            // {
+            //     key: '12',
+            //     category: 'Put Down Location',
+            //     information: 'location B',
+            // },
         ];
         return (
             <CSSTransitionGroup
