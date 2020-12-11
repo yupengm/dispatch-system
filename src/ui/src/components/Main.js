@@ -48,7 +48,7 @@ class Main extends Component {
             order_payment: order_info
         })
         let request = {
-            emailId: this.state.user,
+            email: this.state.user,
             box:{
                 weight: this.state.weight,
                 size: this.state.size

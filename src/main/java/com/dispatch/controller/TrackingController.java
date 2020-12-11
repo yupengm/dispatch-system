@@ -27,6 +27,4 @@ public class TrackingController {
     public ResponseEntity<String> trackOrder(@RequestParam("id") Integer id) throws JsonProcessingException {
         return trackingService.trackOrder(id);
     }
-
-
 }
