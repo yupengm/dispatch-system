@@ -136,22 +136,30 @@ export class MapContainer extends Component {
         })
 
         let directionsService = new google.maps.DirectionsService();
-        const waypoints = stations.map(item => {
-            return {
-                location: {lat: parseFloat(item.lat), lng: parseFloat(item.lng)},
-                stopover: true
-            };
-        });
+        // const waypoints = stations.map(item => {
+        //     return {
+        //         location: {lat: parseFloat(item.lat), lng: parseFloat(item.lng)},
+        //         stopover: true
+        //     };
+        // });
+        const waypoints = [{
+            location : {lat: parseFloat(this.props.origin.lat), lng: parseFloat(this.props.origin.lng)},
+            stopover: true
+        }]
         console.log(waypoints, this.props.origin, this.props.des, "parameters")
         console.log("I am hereeeeeeeeee!")
         let res = []
-        for(let i = 0; i < waypoints.length; i++){
+        for(let i = 0; i < stations.length; i++){
 
             await directionsService.route(
                 {
-                    origin: this.props.origin,
+                    // origin: this.props.route[1],
+                    // destination: this.props.route[2],
+                    // waypoints: [waypoints[i]],
+                    // travelMode: "DRIVING"
+                    origin: stations[i],
                     destination: this.props.des,
-                    waypoints: [waypoints[i]],
+                    waypoints: [waypoints[0]],
                     travelMode: "DRIVING"
                 },
                 (response, status) => {
@@ -383,12 +391,34 @@ export class MapContainer extends Component {
     getTrackingPath= (polyCode, map) =>{
         let res = this.decode(polyCode)
         // console.log(res)
+
         let points = res.map((p)=>{
             return{
                 lat: p.latitude,
                 lng: p.longitude
             }
         })
+
+        let markers = []
+        for (let i = 0; i < 2; i++) {
+            let j = i
+            if(i==0)
+                j=0
+            else
+                j=points.length-1
+
+            const marker = new google.maps.Marker({
+                position: new google.maps.LatLng(points[j].lat, points[j].lng),
+                map: map,
+                label: String.fromCharCode(65+i)
+            });
+            markers.push(marker)
+        }
+
+        this.setState({
+            markers: markers
+        })
+
         const polyline = new google.maps.Polyline({
             strokeColor: "#9500ff",
             strokeOpacity: 0.5,
