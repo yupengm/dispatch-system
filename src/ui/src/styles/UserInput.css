@@ -1,0 +1,16 @@
+.user-input{
+    width:100%;
+    background-color: #fbfbfb;
+    border: 1px solid #d9d9d9;
+    padding: 10px 15px 0px 15px;
+    text-align:left;
+    /*margin-top: 10px;*/
+}
+.arrow{
+    text-align: right;
+}
+
+.ant-input-number{
+    width:230px;
+}
+

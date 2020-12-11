@@ -16,9 +16,9 @@ public class Route implements Serializable {
 
     private double distance;
 
-    private double totalTime;
+    public double totalTime;
 
-    private double price;
+    public double price;
 
     private int deliverType;
 

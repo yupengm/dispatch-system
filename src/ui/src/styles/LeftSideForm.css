@@ -1,0 +1,22 @@
+.location-cards-appear {
+    opacity: 0;
+}
+.location-cards-appear.location-cards-appear-active {
+    opacity: 1;
+    transition: opacity 400ms ease-in;
+}
+.location-cards-enter {
+    opacity: 0;
+}
+.location-cards-enter.location-cards-enter-active {
+    opacity: 1;
+    transition: opacity 400ms ease-in;
+}
+.location-cards-leave {
+    opacity: 1;
+}
+
+.left-side {
+    margin-left: 0.5%;
+    overflow: scroll;
+}

@@ -1,0 +1,35 @@
+
+.recommendation-list-btn {
+    float: right;
+}
+.signout-table-box{
+    margin:0;
+}
+.home-table-btn{
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+.btn-container{
+    text-align: center;
+}
+
+.tracking-table-box{
+    width:100%;
+    background-color: #fbfbfb;
+    border: 1px solid #d9d9d9;
+    padding: 10px 15px 0px 15px;
+    text-align:left;
+}
+
+.warning{
+    position: relative;
+    text-align: center;
+}
+
+#text{
+    font-size: 16px;
+    color: red;
+}

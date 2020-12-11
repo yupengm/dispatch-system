@@ -43,7 +43,7 @@ public class UserService {
     }
 
     public ResponseEntity<String> addUser(User user) throws JsonProcessingException {
-        Map<String, String>  addUserResponse = new HashMap<>();
+        Map<String, String> addUserResponse = new HashMap<>();
         try {
             userDao.addUser(user);
             addUserResponse.put("message","sign up success");
