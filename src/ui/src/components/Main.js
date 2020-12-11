@@ -169,7 +169,9 @@ class Main extends Component {
                 pickUpGeoX: this.state.origin.lat,
                 pickUpGeoY: this.state.origin.lng,
                 putDownGeoX: this.state.dropOff.lat,
-                putDownGeoY: this.state.dropOff.lng
+                putDownGeoY: this.state.dropOff.lng,
+                timeFromStationToPickUpAddress: (data[i].time1),
+                timeFromPickUpAddressToPutDownAddress:(data[i].time2)
             }
             if(this.state.stations[0][i].methodCode == 1){
                 routesOptions.push(datainfo)

@@ -31,14 +31,14 @@ public class TrackingService {
     public ResponseEntity<String> trackOrder(int orderId) throws JsonProcessingException {
         Order order = orderDao.getOrderByOrderId(orderId);
         Map<String, String> toReturn = new HashMap<>();
-        int status = getStatus(order.getStartTime(),order.getTimeFromStationToPickUpAddress(),
+        String status = getStatus(order.getStartTime(),order.getTimeFromStationToPickUpAddress(),
                 order.getTimeFromPickUpAddressToPutDownAddress());
         int timeInterval = -1; // means delivered
         int timeElapsed = -1; // means delivered
-        if (status == 0) {  // means from station to pickUpAddress
+        if (status.equals("On the way to pick up")) {  // means from station to pickUpAddress
             timeElapsed = getTimeElapsed(order.getStartTime());
             timeInterval = order.getTimeFromStationToPickUpAddress();
-        } else if (status == 1) {  // means from pickUpAddress to putDownAddress
+        } else if (status.equals("Out of delivery")) {  // means from pickUpAddress to putDownAddress
             timeElapsed = getTimeElapsed(order.getStartTime()) - order.getTimeFromStationToPickUpAddress();
             timeInterval = order.getTimeFromPickUpAddressToPutDownAddress();
         }
@@ -67,7 +67,9 @@ public class TrackingService {
 
         }
 
-        toReturn.put("status",String.valueOf(status));
+
+//        toReturn.put("status",String.valueOf(status));
+        toReturn.put("status",status);
         toReturn.put("orderNumber",String.valueOf(order.getId()));
         toReturn.put("email", order.getUser().getEmailId());
         toReturn.put("price", String.valueOf(order.getRoute().getPrice()));
@@ -97,7 +99,7 @@ public class TrackingService {
 
     // To get String type status for current order
     // time 1 is leg1 cost in seconds, so does time2
-    private int getStatus(String StartTime, int time1, int time2) {
+    private String getStatus(String StartTime, int time1, int time2) {
 
         Instant start = Instant.parse(StartTime + "z");
         Instant now = Instant.parse(this.getNowTime() + "z");
@@ -108,15 +110,15 @@ public class TrackingService {
 //        System.out.println(timeElapsed.toMillis());
 
         if(timeElapsed.toMillis() < time1*1000) {
-//            return "On the way to pick up";
-            return 0;
+            return "On the way to pick up";
+//            return 0;
 
         } else if(timeElapsed.toMillis() < (time1+time2)*1000) {
-//            return "Shipping to destination";
-            return 1;
+            return "Out for delivery";
+//            return 1;
         } else {
-//            return "Completed";
-            return 2;
+            return "Completed";
+//            return 2;
         }
     }
 
