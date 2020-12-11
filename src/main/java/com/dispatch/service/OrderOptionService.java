@@ -30,7 +30,6 @@ public class OrderOptionService {
         ArrayList<StationAvailability> toReturn = new ArrayList<>();
 
         List<Station> stations = stationDao.getAllStations();
-        ArrayList<String> jsonArray = new ArrayList<>();
         for (Station station : stations) {
             int methodCode = 0;
             if (isDroneApplicable(size, weight, feature)){
