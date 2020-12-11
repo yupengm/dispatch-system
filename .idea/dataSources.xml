@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Dispatch" uuid="497026ec-901d-4646-b6ff-19b16b829937">
+    <data-source source="LOCAL" name="Dispatch@laijobproject.curn8ohpuukh.us-east-2.rds.amazonaws.com" uuid="911b8b6a-b83c-4b1e-82fa-1719d0cb9451">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://laiproject-instance.ckldcu5mwgpe.us-east-2.rds.amazonaws.com:3306/ecommerce</jdbc-url>
+      <jdbc-url>jdbc:mysql://laijobproject.curn8ohpuukh.us-east-2.rds.amazonaws.com:3306/Dispatch</jdbc-url>
     </data-source>
   </component>
 </project>

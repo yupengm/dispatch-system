@@ -21,26 +21,22 @@ import static com.dispatch.service.OrderService.getStringResponseEntity;
 
 @Service
 public class TrackingService {
-    //TODO:
-    // Drone return current location.
-    // robot return fraction.
-
     @Autowired
     private OrderDao orderDao;
 
     public ResponseEntity<String> trackOrder(int orderId) throws JsonProcessingException {
         Order order = orderDao.getOrderByOrderId(orderId);
         Map<String, String> toReturn = new HashMap<>();
-        String status = getStatus(order.getStartTime(),order.getTimeFromStationToPickUpAddress(),
-                order.getTimeFromPickUpAddressToPutDownAddress());
+        String status = getStatus(order.getStartTime(),order.getRoute().getTimeFromStationToPickUpAddress(),
+                order.getRoute().getTimeFromPickUpAddressToPutDownAddress());
         int timeInterval = -1; // means delivered
         int timeElapsed = -1; // means delivered
         if (status.equals("On the way to pick up")) {  // means from station to pickUpAddress
             timeElapsed = getTimeElapsed(order.getStartTime());
-            timeInterval = order.getTimeFromStationToPickUpAddress();
-        } else if (status.equals("Out of delivery")) {  // means from pickUpAddress to putDownAddress
-            timeElapsed = getTimeElapsed(order.getStartTime()) - order.getTimeFromStationToPickUpAddress();
-            timeInterval = order.getTimeFromPickUpAddressToPutDownAddress();
+            timeInterval = order.getRoute().getTimeFromStationToPickUpAddress();
+        } else if (status.equals("Out for delivery")) {  // means from pickUpAddress to putDownAddress
+            timeElapsed = getTimeElapsed(order.getStartTime()) - order.getRoute().getTimeFromStationToPickUpAddress();
+            timeInterval = order.getRoute().getTimeFromPickUpAddressToPutDownAddress();
         }
         int type = order.getRoute().getDeliverType();
         if (type == 1 && timeInterval != -1) {
