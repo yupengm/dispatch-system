@@ -5,4 +5,5 @@ public class Secret {
     static String DB_USERNAME = "admin";
     static String DB_PASSWORD = ".12345678";
 
+    static String GoogleKEY = "AIzaSyBuoOrk0v4p_2Q-Pb7xymPwQoJvDP9v-ck";
 }
