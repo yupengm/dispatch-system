@@ -67,7 +67,6 @@ public class TrackingService {
 
         }
 
-
         toReturn.put("status",String.valueOf(status));
         toReturn.put("orderNumber",String.valueOf(order.getId()));
         toReturn.put("email", order.getUser().getEmailId());
