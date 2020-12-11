@@ -1,3 +1,4 @@
+
 package com.dispatch.tempEntity;
 
 public class StationAvailability {

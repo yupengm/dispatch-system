@@ -1,11 +1,16 @@
 package com.dispatch.service;
 import com.dispatch.external.GoogleMapClient;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import com.dispatch.tempEntity.StationAvailability;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
 import com.dispatch.dao.StationDao;
 import com.dispatch.entity.Station;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +58,7 @@ public class OrderOptionService {
 //            mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, false);
 //            String json = mapper.writeValueAsString(toReturn);
 //            jsonArray.add(json);
-            StationAvailability toAdd = new StationAvailability(station.getName(), methodCode,
+            StationAvailability toAdd = new StationAvailability(station.getStationName(), methodCode,
                     station.getLatitude(), station.getLongitude());
 
 //            toReturn.put("stationName", station.getName());

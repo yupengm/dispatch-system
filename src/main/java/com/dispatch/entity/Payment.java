@@ -1,13 +1,10 @@
 package com.dispatch.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Entity
@@ -19,16 +16,17 @@ public class Payment implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private String type;
-
+    @JsonProperty("name_on_card")
     private String holderName;
 
+    @JsonProperty("expire_date")
     private String expireDate;
 
+    @JsonProperty("card_number")
     private String number;
 
-    @ManyToOne
-    private User user;
+    @OneToOne(mappedBy = "payment")
+    private Order order;
 
     public int getId() {
         return id;
@@ -36,14 +34,6 @@ public class Payment implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getHolderName() {
@@ -70,11 +60,11 @@ public class Payment implements Serializable {
         this.number = number;
     }
 
-    public User getUser() {
-        return user;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

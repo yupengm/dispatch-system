@@ -341,6 +341,7 @@ export class MapContainer extends Component {
                 //
                 // polyline.setMap(this.state.map);
                 // this.handleMapReady();
+                // this.handleMapReady();
                 // this.setState({
                 //     mapCenter :{
                 //         lat: des.lat,

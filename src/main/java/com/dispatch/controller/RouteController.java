@@ -1,10 +1,11 @@
 package com.dispatch.controller;
 
 import com.dispatch.dao.StationDao;
-import com.dispatch.entity.Price;
 import com.dispatch.entity.Route;
 import com.dispatch.entity.Station;
 import com.dispatch.service.PriceService;
+import com.dispatch.tempEntity.Price;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class RouteController {
@@ -103,4 +106,6 @@ public class RouteController {
 
         return new ResponseEntity<ArrayList<Price>>(toReturn, HttpStatus.OK);
     }
+
+
 }
