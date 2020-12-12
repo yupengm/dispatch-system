@@ -37,7 +37,7 @@ class Confirmation extends Component {
             'Your order has been submit! Thank you for choosing DispatchSF!',
             `Order Number: ${this.props.order_number}\n`,
             `Price:  $${this.props.order_route.price}`,
-            'Status: In Process\n',
+            'Status: On the way to pick up\n',
             `User ID: ${this.props.user}\n`,
             `Station: ${this.props.order_route.stationName}`,
             `Deliver Method: ${this.props.deliverType == 1 ? "Drone": "Robot"}`,

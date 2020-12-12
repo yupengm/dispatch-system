@@ -51,25 +51,27 @@ public class RouteController {
         double MIN_PRICE = 1000000000.0;
         double MIN_TIME = 1000000000.0; //TBD
 
-        // loop over once for time and price, and their minimun
+        // loop over once for time and price, and their min max.
         for (Route input: inputs) {
             int type = input.getDeliverType();
             Station station = stationDao.getStationByName(input.getStationName());
-
-            //get price in the following:
-            if (type == 2) {// drone
+            //get price and set time:
+            if (type == 2) {
                 double distance1 = priceService.distance(station.getLatitude(),station.getLongitude(),
                         input.getPickUpGeoX(), input.getPickUpGeoY());
                 double distance2 = priceService.distance(input.getPickUpGeoX(),input.getPickUpGeoY(),
-                        input.getPickUpGeoX(),input.getPickUpGeoY());
-                double distance = distance1 + distance2;
-                double price = priceService.priceCalculator(distance, type);
-                double time = priceService.timeCalculator(distance);
+                        input.getPutDownGeoX(),input.getPutDownGeoY());
+                double price = priceService.priceCalculator(distance1 + distance2, type);
+                int time1 = priceService.timeCalculator(distance1);
+                int time2 = priceService.timeCalculator(distance2);
+                input.setTotalTime(time1 + time2);
                 input.setPrice(Math.round(price * 100.0) / 100.0);
-                input.setDistance(distance);
-                input.setTotalTime(Math.round(time * 100.0) / 100.0);
-                input.setDistance(distance);
-            } else if (type == 1) {//drone
+                input.setDistance(distance1 + distance2);
+                input.setTimeFromStationToPickUpAddress(time1);
+                input.setTimeFromPickUpAddressToPutDownAddress(time2);
+            } else if (type == 1) {
+                input.setTotalTime(input.getTimeFromStationToPickUpAddress() +
+                        input.getTimeFromPickUpAddressToPutDownAddress());
                 double price = priceService.priceCalculator(input.getDistance(), type);
                 input.setPrice(Math.round(price * 100.0) / 100.0);
             } else {
@@ -90,7 +92,8 @@ public class RouteController {
         // loop over twice to put tage on
         for (Route input: inputs) {
             Price temp = new Price(input.getPrice(), null,
-                    null, String.valueOf(input.getTotalTime()),
+                    null, String.valueOf(input.getTimeFromStationToPickUpAddress()),
+                    String.valueOf(input.getTimeFromPickUpAddressToPutDownAddress()),
                     String.valueOf(df.format(input.getDistance())),
                     String.valueOf(input.getDeliverType()),
                     String.valueOf(input.getStationName()));
