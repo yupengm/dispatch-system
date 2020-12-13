@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Dispatch" uuid="d1142050-ea75-4bd5-9115-1d3241884bf4">
+    <data-source source="LOCAL" name="Dispatch@laijobproject.curn8ohpuukh.us-east-2.rds.amazonaws.com" uuid="911b8b6a-b83c-4b1e-82fa-1719d0cb9451">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://laijobproject.curn8ohpuukh.us-east-2.rds.amazonaws.com:3306/laiproject</jdbc-url>
+      <jdbc-url>jdbc:mysql://laijobproject.curn8ohpuukh.us-east-2.rds.amazonaws.com:3306/Dispatch</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="@laijobproject.curn8ohpuukh.us-east-2.rds.amazonaws.com" uuid="ab749246-c1c4-40c5-9508-55b81b5bb899">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://laijobproject.curn8ohpuukh.us-east-2.rds.amazonaws.com:3306</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
 </project>

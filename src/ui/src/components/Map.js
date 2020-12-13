@@ -136,22 +136,30 @@ export class MapContainer extends Component {
         })
 
         let directionsService = new google.maps.DirectionsService();
-        const waypoints = stations.map(item => {
-            return {
-                location: {lat: parseFloat(item.lat), lng: parseFloat(item.lng)},
-                stopover: true
-            };
-        });
+        // const waypoints = stations.map(item => {
+        //     return {
+        //         location: {lat: parseFloat(item.lat), lng: parseFloat(item.lng)},
+        //         stopover: true
+        //     };
+        // });
+        const waypoints = [{
+            location : {lat: parseFloat(this.props.origin.lat), lng: parseFloat(this.props.origin.lng)},
+            stopover: true
+        }]
         console.log(waypoints, this.props.origin, this.props.des, "parameters")
         console.log("I am hereeeeeeeeee!")
         let res = []
-        for(let i = 0; i < waypoints.length; i++){
+        for(let i = 0; i < stations.length; i++){
 
             await directionsService.route(
                 {
-                    origin: this.props.origin,
+                    // origin: this.props.route[1],
+                    // destination: this.props.route[2],
+                    // waypoints: [waypoints[i]],
+                    // travelMode: "DRIVING"
+                    origin: stations[i],
                     destination: this.props.des,
-                    waypoints: [waypoints[i]],
+                    waypoints: [waypoints[0]],
                     travelMode: "DRIVING"
                 },
                 (response, status) => {
@@ -162,7 +170,8 @@ export class MapContainer extends Component {
                                 response.routes[0].legs[1].duration.value, // seconds
                             distance: response.routes[0].legs[0].distance.value +
                                 response.routes[0].legs[1].distance.value, // meters
-                            tag: 1
+                            time1: response.routes[0].legs[0].duration.value,
+                            time2: response.routes[0].legs[1].duration.value
                         }
                         console.log(cur)
                         // res.push(cur)
@@ -247,6 +256,7 @@ export class MapContainer extends Component {
                     if (status === "OK") {
                         console.log('route', response)
                         directionsDisplay.setDirections(response);
+                        this.props.addPoly(response.routes[0].overview_polyline)
                         // this.props.routeResult(
                         //         [response.routes[0].legs[0].duration,
                         //         response.routes[0].legs[1].duration,
@@ -278,6 +288,10 @@ export class MapContainer extends Component {
         if (prevProps.stations !== this.props.stations && this.props.stations.length!=0){
             console.log(this.props.stations)
             this.calculateRoute(this.state.map)
+        }
+
+        if(prevProps.polyline!=this.props.polyline){
+            this.getTrackingPath(this.props.polyline, this.state.map)
         }
 
         if(prevProps.route[0] !== this.props.route[0]){
@@ -327,6 +341,7 @@ export class MapContainer extends Component {
                 //
                 // polyline.setMap(this.state.map);
                 // this.handleMapReady();
+                // this.handleMapReady();
                 // this.setState({
                 //     mapCenter :{
                 //         lat: des.lat,
@@ -374,14 +389,36 @@ export class MapContainer extends Component {
     };
 
     getTrackingPath= (polyCode, map) =>{
-        let res = this.decode("cjseFblhjVEM@SJEFADGFSEMC[gALd@pHb@lGnAzRdAzO`@xGFx@L^X^pBfBJFXPRFxG{@bD_@VAZBH@NDPRv@^j@Rt@Lj@DZA`AItDi@vCY~Dg@bKmAhBSb@GBd@PnCHhAb@`HNbCx@tLb@dHdAzOp@hKCT?\@NRpDhA|Pj@tIPtCFLFz@JjCNlJThNFtEuJXD|A@ZrJYh@CLBZLTPVd@H\Bh@M~DSnDEtAD|APhCLdFJlGB^Nt@Tb@V\NN`@V\HNBr@DNCbAc@jB{@lD{Aj@Op@KdDQdAKtAa@dAg@fAs@b@UXKh@KrBItBIfIUjDKhCObJe@na@mAx{@iChL[lGKvIYdL[|CCvJUz@IfPg@lFQtBEhGLjDL`FHjS`@xLZ^?FVBJH\JpAOrOOrLElA{@bAu@|@WXICG?QJIT?LQj@[\qBdCOBGAKBEDCBUc@a@o@o@aAS_@ESBo@FgCE_ACk@Cm@Cm@EMCAKCAIUkBEYS{ACk@BiJ~@J")
-        console.log(res)
+        let res = this.decode(polyCode)
+        // console.log(res)
+
         let points = res.map((p)=>{
             return{
                 lat: p.latitude,
                 lng: p.longitude
             }
         })
+
+        let markers = []
+        for (let i = 0; i < 2; i++) {
+            let j = i
+            if(i==0)
+                j=0
+            else
+                j=points.length-1
+
+            const marker = new google.maps.Marker({
+                position: new google.maps.LatLng(points[j].lat, points[j].lng),
+                map: map,
+                label: String.fromCharCode(65+i)
+            });
+            markers.push(marker)
+        }
+
+        this.setState({
+            markers: markers
+        })
+
         const polyline = new google.maps.Polyline({
             strokeColor: "#9500ff",
             strokeOpacity: 0.5,
@@ -433,7 +470,7 @@ export class MapContainer extends Component {
     render() {
         // const polyCoords = [ ];
         return (
-            <div className="mapWrapper" style={{height: `87%`, width: `69.5%`}}>
+            <div className="mapWrapper" style={{height: `100%`, width: `69.5%`}}>
 
                 <Map
                     google={this.props.google}

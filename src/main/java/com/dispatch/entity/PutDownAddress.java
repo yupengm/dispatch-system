@@ -33,6 +33,7 @@ public class PutDownAddress implements Serializable {
 
     private String country;
 
+
     @ManyToOne
     private User user;
 

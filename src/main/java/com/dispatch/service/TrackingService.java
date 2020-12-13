@@ -21,56 +21,55 @@ import static com.dispatch.service.OrderService.getStringResponseEntity;
 
 @Service
 public class TrackingService {
-    //TODO:
-    // Drone return current location.
-    // robot return fraction.
-
     @Autowired
     private OrderDao orderDao;
 
     public ResponseEntity<String> trackOrder(int orderId) throws JsonProcessingException {
         Order order = orderDao.getOrderByOrderId(orderId);
         Map<String, String> toReturn = new HashMap<>();
-        int status = getStatus(order.getStartTime(),order.getTimeFromStationToPickUpAddress(),
-                order.getTimeFromPickUpAddressToPutDownAddress());
+        String status = getStatus(order.getStartTime(),order.getRoute().getTimeFromStationToPickUpAddress(),
+                order.getRoute().getTimeFromPickUpAddressToPutDownAddress());
         int timeInterval = -1; // means delivered
-        int TimeElapsed = -1; // means delivered
-        if (status == 0) {
-            TimeElapsed = getTimeElapsed(order.getStartTime());
-            timeInterval = order.getTimeFromStationToPickUpAddress();
-        } else if (status == 1) {
-            TimeElapsed = getTimeElapsed(order.getStartTime()) - order.getTimeFromStationToPickUpAddress();
-            timeInterval = order.getTimeFromPickUpAddressToPutDownAddress();
+        int timeElapsed = -1; // means delivered
+        if (status.equals("On the way to pick up")) {  // means from station to pickUpAddress
+            timeElapsed = getTimeElapsed(order.getStartTime());
+            timeInterval = order.getRoute().getTimeFromStationToPickUpAddress();
+        } else if (status.equals("Out for delivery")) {  // means from pickUpAddress to putDownAddress
+            timeElapsed = getTimeElapsed(order.getStartTime()) - order.getRoute().getTimeFromStationToPickUpAddress();
+            timeInterval = order.getRoute().getTimeFromPickUpAddressToPutDownAddress();
         }
         int type = order.getRoute().getDeliverType();
         if (type == 1 && timeInterval != -1) {
-            double scale = getScale(TimeElapsed, timeInterval);
+            double scale = getScale(timeElapsed, timeInterval);
             GoogleMapPolylineDecoder decoder = new GoogleMapPolylineDecoder();
             List<List<Double>> coordinates = decoder.decodePolyline(order.getRoute().getRoutePoly());
             int index = (int) (Math.round(coordinates.size() * scale)) - 1;
             toReturn.put("currentX",String.valueOf(coordinates.get(index).get(0)));
             toReturn.put("currentY",String.valueOf(coordinates.get(index).get(1)));
         } else if (type == 2 && timeInterval != -1) {
-            double[] currentXY = trackDrone(TimeElapsed,timeInterval,
-                        order.getRoute().getPickUpGeoX(),
-                        order.getRoute().getPickUpGeoY(),
-                        order.getRoute().getPutDownGeoX(),
-                        order.getRoute().getPutDownGeoY());
+            double[] currentXY = trackDrone(timeElapsed,timeInterval,
+                    order.getRoute().getPickUpGeoX(),
+                    order.getRoute().getPickUpGeoY(),
+                    order.getRoute().getPutDownGeoX(),
+                    order.getRoute().getPutDownGeoY());
             toReturn.put("currentX",String.valueOf(currentXY[0]));
             toReturn.put("currentY",String.valueOf(currentXY[1]));
             toReturn.put("PickUpAddressX",String.valueOf(order.getRoute().getPickUpGeoX()));
-            toReturn.put("PickUpAddressY",String.valueOf(order.getRoute().getPickUpGeoX()));
+            toReturn.put("PickUpAddressY",String.valueOf(order.getRoute().getPickUpGeoY()));
             toReturn.put("PutDownAddressX",String.valueOf(order.getRoute().getPutDownGeoX()));
             toReturn.put("PutDownAddressY",String.valueOf(order.getRoute().getPutDownGeoY()));
+            toReturn.put("stationX",String.valueOf(order.getStation().getLatitude()));
+            toReturn.put("stationY",String.valueOf(order.getStation().getLongitude()));
 
         }
 
 
-        toReturn.put("status",String.valueOf(status));
+//        toReturn.put("status",String.valueOf(status));
+        toReturn.put("status",status);
         toReturn.put("orderNumber",String.valueOf(order.getId()));
         toReturn.put("email", order.getUser().getEmailId());
         toReturn.put("price", String.valueOf(order.getRoute().getPrice()));
-        toReturn.put("station", String.valueOf(order.getStation().getName()));
+        toReturn.put("station", String.valueOf(order.getStation().getStationName()));
         toReturn.put("type", String.valueOf(type));
         toReturn.put("weight", String.valueOf(order.getBox().getWeight()));
         toReturn.put("RoutePoly", String.valueOf(order.getRoute().getRoutePoly()));
@@ -96,7 +95,7 @@ public class TrackingService {
 
     // To get String type status for current order
     // time 1 is leg1 cost in seconds, so does time2
-    private int getStatus(String StartTime, int time1, int time2) {
+    private String getStatus(String StartTime, int time1, int time2) {
 
         Instant start = Instant.parse(StartTime + "z");
         Instant now = Instant.parse(this.getNowTime() + "z");
@@ -107,21 +106,21 @@ public class TrackingService {
 //        System.out.println(timeElapsed.toMillis());
 
         if(timeElapsed.toMillis() < time1*1000) {
-//            return "On the way to pick up";
-            return 0;
+            return "On the way to pick up";
+//            return 0;
 
         } else if(timeElapsed.toMillis() < (time1+time2)*1000) {
-//            return "Shipping to destination";
-            return 1;
+            return "Out for delivery";
+//            return 1;
         } else {
-//            return "Completed";
-            return 2;
+            return "Completed";
+//            return 2;
         }
     }
 
     private double[] trackDrone(int timeElapsed, int timeInterval, double geoLocation1X, double
-                                geoLocation1Y, double geoLocation2X, double
-            geoLocation2Y) {
+            geoLocation1Y, double geoLocation2X, double
+                                        geoLocation2Y) {
         double scale = getScale(timeElapsed, timeInterval);
         double diffY = geoLocation2Y - geoLocation1Y;
         double diffX = geoLocation2X - geoLocation1X;

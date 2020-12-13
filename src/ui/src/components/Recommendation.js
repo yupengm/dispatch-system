@@ -22,6 +22,11 @@ class Recommendation extends Component {
 
     }
 
+    handleSubmit = () =>{
+        this.props.optionSubmit()
+        this.props.gotoLogin()
+    }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         // if(prevProps.routes!=this.props.routes){
         //     this.fetchData(this.props.routes)
@@ -85,6 +90,8 @@ class Recommendation extends Component {
                                key={index}
                                checked={this.state.checked === index}
                                onChange={this.onChange.bind(this, index)} /> Option {index + 1} &nbsp; &nbsp; <span style={{ color: 'red' }}> {choice.tag1} &nbsp; &nbsp;</span> <span style={{ color: 'red' }}> {choice.tag2} &nbsp; &nbsp;</span>
+
+
                         <ul>
                             <li>Delivery Type: {this.props.routeOptions[index].deliverType === 2 ? 'Drone' : 'Robot'}</li>
                             <li>Price: {choice.price}</li>
@@ -103,7 +110,7 @@ class Recommendation extends Component {
                     <Button type="primary"
                         htmlType="submit"
                         className="pay-list-btn"
-                        onClick={this.props.gotoLogin}>
+                        onClick={this.handleSubmit}>
                         Pay
                     </Button>
                 </div>

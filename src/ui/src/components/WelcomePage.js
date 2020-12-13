@@ -2,11 +2,14 @@ import React, {Component} from 'react';
 import { Input, Button } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import backgroundImage from '../assets/images/SFBackground.jpeg';
-import { useHistory } from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
+import {SearchOutlined} from '@ant-design/icons';
+import SearchIcon from '../assets/images/dark_search.svg';
+
 // import axios from 'axios';
 
 const { Search } = Input;
-const onSearch = value => console.log(value);
+
 class WelcomePage extends Component {
     constructor() {
         super();
@@ -15,10 +18,22 @@ class WelcomePage extends Component {
 //            trackingInfo: null,//this is the information passed on to tracking component
             size: 'large',
 //            isLoading: false,
+            value: 0
         }
     }
+
+    handleChange = e => {
+        this.setState({
+            value: e.target.value
+        })
+    }
+
     handleRedirect = ()=>{
         this.props.history.push("/package")
+    }
+
+    track = () => {
+        this.props.history.push("/track")
     }
     // showTracking = trackingNum => {
     //     this.setState({
@@ -66,7 +81,18 @@ class WelcomePage extends Component {
             <div className='welcome' style={backgroundStyle}>
                 <div className='box'>
                     <div className='search'>
-                        <Search placeholder="Search Tracking Number" onSearch={onSearch} style={{ width: 400, margin: '0 10px', textAlign: 'center'}} size={ size } enterButton/>
+
+                        {/*<Search placeholder="Search Tracking Number"  onSearch={this.onSearch} style={{ width: 400, margin: '0 10px', textAlign: 'center'}} size={ size } enterButton/>*/}
+                        <Input placeholder="Search Tracking Number" onChange={this.handleChange} style={{ width: 400, margin: '0 10px', textAlign: 'center'}} size={ size }/>
+                        <Link to={{
+                            pathname:'/package',
+                            state:{
+                                steps : 6,
+                                orderNum: this.state.value
+                            }}}>
+                            <img id="search" src={SearchIcon} />
+                        </Link>
+
                     </div>
                     <br/>
                     <div></div>

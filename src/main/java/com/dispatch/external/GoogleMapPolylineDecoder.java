@@ -62,12 +62,9 @@ public class GoogleMapPolylineDecoder {
     public static void main (String[] args){
         String url = "azljFjss{S?oA?kB";
         GoogleMapPolylineDecoder g = new GoogleMapPolylineDecoder();
-        List<List<Double>> output= g.decodePolyline(url);
-
-        System.out.println(output);
-        System.out.println(output.size());
-        System.out.println(output.get(1).get(1));
+        System.out.println(g.decodePolyline(url));
     }
 
 
 }
+

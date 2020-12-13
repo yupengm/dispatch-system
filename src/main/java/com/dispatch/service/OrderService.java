@@ -3,6 +3,7 @@ import com.dispatch.dao.OrderDao;
 import com.dispatch.dao.StationDao;
 import com.dispatch.dao.UserDao;
 import com.dispatch.entity.Order;
+import com.dispatch.entity.Route;
 import com.dispatch.entity.Station;
 import com.dispatch.entity.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -32,7 +33,10 @@ public class OrderService {
     @Autowired
     private StationDao stationDao;
 
-    public ResponseEntity<String> addOrder(Order order) throws JsonProcessingException {
+    @Autowired
+    private PriceService priceService;
+
+    public ResponseEntity<String> addOrder(Order order) throws Exception {
         // TODO: String emailId = order.getEmail();
         // User user = userDao.getUserbyId(emailId);
         // order.setUser(user);
@@ -49,10 +53,11 @@ public class OrderService {
 
         Map<String, String> toReturn = new HashMap<>();
 
+
         try {
             order.setStartTime(LocalDateTime.now().toString());
-            order.setEndTime(LocalDateTime.now().plusMinutes(order.getTimeFromPickUpAddressToPutDownAddress() +
-                    order.getTimeFromStationToPickUpAddress()).toString());
+            order.setEndTime(LocalDateTime.now().plusSeconds(order.getRoute().getTimeFromStationToPickUpAddress() +
+                    order.getRoute().getTimeFromPickUpAddressToPutDownAddress()).toString());
             orderDao.addOrder(order);
             return getStringResponseEntity(order, toReturn);
         } catch (IllegalAccessException e) {
@@ -66,7 +71,7 @@ public class OrderService {
         toReturn.put("OrderNumber",String.valueOf(order.getId()));
         toReturn.put("email", order.getUser().getEmailId());
         toReturn.put("price", String.valueOf(order.getRoute().getPrice()));
-        toReturn.put("station", String.valueOf(order.getStation().getName()));
+        toReturn.put("station", String.valueOf(order.getStation().getStationName()));
         toReturn.put("type", String.valueOf(order.getRoute().getDeliverType()));
         toReturn.put("weight", String.valueOf(order.getBox().getWeight()));
 //        toReturn.put("PickUpAddress",String.valueOf(order.getPickUpAddress()));//TODO
