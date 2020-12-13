@@ -24,6 +24,8 @@ class Confirmation extends Component {
 
     render() {
 
+        console.log(this.props.order_route)
+
         if(this.props.curr_step != 5)
             return null
         if(this.props.order_number == null)
@@ -37,10 +39,10 @@ class Confirmation extends Component {
             'Your order has been submit! Thank you for choosing DispatchSF!',
             `Order Number: ${this.props.order_number}\n`,
             `Price:  $${this.props.order_route.price}`,
-            'Status: In Process\n',
+            'Status: On the way to pick up\n',
             `User ID: ${this.props.user}\n`,
             `Station: ${this.props.order_route.stationName}`,
-            `Deliver Method: ${this.props.deliverType == 1 ? "Drone": "Robot"}`,
+            `Deliver Method: ${this.props.order_route.deliverType == 2 ? "Drone": "Robot"}`,
             `Size: ${this.props.length}in.(length) x ${this.props.width}in.(width) x ${this.props.height}in.(height)`,
             `Weight: ${this.props.weight} lbs`,
             `Pick Up Location:  ${this.props.pickup.address1A}, ${this.props.pickup.city}, US. ${this.props.pickup.zipadd}`,

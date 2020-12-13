@@ -1,5 +1,7 @@
 package com.dispatch.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 import javax.persistence.*;
@@ -30,7 +32,12 @@ public class Route implements Serializable {
 
     private double putDownGeoY;
 
-//    @Column(columnDefinition="TEXT")
+    @JsonProperty("time1")
+    private int timeFromStationToPickUpAddress;
+
+    @JsonProperty("time2")
+    private int timeFromPickUpAddressToPutDownAddress;
+
     @Lob
     private String routePoly;
 
@@ -145,5 +152,21 @@ public class Route implements Serializable {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public int getTimeFromStationToPickUpAddress() {
+        return timeFromStationToPickUpAddress;
+    }
+
+    public void setTimeFromStationToPickUpAddress(int timeFromStationToPickUpAddress) {
+        this.timeFromStationToPickUpAddress = timeFromStationToPickUpAddress;
+    }
+
+    public int getTimeFromPickUpAddressToPutDownAddress() {
+        return timeFromPickUpAddressToPutDownAddress;
+    }
+
+    public void setTimeFromPickUpAddressToPutDownAddress(int timeFromPickUpAddressToPutDownAddress) {
+        this.timeFromPickUpAddressToPutDownAddress = timeFromPickUpAddressToPutDownAddress;
     }
 }

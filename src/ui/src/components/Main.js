@@ -48,7 +48,7 @@ class Main extends Component {
             order_payment: order_info
         })
         let request = {
-            emailId: this.state.user,
+            email: this.state.user,
             box:{
                 weight: this.state.weight,
                 size: this.state.size
@@ -169,7 +169,9 @@ class Main extends Component {
                 pickUpGeoX: this.state.origin.lat,
                 pickUpGeoY: this.state.origin.lng,
                 putDownGeoX: this.state.dropOff.lat,
-                putDownGeoY: this.state.dropOff.lng
+                putDownGeoY: this.state.dropOff.lng,
+                time1: (data[i].time1),
+                time2: (data[i].time2)
             }
             if(this.state.stations[0][i].methodCode == 1){
                 routesOptions.push(datainfo)

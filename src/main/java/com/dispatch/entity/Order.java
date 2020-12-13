@@ -24,23 +24,19 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @JsonProperty("email")
     private String emailId;
 
     private String startTime;
 
     private String endTime;
 
-    private int timeFromStationToPickUpAddress;
-
-    private int timeFromPickUpAddressToPutDownAddress;
-
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Route route;
-
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Payment payment;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Route route;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Box box;
@@ -57,6 +53,13 @@ public class Order implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private PutDownAddress putDownAddress;
 
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
 
     public int getId() {
         return id;
@@ -64,14 +67,6 @@ public class Order implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getEmailId() {
-        return emailId;
-    }
-
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
     }
 
     public String getStartTime() {
@@ -88,22 +83,6 @@ public class Order implements Serializable {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
-    }
-
-    public int getTimeFromStationToPickUpAddress() {
-        return timeFromStationToPickUpAddress;
-    }
-
-    public void setTimeFromStationToPickUpAddress(int timeFromStationToPickUpAddress) {
-        this.timeFromStationToPickUpAddress = timeFromStationToPickUpAddress;
-    }
-
-    public int getTimeFromPickUpAddressToPutDownAddress() {
-        return timeFromPickUpAddressToPutDownAddress;
-    }
-
-    public void setTimeFromPickUpAddressToPutDownAddress(int timeFromPickUpAddressToPutDownAddress) {
-        this.timeFromPickUpAddressToPutDownAddress = timeFromPickUpAddressToPutDownAddress;
     }
 
     public Route getRoute() {
@@ -161,5 +140,4 @@ public class Order implements Serializable {
     public void setPayment(Payment payment) {
         this.payment = payment;
     }
-
 }

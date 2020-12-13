@@ -51,26 +51,13 @@ public class OrderService {
         Station station = stationDao.getStationByName(stationName);
         order.setStation(station);
 
-        // set time1 and time2 for drone.
-        if (order.getRoute().getDeliverType() == 2) {
-            Route route = order.getRoute();
-            double distance1 = priceService.distance(station.getLatitude(),station.getLongitude(),
-                    route.getPickUpGeoX(), route.getPickUpGeoY());
-            double distance2 = priceService.distance(route.getPickUpGeoX(),route.getPickUpGeoY(),
-                    route.getPickUpGeoX(),route.getPickUpGeoY());
-            int time1 = (int) priceService.timeCalculator(distance1);
-            int time2 = (int) priceService.timeCalculator(distance2);
-            order.setTimeFromStationToPickUpAddress(time1);
-            order.setTimeFromPickUpAddressToPutDownAddress(time2);
-        }
-
         Map<String, String> toReturn = new HashMap<>();
 
 
         try {
             order.setStartTime(LocalDateTime.now().toString());
-            order.setEndTime(LocalDateTime.now().plusMinutes(order.getTimeFromPickUpAddressToPutDownAddress() +
-                    order.getTimeFromStationToPickUpAddress()).toString());
+            order.setEndTime(LocalDateTime.now().plusSeconds(order.getRoute().getTimeFromStationToPickUpAddress() +
+                    order.getRoute().getTimeFromPickUpAddressToPutDownAddress()).toString());
             orderDao.addOrder(order);
             return getStringResponseEntity(order, toReturn);
         } catch (IllegalAccessException e) {
@@ -84,7 +71,7 @@ public class OrderService {
         toReturn.put("OrderNumber",String.valueOf(order.getId()));
         toReturn.put("email", order.getUser().getEmailId());
         toReturn.put("price", String.valueOf(order.getRoute().getPrice()));
-        toReturn.put("station", String.valueOf(order.getStation().getName()));
+        toReturn.put("station", String.valueOf(order.getStation().getStationName()));
         toReturn.put("type", String.valueOf(order.getRoute().getDeliverType()));
         toReturn.put("weight", String.valueOf(order.getBox().getWeight()));
 //        toReturn.put("PickUpAddress",String.valueOf(order.getPickUpAddress()));//TODO

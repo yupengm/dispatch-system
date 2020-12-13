@@ -90,10 +90,12 @@ class Recommendation extends Component {
                                key={index}
                                checked={this.state.checked === index}
                                onChange={this.onChange.bind(this, index)} /> Option {index + 1} &nbsp; &nbsp; <span style={{ color: 'red' }}> {choice.tag1} &nbsp; &nbsp;</span> <span style={{ color: 'red' }}> {choice.tag2} &nbsp; &nbsp;</span>
+
+
                         <ul>
                             <li>Delivery Type: {this.props.routeOptions[index].deliverType === 2 ? 'Drone' : 'Robot'}</li>
                             <li>Price: {choice.price}</li>
-                            <li>Delivery Time: {(choice.time)} Mins</li>
+                            <li>Delivery Time: {((parseInt(choice.time1)+parseInt(choice.time2))/60).toFixed(2)} Mins</li>
                             <li>Distance: {(choice.distance)} Km</li>
                         </ul>
                         <br />
