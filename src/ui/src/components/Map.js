@@ -115,7 +115,7 @@ export class MapContainer extends Component {
         // marker2.setMap(map)
         // marker3.setMap(map)
 
-        console.log('drawPolyline', map);
+        console.log('drawPolyline', this.props.drone);
         polyline.setPath(this.props.drone);
         console.log('drawPolyline', polyline);
         polyline.setMap(map);
@@ -294,17 +294,27 @@ export class MapContainer extends Component {
             this.getTrackingPath(this.props.polyline, this.state.map)
         }
 
+
         if(prevProps.route[0] !== this.props.route[0]){
             this.setState({
                 showMarkers: false
             })
-            if(this.props.drawDroneOrRobot == 1){
-                this.handleDrone(this.state.mapProps, this.state.map) // test draw drone api
-            } else if(this.props.drawDroneOrRobot == 0){
+            // if(this.props.drawDroneOrRobot == 1){
+            //     this.handleDrone(this.state.mapProps, this.state.map) // test draw drone api
+            // }
+            if(this.props.drawDroneOrRobot == 0){
                 this.handleRobot(this.state.mapProps, this.state.map)
             }
             // this.handleDrone(this.state.mapProps, this.state.map)
             // this.handleRobot(this.state.mapProps, this.state.map)
+        }
+
+        if(prevProps.drone[0] !== this.props.drone[0]){
+            console.log(this.props.drone)
+            if(this.props.drawDroneOrRobot == 1){
+                console.log("draw drone2")
+                this.handleDrone(this.state.mapProps, this.state.map) // test draw drone api
+            }
         }
 
         if (prevProps.des !== this.props.des || prevProps.origin !== this.props.origin) {
