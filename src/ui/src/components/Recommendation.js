@@ -95,7 +95,7 @@ class Recommendation extends Component {
                         <ul>
                             <li>Delivery Type: {this.props.routeOptions[index].deliverType === 2 ? 'Drone' : 'Robot'}</li>
                             <li>Price: {choice.price}</li>
-                            <li>Delivery Time: {(choice.time)} Mins</li>
+                            <li>Delivery Time: {((parseInt(choice.time1)+parseInt(choice.time2))/60).toFixed(2)} Mins</li>
                             <li>Distance: {(choice.distance)} Km</li>
                         </ul>
                         <br />
