@@ -55,7 +55,6 @@ public class RouteController {
         for (Route input: inputs) {
             int type = input.getDeliverType();
             Station station = stationDao.getStationByName(input.getStationName());
-
             //get price and set time:
             if (type == 2) {
                 double distance1 = priceService.distance(station.getLatitude(),station.getLongitude(),
