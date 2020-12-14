@@ -129,6 +129,13 @@ class Main extends Component {
 
     optionSubmit = () => {
         let route = this.state.order_route
+        if (route == null){
+            // this.setState({
+            //     steps: 1
+            // })
+            // return;
+            route = 1;
+        }
         route.routePoly = this.state.poly
         this.setState({
             order_route:route
@@ -164,8 +171,10 @@ class Main extends Component {
             const datainfo = {
                 stationName: this.state.stations[0][i].stationName,
                 deliverType: this.state.stations[0][i].methodCode, // 1 for robot
-                totalTime: (data[i].time/60).toFixed(2),
-                distance: (data[i].distance/1000).toFixed(2),
+                // totalTime: (data[i].time/60).toFixed(2),
+                // distance: (data[i].distance/1000).toFixed(2),
+                totalTime: (data[i].time).toFixed(2),
+                distance: (data[i].distance).toFixed(2),
                 pickUpGeoX: this.state.origin.lat,
                 pickUpGeoY: this.state.origin.lng,
                 putDownGeoX: this.state.dropOff.lat,
@@ -250,31 +259,31 @@ class Main extends Component {
             });
     }
 
-    getPrice = () => {
-        let routeList = this.state;
-        axios.get('http://localhost:8080/Dispatch/getPrice', {
-            params:{
-                station: this.state.station1,
-                equipment: 'robot',
-                // Distance: ,
-                // deliverTime: ,
-                Weight: this.state.weight,
-                Size: this.state.size,
-            }
-        })
-            .then(response => {
-                console.log(response);
-                const newItem = {
-                    station: response.data.station,
-                    equipment: response.data.equipment,
-                    tag: response.data.tag,
-                    price: response.data.price,
-                    time: response.data.time,
-                };
-                routeList.push(newItem);
-            })
-        return routeList
-    }
+    // getPrice = () => {
+    //     let routeList = this.state;
+    //     axios.get('http://localhost:8080/Dispatch/getPrice', {
+    //         params:{
+    //             station: this.state.station1,
+    //             equipment: 'robot',
+    //             // Distance: ,
+    //             // deliverTime: ,
+    //             Weight: this.state.weight,
+    //             Size: this.state.size,
+    //         }
+    //     })
+    //         .then(response => {
+    //             console.log(response);
+    //             const newItem = {
+    //                 station: response.data.station,
+    //                 equipment: response.data.equipment,
+    //                 tag: response.data.tag,
+    //                 price: response.data.price,
+    //                 time: response.data.time,
+    //             };
+    //             routeList.push(newItem);
+    //         })
+    //     return routeList
+    // }
 
     addPoly = (poly)=>{
         this.setState({
