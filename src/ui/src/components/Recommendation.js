@@ -12,6 +12,8 @@ class Recommendation extends Component {
             checked: -1,
             options:[],
             isLoading: true,
+            warning:"",
+            shake:false,
         }
     }
     //use didMount lifecycle to fetch route data from Main
@@ -23,8 +25,15 @@ class Recommendation extends Component {
     }
 
     handleSubmit = () =>{
-        this.props.optionSubmit()
-        this.props.gotoLogin()
+        if (this.state.checked !== -1){
+            this.props.optionSubmit()
+            this.props.gotoLogin()
+        } else {
+            this.setState({
+                warning: "Please select an option from the list",
+                shake: true,
+            })
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -88,15 +97,14 @@ class Recommendation extends Component {
                                name="options"
                                value={choice}
                                key={index}
+                               //defaultChecked={choice.tag2 === "Cheapest"}
                                checked={this.state.checked === index}
                                onChange={this.onChange.bind(this, index)} /> Option {index + 1} &nbsp; &nbsp; <span style={{ color: 'red' }}> {choice.tag1} &nbsp; &nbsp;</span> <span style={{ color: 'red' }}> {choice.tag2} &nbsp; &nbsp;</span>
-
-
                         <ul>
                             <li>Delivery Type: {this.props.routeOptions[index].deliverType === 2 ? 'Drone' : 'Robot'}</li>
                             <li>Price: {choice.price}</li>
                             <li>Delivery Time: {((parseInt(choice.time1)+parseInt(choice.time2))/60).toFixed(2)} Mins</li>
-                            <li>Distance: {(choice.distance)} Km</li>
+                            <li>Distance: {(choice.distance / 1000).toFixed(2)} Km</li>
                         </ul>
                         <br />
                     </label>
@@ -113,6 +121,7 @@ class Recommendation extends Component {
                         onClick={this.handleSubmit}>
                         Pay
                     </Button>
+                    <p style={{color: "red"}} className={this.state.shake ? "shake": ""}>{this.state.warning}</p>
                 </div>
             </div>
             </CSSTransitionGroup>

@@ -49,10 +49,32 @@ export class MapContainer extends Component {
             map:map
         })
         this.calculateAndDisplayRoute(map);
+        if(this.props.curr.lat !== ""){
+            const marker = new google.maps.Marker({
+                position: new google.maps.LatLng(parseFloat(this.props.curr.lat), parseFloat(this.props.curr.lng)),
+                map: map,
+                icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                }
+            });
+            console.log("this is inside if", this.props.curr);
+        }
+        console.log(this.props.curr);
     }
 
     handleDrone(mapProps, map) {
         this.drawPolyline(map);
+        if(this.props.curr.lat !== ""){
+            const marker = new google.maps.Marker({
+                position: new google.maps.LatLng(parseFloat(this.props.curr.lat), parseFloat(this.props.curr.lng)),
+                map: map,
+                icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                }
+            });
+            console.log("this is inside if", this.props.curr);
+        }
+        console.log(this.props.curr);
     }
 
     drawPolyline (map) {
