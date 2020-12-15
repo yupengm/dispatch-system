@@ -12,6 +12,8 @@ class Recommendation extends Component {
             checked: -1,
             options:[],
             isLoading: true,
+            warning:"",
+            shake:false,
         }
     }
     //use didMount lifecycle to fetch route data from Main
@@ -26,6 +28,11 @@ class Recommendation extends Component {
         if (this.state.checked !== -1){
             this.props.optionSubmit()
             this.props.gotoLogin()
+        } else {
+            this.setState({
+                warning: "Please select an option from the list",
+                shake: true,
+            })
         }
     }
 
@@ -114,6 +121,7 @@ class Recommendation extends Component {
                         onClick={this.handleSubmit}>
                         Pay
                     </Button>
+                    <p style={{color: "red"}} className={this.state.shake ? "shake": ""}>{this.state.warning}</p>
                 </div>
             </div>
             </CSSTransitionGroup>

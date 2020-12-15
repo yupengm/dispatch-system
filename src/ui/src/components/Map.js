@@ -53,7 +53,9 @@ export class MapContainer extends Component {
             const marker = new google.maps.Marker({
                 position: new google.maps.LatLng(parseFloat(this.props.curr.lat), parseFloat(this.props.curr.lng)),
                 map: map,
-                icon: customMarker,
+                icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                }
             });
             console.log("this is inside if", this.props.curr);
         }
@@ -66,7 +68,9 @@ export class MapContainer extends Component {
             const marker = new google.maps.Marker({
                 position: new google.maps.LatLng(parseFloat(this.props.curr.lat), parseFloat(this.props.curr.lng)),
                 map: map,
-                icon: customMarker,
+                icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                }
             });
             console.log("this is inside if", this.props.curr);
         }
