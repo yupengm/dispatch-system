@@ -39,7 +39,9 @@ class Main extends Component {
             order_payment:null,
             order_number:null,
             poly:"",
-            inputPoly:""
+            inputPoly:"",
+            currX:"",
+            currY:"",
         }
     }
 
@@ -129,6 +131,13 @@ class Main extends Component {
 
     optionSubmit = () => {
         let route = this.state.order_route
+        if (route == null){
+            // this.setState({
+            //     steps: 1
+            // })
+            // return;
+            route = 1;
+        }
         route.routePoly = this.state.poly
         this.setState({
             order_route:route
@@ -164,14 +173,16 @@ class Main extends Component {
             const datainfo = {
                 stationName: this.state.stations[0][i].stationName,
                 deliverType: this.state.stations[0][i].methodCode, // 1 for robot
-                totalTime: (data[i].time/60).toFixed(2),
-                distance: (data[i].distance/1000).toFixed(2),
+                // totalTime: (data[i].time/60).toFixed(2),
+                // distance: (data[i].distance/1000).toFixed(2),
+                totalTime: (data[i].time).toFixed(2),
+                distance: (data[i].distance).toFixed(2),
                 pickUpGeoX: this.state.origin.lat,
                 pickUpGeoY: this.state.origin.lng,
                 putDownGeoX: this.state.dropOff.lat,
                 putDownGeoY: this.state.dropOff.lng,
-                timeFromStationToPickUpAddress: (data[i].time1),
-                timeFromPickUpAddressToPutDownAddress:(data[i].time2)
+                time1: (data[i].time1),
+                time2: (data[i].time2)
             }
             if(this.state.stations[0][i].methodCode == 1){
                 routesOptions.push(datainfo)
@@ -250,31 +261,31 @@ class Main extends Component {
             });
     }
 
-    getPrice = () => {
-        let routeList = this.state;
-        axios.get('http://localhost:8080/Dispatch/getPrice', {
-            params:{
-                station: this.state.station1,
-                equipment: 'robot',
-                // Distance: ,
-                // deliverTime: ,
-                Weight: this.state.weight,
-                Size: this.state.size,
-            }
-        })
-            .then(response => {
-                console.log(response);
-                const newItem = {
-                    station: response.data.station,
-                    equipment: response.data.equipment,
-                    tag: response.data.tag,
-                    price: response.data.price,
-                    time: response.data.time,
-                };
-                routeList.push(newItem);
-            })
-        return routeList
-    }
+    // getPrice = () => {
+    //     let routeList = this.state;
+    //     axios.get('http://localhost:8080/Dispatch/getPrice', {
+    //         params:{
+    //             station: this.state.station1,
+    //             equipment: 'robot',
+    //             // Distance: ,
+    //             // deliverTime: ,
+    //             Weight: this.state.weight,
+    //             Size: this.state.size,
+    //         }
+    //     })
+    //         .then(response => {
+    //             console.log(response);
+    //             const newItem = {
+    //                 station: response.data.station,
+    //                 equipment: response.data.equipment,
+    //                 tag: response.data.tag,
+    //                 price: response.data.price,
+    //                 time: response.data.time,
+    //             };
+    //             routeList.push(newItem);
+    //         })
+    //     return routeList
+    // }
 
     addPoly = (poly)=>{
         this.setState({
@@ -285,11 +296,25 @@ class Main extends Component {
 
     saveTracking = (data)=>{
         console.log(data)
-        this.setState({
-            // inputPoly: "cjseFblhjVEM@SJEFADGFSEMC[gALd@pHb@lGnAzRdAzO`@xGFx@L^X^pBfBJFXPRFxG{@bD_@VAZBH@NDPRv@^j@Rt@Lj@DZA`AItDi@vCY~Dg@bKmAhBSb@GBd@PnCHhAb@`HNbCx@tLb@dHdAzOp@hKCT?\\@NRpDhA|Pj@tIPtCFLFz@JjCNlJThNFtEuJXD|A@ZrJYh@CLBZLTPVd@H\\Bh@M~DSnDEtAD|APhCLdFJlGB^Nt@Tb@V\\NN`@V\\HNBr@DNCbAc@jB{@lD{Aj@Op@KdDQdAKtAa@dAg@fAs@b@UXKh@KrBItBIfIUjDKhCObJe@na@mAx{@iChL[lGKvIYdL[|CCvJUz@IfPg@lFQtBEhGLjDL`FHjS`@xLZ^?FVBJH\\JpAOrOOrLElA{@bAu@|@WXICG?QJIT?LQj@[\\qBdCOBGAKBEDCBUc@a@o@o@aAS_@ESBo@FgCE_ACk@Cm@Cm@EMCAKCAIUkBEYS{ACk@BiJ~@J"
-            // inputPoly:"cgqeFt_djVvAlB~@pAh@s@jA_B|BaDx@hAdArAR[v@cAf@s@jIaLnGuINWJ_AD_@XoAl@qAtAeCf@_AxA{BdAwA|@uAXUTMf@[h@Sn@Kf@EfAGPCRIHGPAh@Cr@C~CQtCIr@@z@D|@JlAZ|@X`ClApBbA~@Zj@Lz@Jt@@~@CbAOjA]j@Yp@c@nAkAlAeBnAoBh@s@hAiAx@i@ZOtAa@v@MfG[dH[lACtB@dBNhAN~EdAvK`C`H~AfE|@zCr@fA`@|@`@fAn@|AjAzDzCbAp@pAr@^PlAb@nCp@~@LrBP~AF^NT?|CEjCCp@@xARRDbAxAx@n@f@z@v@l@p@v@jAl@dArAbDNXFFLHVn@nAxCz@rBlAbDp@~Bj@vCL~@RbCFhCC`L@`CDfBDjAP`Cv@lKNlHG`CCf@M`CMhBcB|NOdCIlC@zBFdBR`C"
-            inputPoly: data.RoutePoly
-        })
+        if(data.type == 1){//robot
+            this.setState({
+                // inputPoly: "cjseFblhjVEM@SJEFADGFSEMC[gALd@pHb@lGnAzRdAzO`@xGFx@L^X^pBfBJFXPRFxG{@bD_@VAZBH@NDPRv@^j@Rt@Lj@DZA`AItDi@vCY~Dg@bKmAhBSb@GBd@PnCHhAb@`HNbCx@tLb@dHdAzOp@hKCT?\\@NRpDhA|Pj@tIPtCFLFz@JjCNlJThNFtEuJXD|A@ZrJYh@CLBZLTPVd@H\\Bh@M~DSnDEtAD|APhCLdFJlGB^Nt@Tb@V\\NN`@V\\HNBr@DNCbAc@jB{@lD{Aj@Op@KdDQdAKtAa@dAg@fAs@b@UXKh@KrBItBIfIUjDKhCObJe@na@mAx{@iChL[lGKvIYdL[|CCvJUz@IfPg@lFQtBEhGLjDL`FHjS`@xLZ^?FVBJH\\JpAOrOOrLElA{@bAu@|@WXICG?QJIT?LQj@[\\qBdCOBGAKBEDCBUc@a@o@o@aAS_@ESBo@FgCE_ACk@Cm@Cm@EMCAKCAIUkBEYS{ACk@BiJ~@J"
+                // inputPoly:"cgqeFt_djVvAlB~@pAh@s@jA_B|BaDx@hAdArAR[v@cAf@s@jIaLnGuINWJ_AD_@XoAl@qAtAeCf@_AxA{BdAwA|@uAXUTMf@[h@Sn@Kf@EfAGPCRIHGPAh@Cr@C~CQtCIr@@z@D|@JlAZ|@X`ClApBbA~@Zj@Lz@Jt@@~@CbAOjA]j@Yp@c@nAkAlAeBnAoBh@s@hAiAx@i@ZOtAa@v@MfG[dH[lACtB@dBNhAN~EdAvK`C`H~AfE|@zCr@fA`@|@`@fAn@|AjAzDzCbAp@pAr@^PlAb@nCp@~@LrBP~AF^NT?|CEjCCp@@xARRDbAxAx@n@f@z@v@l@p@v@jAl@dArAbDNXFFLHVn@nAxCz@rBlAbDp@~Bj@vCL~@RbCFhCC`L@`CDfBDjAP`Cv@lKNlHG`CCf@M`CMhBcB|NOdCIlC@zBFdBR`C"
+                inputPoly: data.RoutePoly,
+                currX : data.currentX,
+                currY : data.currentY,
+            })
+        } else if(data.type == 2){//drone
+            console.log(data)
+            this.setState({
+                station: {lat: parseFloat(data.stationX), lng:parseFloat(data.stationY)},
+                origin: {lat: parseFloat(data.PickUpAddressX), lng: parseFloat(data.PickUpAddressY)},
+                dropOff: {lat: parseFloat(data.PutDownAddressX), lng: parseFloat(data.PutDownAddressY)},
+                drawDroneOrRobot: 1,
+                currX : data.currentX,
+                currY : data.currentY,
+            })
+        }
     }
 
 
@@ -366,6 +391,7 @@ class Main extends Component {
                          origin={this.state.origin} des={this.state.dropOff} station={this.state.station}
                          polyline={this.state.inputPoly}
                          addPoly={this.addPoly}
+                         curr={{lat:this.state.currX, lng: this.state.currY}}
                     />
                 </div>
             </div>
