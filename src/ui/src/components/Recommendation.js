@@ -23,8 +23,10 @@ class Recommendation extends Component {
     }
 
     handleSubmit = () =>{
-        this.props.optionSubmit()
-        this.props.gotoLogin()
+        if (this.state.checked !== -1){
+            this.props.optionSubmit()
+            this.props.gotoLogin()
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -88,10 +90,9 @@ class Recommendation extends Component {
                                name="options"
                                value={choice}
                                key={index}
+                               //defaultChecked={choice.tag2 === "Cheapest"}
                                checked={this.state.checked === index}
                                onChange={this.onChange.bind(this, index)} /> Option {index + 1} &nbsp; &nbsp; <span style={{ color: 'red' }}> {choice.tag1} &nbsp; &nbsp;</span> <span style={{ color: 'red' }}> {choice.tag2} &nbsp; &nbsp;</span>
-
-
                         <ul>
                             <li>Delivery Type: {this.props.routeOptions[index].deliverType === 2 ? 'Drone' : 'Robot'}</li>
                             <li>Price: {choice.price}</li>

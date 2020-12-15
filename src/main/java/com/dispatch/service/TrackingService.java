@@ -65,6 +65,12 @@ public class TrackingService {
 
 
 //        toReturn.put("status",String.valueOf(status));
+        toReturn.put("PickUpAddressX",String.valueOf(order.getRoute().getPickUpGeoX()));
+        toReturn.put("PickUpAddressY",String.valueOf(order.getRoute().getPickUpGeoY()));
+        toReturn.put("PutDownAddressX",String.valueOf(order.getRoute().getPutDownGeoX()));
+        toReturn.put("PutDownAddressY",String.valueOf(order.getRoute().getPutDownGeoY()));
+        toReturn.put("stationX",String.valueOf(order.getStation().getLatitude()));
+        toReturn.put("stationY",String.valueOf(order.getStation().getLongitude()));
         toReturn.put("status",status);
         toReturn.put("orderNumber",String.valueOf(order.getId()));
         toReturn.put("email", order.getUser().getEmailId());

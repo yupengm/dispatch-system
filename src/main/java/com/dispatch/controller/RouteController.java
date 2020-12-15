@@ -102,7 +102,7 @@ public class RouteController {
                 temp.tag1 = "Fastest";
             }
             if (input.getPrice() == MIN_PRICE) {
-                temp.tag2 = "Cheapeast";
+                temp.tag2 = "Cheapest";
             }
             toReturn.add(temp);
         }
