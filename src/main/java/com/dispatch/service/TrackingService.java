@@ -42,7 +42,7 @@ public class TrackingService {
             double scale = getScale(timeElapsed, timeInterval);
             GoogleMapPolylineDecoder decoder = new GoogleMapPolylineDecoder();
             List<List<Double>> coordinates = decoder.decodePolyline(order.getRoute().getRoutePoly());
-            int index = (int) (Math.round(coordinates.size() * scale)) - 1;
+            int index = (int) (Math.round(coordinates.size() * scale));
             toReturn.put("currentX",String.valueOf(coordinates.get(index).get(0)));
             toReturn.put("currentY",String.valueOf(coordinates.get(index).get(1)));
         } else if(type == 2 && !status.equals("Completed")) {
