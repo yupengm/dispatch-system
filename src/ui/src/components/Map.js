@@ -422,7 +422,8 @@ export class MapContainer extends Component {
 
     getTrackingPath= (polyCode, map) =>{
         let res = this.decode(polyCode)
-        // console.log(res)
+        console.log(res)
+        console.log("props" + this.props)
 
         let points = res.map((p)=>{
             return{
@@ -431,21 +432,30 @@ export class MapContainer extends Component {
             }
         })
 
+        //Set 3 location, sta, ori, des
         let markers = []
-        for (let i = 0; i < 2; i++) {
-            let j = i
-            if(i==0)
-                j=0
-            else
-                j=points.length-1
+        for (let i = 0; i < 3; i++) {
 
             const marker = new google.maps.Marker({
-                position: new google.maps.LatLng(points[j].lat, points[j].lng),
+                position: new google.maps.LatLng(this.props.route[i].lat, this.props.route[i].lng),
                 map: map,
                 label: String.fromCharCode(65+i)
             });
             markers.push(marker)
         }
+
+
+        // Set cur location
+        const curLocation = new google.maps.Marker({
+                // position: new google.maps.LatLng(this.props.curr.lat, parseFloat(this.props.curr.lng)),
+                position: new google.maps.LatLng(this.props.curr.lat, this.props.curr.lng),
+                map: map,
+                icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                }
+            });
+
+        markers.push(curLocation);
 
         this.setState({
             markers: markers
@@ -562,6 +572,5 @@ export class MapContainer extends Component {
 }
 
 export default GoogleApiWrapper({
-    // apiKey: process.env.googleMapApi
-    apiKey: "AIzaSyBuoOrk0v4p_2Q-Pb7xymPwQoJvDP9v-ck"
+    apiKey: process.env.REACT_APP_google_map_api
 })(MapContainer)
