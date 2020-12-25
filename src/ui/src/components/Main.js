@@ -303,6 +303,9 @@ class Main extends Component {
                 inputPoly: data.RoutePoly,
                 currX : data.currentX,
                 currY : data.currentY,
+                station: {lat: parseFloat(data.stationX), lng:parseFloat(data.stationY)},
+                origin: {lat: parseFloat(data.PickUpAddressX), lng: parseFloat(data.PickUpAddressY)},
+                dropOff: {lat: parseFloat(data.PutDownAddressX), lng: parseFloat(data.PutDownAddressY)},
             })
         } else if(data.type == 2){//drone
             console.log(data)
@@ -382,7 +385,7 @@ class Main extends Component {
                     {/*     drone={[]}*/}
                     {/*     origin={this.state.origin} des={this.state.dropOff} station={this.state.station}*/}
                     {/*/>*/}
-                    <Map route={[this.state.station, this.state.origin, this.state.dropOff ]}
+                    <Map route={[this.state.station, this.state.origin, this.state.dropOff]}
                          drone={[this.state.station, this.state.origin, this.state.dropOff]}
                          drawDroneOrRobot={this.state.drawDroneOrRobot}
                          stations={this.state.stations}

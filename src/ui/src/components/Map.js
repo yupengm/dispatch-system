@@ -421,9 +421,9 @@ export class MapContainer extends Component {
     };
 
     getTrackingPath= (polyCode, map) =>{
+
         let res = this.decode(polyCode)
         // console.log(res)
-
         let points = res.map((p)=>{
             return{
                 lat: p.latitude,
@@ -432,17 +432,12 @@ export class MapContainer extends Component {
         })
 
         let markers = []
-        for (let i = 0; i < 2; i++) {
-            let j = i
-            if(i==0)
-                j=0
-            else
-                j=points.length-1
+        for (let i = 0; i < 3; i++) {
 
             const marker = new google.maps.Marker({
-                position: new google.maps.LatLng(points[j].lat, points[j].lng),
+                position: new google.maps.LatLng(this.props.route[i].lat, this.props.route[i].lng),
                 map: map,
-                label: String.fromCharCode(65+i)
+                label: String.fromCharCode(65 + i)
             });
             markers.push(marker)
         }
