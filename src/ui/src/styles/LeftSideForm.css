@@ -15,3 +15,8 @@
 .location-cards-leave {
     opacity: 1;
 }
+
+.left-side {
+    margin-left: 0.5%;
+    overflow: scroll;
+}

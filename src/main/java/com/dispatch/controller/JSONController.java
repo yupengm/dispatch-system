@@ -15,7 +15,6 @@ public class JSONController {
     @RequestMapping("/test")
     @ResponseBody
     public String test() {
-
         return "123";
     }
 

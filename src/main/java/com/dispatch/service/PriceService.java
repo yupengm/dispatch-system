@@ -4,7 +4,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RouteService {
+public class PriceService {
     // input: list of hashmap: length = routes num
 
     //need to return
@@ -20,16 +20,25 @@ public class RouteService {
         final double dronePricePerKm = 3;
 
         if (methodCode == 1){
-            double price = distance * robotPricePerKm;
+            double price = distance/1000 * robotPricePerKm;
             return price;
         } else if (methodCode == 2){
-            double price = distance * dronePricePerKm;
+            double price = distance/1000 * dronePricePerKm;
             return price;
         } else {
             throw new ArithmeticException("wrong method code provided.");
         }
 
     }
+
+
+    // use for drone only
+    public int timeCalculator(double distance) throws Exception{
+        final double MPS = 20; // meter per second
+        int time = (int) (distance /MPS);
+        return time;// convert hour to seconds
+    }
+
 
     public static double distance(double lat1, double lon1, double lat2, double lon2) {
 
@@ -47,4 +56,6 @@ public class RouteService {
 
         return Math.sqrt(distance);
     }
+
+
 }

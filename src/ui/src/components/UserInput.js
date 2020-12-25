@@ -16,19 +16,43 @@ class UserInputForm extends Component{
                 console.log('Received values of form: ', values);
                 //axios
                 this.props.handleChange(values)
-                this.props.setSteps()
 
-                const params = {
-                        size: this.props.length * this.props.width * this.props.height,
-                    }
 
-                    let res = axios.post('Dispatch/input', params);
+                console.log(values)
 
-                    // console.log(res.data);
+                let data = {
+                    size: values.height * values.length * values.width,
+                    weight:values.weight,
+                    feature:[],
+                    declared_value: values.value
                 }
 
-        });
-    };
+                axios({
+                    method: 'post',
+                    url: '/Dispatch/input',
+                    data: data
+                }).then((response) => {
+                    console.log(response.data)
+                    this.props.getListOfStations(response.data, data.weight, data.size)
+                    this.props.getListOfStationsFromLeftSideForm(response.data)
+                    this.props.setSteps()
+                }, (error) => {
+
+                    console.log("MY ERROR IS: "+error.response.status +"oh yeah");
+                    if(error.response.status == 401){
+                        this.setState({
+
+                        })
+                    } else if (error.response.status == 400){
+                        // this.state.isError = "User does not exist"
+                        this.setState({
+
+                        })
+                    }
+                });
+        }
+    })
+    }
 
 
     normFile = e => {
@@ -70,7 +94,7 @@ class UserInputForm extends Component{
         //             value:this.props.value
         //         });
         //     }, []);
-        console.log(this.props)
+
         const formItemLayout = {labelCol: { span: 4 }, wrapperCol: { span: 14 }};
         return (
             <CSSTransitionGroup

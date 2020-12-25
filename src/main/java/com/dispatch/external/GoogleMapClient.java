@@ -1,4 +1,5 @@
 package com.dispatch.external;
+import com.dispatch.Secret;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -7,12 +8,14 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import com.dispatch.Secret;
 
 import java.io.IOException;
 
 
+
 public class GoogleMapClient {
-    private final static String KEY = "AIzaSyBuoOrk0v4p_2Q-Pb7xymPwQoJvDP9v-ck" ;
+    private static String KEY = Secret.GoogleKEY;
     private static final String EXTRACT_URL = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=";
     private static final String FORMAT_URL = "&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=";
 

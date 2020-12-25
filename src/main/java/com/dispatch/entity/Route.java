@@ -1,13 +1,10 @@
 package com.dispatch.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 
 
 @Entity
@@ -21,12 +18,37 @@ public class Route implements Serializable {
 
     private double distance;
 
-    private double totalTime;
+    public double totalTime;
 
-    private String route;
+    public double price;
+
+    private int deliverType;
+
+    private double pickUpGeoX;
+
+    private double pickUpGeoY;
+
+    private double putDownGeoX;
+
+    private double putDownGeoY;
+
+    @JsonProperty("time1")
+    private int timeFromStationToPickUpAddress;
+
+    @JsonProperty("time2")
+    private int timeFromPickUpAddressToPutDownAddress;
+
+    @Lob
+    private String routePoly;
+
+    private String stationName;
+
+    private String message;
+
 
     @OneToOne(mappedBy = "route")
     private Order order;
+
 
     public int getId() {
         return id;
@@ -52,12 +74,76 @@ public class Route implements Serializable {
         this.totalTime = totalTime;
     }
 
-    public String getRoute() {
-        return route;
+    public double getPrice() {
+        return price;
     }
 
-    public void setRoute(String route) {
-        this.route = route;
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getDeliverType() {
+        return deliverType;
+    }
+
+    public void setDeliverType(int deliverType) {
+        this.deliverType = deliverType;
+    }
+
+    public double getPickUpGeoX() {
+        return pickUpGeoX;
+    }
+
+    public void setPickUpGeoX(double pickUpGeoX) {
+        this.pickUpGeoX = pickUpGeoX;
+    }
+
+    public double getPickUpGeoY() {
+        return pickUpGeoY;
+    }
+
+    public void setPickUpGeoY(double pickUpGeoY) {
+        this.pickUpGeoY = pickUpGeoY;
+    }
+
+    public double getPutDownGeoX() {
+        return putDownGeoX;
+    }
+
+    public void setPutDownGeoX(double putDownGeoX) {
+        this.putDownGeoX = putDownGeoX;
+    }
+
+    public double getPutDownGeoY() {
+        return putDownGeoY;
+    }
+
+    public void setPutDownGeoY(double putDownGeoY) {
+        this.putDownGeoY = putDownGeoY;
+    }
+
+    public String getRoutePoly() {
+        return routePoly;
+    }
+
+    public void setRoutePoly(String route) {
+        this.routePoly = route;
+    }
+
+    public String getStationName() {
+        return stationName;
+    }
+
+    public void setStationName(String stationName) {
+        this.stationName = stationName;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public Order getOrder() {
@@ -66,5 +152,21 @@ public class Route implements Serializable {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public int getTimeFromStationToPickUpAddress() {
+        return timeFromStationToPickUpAddress;
+    }
+
+    public void setTimeFromStationToPickUpAddress(int timeFromStationToPickUpAddress) {
+        this.timeFromStationToPickUpAddress = timeFromStationToPickUpAddress;
+    }
+
+    public int getTimeFromPickUpAddressToPutDownAddress() {
+        return timeFromPickUpAddressToPutDownAddress;
+    }
+
+    public void setTimeFromPickUpAddressToPutDownAddress(int timeFromPickUpAddressToPutDownAddress) {
+        this.timeFromPickUpAddressToPutDownAddress = timeFromPickUpAddressToPutDownAddress;
     }
 }

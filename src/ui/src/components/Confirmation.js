@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, List} from "antd"
+import {Button, List, Spin} from "antd"
 import { withRouter } from "react-router-dom";
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
@@ -24,21 +24,31 @@ class Confirmation extends Component {
 
     render() {
 
+        console.log(this.props.order_route)
+
         if(this.props.curr_step != 5)
             return null
+        if(this.props.order_number == null)
+            return(
+                <div className="spin-box" id="loading">
+                    <Spin tip="Loading..." size="large"/>
+                </div>
+            )
 
-        /*const satList = this.props.satInfo ? this.props.satInfo.above : [];
-        const { isLoad } = this.props;*/
         const data = [
             'Your order has been submit! Thank you for choosing DispatchSF!',
-            'User ID: john@gmail.com\n',
-            'Order Number: 12345\n',
-            'Status: In Process\n',
-            'Drone 1',
-            'Price :  $40',
-            'Estimated Deliver Time:   14:00 today',
-            'Estimated Travel Distance: 10 mi',
+            `Order Number: ${this.props.order_number}\n`,
+            `Price:  $${this.props.order_route.price}`,
+            'Status: On the way to pick up\n',
+            `User ID: ${this.props.user}\n`,
+            `Station: ${this.props.order_route.stationName}`,
+            `Deliver Method: ${this.props.order_route.deliverType == 2 ? "Drone": "Robot"}`,
+            `Size: ${this.props.length}in.(length) x ${this.props.width}in.(width) x ${this.props.height}in.(height)`,
+            `Weight: ${this.props.weight} lbs`,
+            `Pick Up Location:  ${this.props.pickup.address1A}, ${this.props.pickup.city}, US. ${this.props.pickup.zipadd}`,
+            `Put Down Location: ${this.props.deliver.address1A}, ${this.props.deliver.city}, US. ${this.props.deliver.zipadd}`,
         ];
+
         return(
             <CSSTransitionGroup
                 transitionName="location-cards"
@@ -49,37 +59,18 @@ class Confirmation extends Component {
             <div className="tracking-list-box">
 
                 {
-                    /*isLoad ?
-                        <div className="spin-box">
-                            <Spin tip="Loading..." size="large" />
-                        </div>
-                        :*/
                     <List
                         bordered
                         dataSource={data}
                         renderItem={item => <List.Item>{item}</List.Item>}
                     />
-                    // <List
-                    //     className="tracking-list"
-                    //     itemLayout="horizontal"
-                    //     size="small"
-                    //     dataSource={data}
-                    //     renderItem={item => (
-                    //         <List.Item>
-                    //             <List.Item.Meta
-                    //                 /*avatar={<Avatar size={50} src={satellite} />}*/
-                    //                 title={<a href="https://ant.design">{item.title}</a>}
-                    //             />
-                    //         </List.Item>
-                    //     )}
-                    // />
                 }
                 <div className="btn-container">
 
-                    <Button type="primary" htmlType="submit" className="tracking-list-btn"
-                            onClick={this.props.setSteps}>
-                        Tracking
-                    </Button>
+                    {/*<Button type="primary" htmlType="submit" className="tracking-list-btn"*/}
+                    {/*        onClick={this.props.setSteps}>*/}
+                    {/*    Tracking*/}
+                    {/*</Button>*/}
                     <Button type="primary" htmlType="submit" className="home-list-btn"
                             onClick={this.handleRedirect}>
                         Home

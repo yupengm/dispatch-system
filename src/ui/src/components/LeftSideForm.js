@@ -15,7 +15,7 @@ class LeftSideForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            steps : 1,
+            steps : this.props.curr_step == 6 ? 6 : 1,
             length: 0,
             width: 0,
             height: 0,
@@ -24,10 +24,55 @@ class LeftSideForm extends Component {
             value: 0,
             destination: "",
             target:"",
-            options:[["1","option1"],["2","option2"],["3","option3"]],
+            routes:[],
+            stations:[],
             selectedOption:""
         }
     }
+
+    getListOfStationsFromLeftSideForm = (stations)=>{
+        let mystations = []
+        mystations.push(stations)
+        this.setState({
+            stations: mystations
+        })
+        console.log(this.state.stations)
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot){
+        //gather all info
+
+        console.log("component did from left side form", this.props.timeAndDistance, this.state.stations[0])
+        //
+        // if(prevProps.timeAndDistance != this.props.timeAndDistance) {
+        //     let data = this.props.timeAndDistance
+        //     console.log(data)
+        //     console.log(data.length)
+        //     let routesOptions = []
+        //     for (let i = 0; i < data.length; i++) {
+        //         let datainfo = {
+        //             stationName: this.state.stations[0][i].stationName,
+        //             deliverType: this.state.stations[0][i].methodCode, // 1 for robot
+        //             totalTime: data[i].time,
+        //             distance: data[i].distance,
+        //             pickUpGeoX: this.props.origin.lat,
+        //             pickUpGeoY: this.props.origin.lng,
+        //             putDownGeoX: this.props.dropOff.lat,
+        //             putDownGeoY: this.props.dropOff.lng
+        //         }
+        //         console.log(datainfo)
+        //         routesOptions.push(datainfo)
+        //     }
+        //     console.log(routesOptions)
+        //     this.setState({
+        //         routes:routesOptions
+        //     })
+        //     this.props.handleRoute(routesOptions)
+        // }
+
+    }
+
+
 
     handleSteps = ()=> {
         this.setState(prevState=>{
@@ -99,15 +144,20 @@ class LeftSideForm extends Component {
         }))
     }
 
-    selected = (selectedOption) => {
-        console.log()
-        this.setState({
-            selectedOption: selectedOption
-        })
-    }
+    // selected = (selectedOption) => {
+    //     console.log(this.state.routes[selectedOption])
+    //     this.setState({
+    //         selectedOption: this.state.routes[selectedOption],
+    //     })
+    //
+    //     //draw the route
+    //     let data = this.state.routes[selectedOption]
+    //     this.props.getOptionFromUser(data)
+    // }
 
     render() {
         const {steps, options} = this.state
+        console.log(this.props.timeAndDistance, this.props.stations)
         return (
             <div className="left-side">
 
@@ -115,7 +165,9 @@ class LeftSideForm extends Component {
 
                 <UserAddress curr_step={steps}
                              setSteps={this.handleSteps}
-                             showPoints = {this.setPoints}
+                             showAddress = {this.props.showAddress}
+                             pickup = {this.props.value.pickup}
+                             deliver = {this.props.value.deliver}
                 />
 
 
@@ -128,6 +180,8 @@ class LeftSideForm extends Component {
                            height = {this.state.height}
                            feature={this.state.feature}
                            value={this.state.value}
+                           getListOfStations = {this.props.getListOfStations}
+                           getListOfStationsFromLeftSideForm = {this.getListOfStationsFromLeftSideForm}
                            goback={this._prev}
                 />
 
@@ -136,25 +190,41 @@ class LeftSideForm extends Component {
                                 setSteps={this.handleSteps}
                                 gotoLogin={this.gotoLogin}
                                 goback={this._prev}
-                                options={options}
-                                changeFn={this.selected}
+                                routeOptions={this.props.routeOptions}
+                                routes={this.props.routes}
+                                changeFn={this.props.selected}
+                                organizeRoute={this.props.organizeRoute}
+                                optionSubmit={this.props.optionSubmit}
                 />
 
                 <Login curr_step={steps}
                        loggedin={this.loggedin}
                        gotoRegister={this.gotoRegister}
+                       authenticate={this.props.authenticate}
                 />
 
                 <CreditCard curr_step={steps}
-                          setSteps={this.handleSteps}
+                            setSteps={this.handleSteps}
+                            order={this.props.order}
                 />
 
                 <Confirmation curr_step={steps}
-                          setSteps={this.handleSteps}
+                              setSteps={this.handleSteps}
+                              order_number={this.props.order_number}
+                              order_route={this.props.order_route}
+                              length={this.state.length}
+                              width ={this.state.width}
+                              height = {this.state.height}
+                              weight={this.props.weight}
+                              deliver={this.props.deliver}
+                              pickup={this.props.pickup}
+                              user={this.props.user}
                 />
 
                 <Tracking curr_step={steps}
                           setSteps={this.handleSteps}
+                          orderNum={this.props.orderNum}
+                          saveTracking={this.props.saveTracking}
                 />
 
                 <Register curr_step={steps}

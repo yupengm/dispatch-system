@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Input, Tooltip, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete,} from 'antd';
+import {Form, Input, Tooltip, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete, InputNumber,} from 'antd';
 import axios from 'axios';
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
@@ -15,33 +15,52 @@ class RegisterForm extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        this.props.gotoLogin()
+
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                const params = {
-                    "emailId": "1111@gmail.com",
-                    "password": "123123",
-                    "firstName": "Christopher",
-                    "lastName": "Nolan",
-                    "phone": "1234567890"
+                axios({
+                    method: 'post',
+                    url: '/Dispatch/signup',
+                    data: {
+                        email: values.email,
+                        password: values.password,
+                        first_name: values.first_name,
+                        last_name: values.last_name,
+                        phone_number: values.phone
                     }
-
-                    let res = axios.post('Dispatch/signup', params);
-
-                    // console.log(res.data);
+                }).then((response) => {
+                    console.log(response);
+                    this.props.gotoLogin()
+                }, (error) => {
+                    console.log("MY ERROR IS: "+error.response.status +"oh yeah");
+                    if(error.response.status == 401){
+                        this.setState({
+                            isError : "Password combination is not correct"
+                        })
+                    } else if (error.response.status == 400){
+                        // this.state.isError = "User does not exist"
+                        this.setState({
+                            isError : "User does not exist"
+                        })
+                    }
+                    //Error pending
+                });
+                // const params = {
+                //     "emailId": "1111@gmail.com",
+                //     "password": "123123",
+                //     "firstName": "Christopher",
+                //     "lastName": "Nolan",
+                //     "phone": "1234567890"
+                //     }
+                //
+                //     let res = axios.post('Dispatch/signup', params);
+                //
+                //     // console.log(res.data);
+                // this.props.gotoLogin()
                 }
 
         });
-    };
-
-    compareToFirstPassword = (rule, value, callback) => {
-        const { form } = this.props;
-        if (value && value !== form.getFieldValue('password')) {
-            callback('Two passwords that you enter is inconsistent!');
-        } else {
-            callback();
-        }
     };
 
     normFile = e => {
@@ -127,111 +146,111 @@ class RegisterForm extends Component {
                 transitionAppearTimeout={400}
                 transitionEnterTimeout={400}>
 
-            <Form{...formItemLayout} className="register" onSubmit={this.handleSubmit}>
+                <Form{...formItemLayout} className="register" onSubmit={this.handleSubmit}>
 
-                <Form.Item label="E-mail" hasFeedback>
-                    {getFieldDecorator('email', {
-                        rules: [
+                    <Form.Item label="E-mail" hasFeedback>
+                        {getFieldDecorator('email', {
+                            rules: [
+                                {
+                                    type: 'email',
+                                    message: 'The input is not valid E-mail!',
+                                },
+                                {
+                                    required: true,
+                                    message: 'Please input your E-mail!',
+                                },
+                            ],
+                        })(<Input />)}
+                    </Form.Item>
+
+
+                    <Form.Item label="Password" hasFeedback>
+                        {getFieldDecorator('password', {
+                            rules: [
+                                {
+                                    required: true,
+                                    message: 'Please input your password!',
+                                },
+                            ],
+                        })(<Input.Password />)}
+                    </Form.Item>
+
+                    <Form.Item label="Confirm Password" hasFeedback>
+                        {getFieldDecorator('confirm', {
+                            rules: [
+                                {
+                                    required: true,
+                                    message: 'Please confirm your password!',
+                                },
+                                {
+                                    validator: this.compareToFirstPassword,
+                                },
+                            ],
+                        })(<Input.Password />)}
+                    </Form.Item>
+
+
+                    <Form.Item label="First Name" hasFeedback>
+                        {getFieldDecorator('first_name', {
+                            rules: [
+                                {
+                                    required: true,
+                                    message: 'Please input your first name!',
+                                    whitespace: true,
+                                },
+                            ],
+                        }) (<Input />)}
+                    </Form.Item>
+
+
+                    <Form.Item label="Last Name" hasFeedback>
+                        {getFieldDecorator('last_name', {
+                            rules: [
+                                {
+                                    required: true,
+                                    message: 'Please input your last name!',
+                                    whitespace: true,
+                                },
+                            ],
+                        }) (<Input />)}
+                    </Form.Item>
+
+                    <Form.Item label="Phone Number" hasFeedback>
+                        {getFieldDecorator('phone', {
+                            rules: [
+                                {
+                                    required: true,
+                                    message: 'Please input your phone number!',
+                                    whitespace: true,
+                                },
+                            ],
+
+                        }) (<Input addonBefore={prefixSelector} style={{width: '100%',}}/>)}
+                    </Form.Item>
+
+                    <Form.Item
+                        name="agreement"
+                        valuePropName="checked"
+                        rules={[
                             {
-                                type: 'email',
-                                message: 'The input is not valid E-mail!',
+                                validator: (_, value) =>
+                                    value ? Promise.resolve() : Promise.reject('Should accept agreement'),
                             },
-                            {
-                                required: true,
-                                message: 'Please input your E-mail!',
-                            },
-                        ],
-                    })(<Input />)}
-                </Form.Item>
+                        ]}
+                        {...tailFormItemLayout}
+                    >
+                        <Checkbox>
+                            I have read the <a href="">agreement</a>
+                        </Checkbox>
+                    </Form.Item>
+                    <Form.Item {...tailFormItemLayout}>
+                        <Button type="primary" htmlType="submit">
+                            Register
+                        </Button>
+                    </Form.Item>
 
 
-                <Form.Item label="Password" hasFeedback>
-                    {getFieldDecorator('password', {
-                        rules: [
-                            {
-                                required: true,
-                                message: 'Please input your password!',
-                            },
-                        ],
-                    })(<Input.Password />)}
-                </Form.Item>
-
-                <Form.Item label="Confirm Password" hasFeedback>
-                    {getFieldDecorator('confirm', {
-                        rules: [
-                            {
-                                required: true,
-                                message: 'Please confirm your password!',
-                            },
-                            {
-                                validator: this.compareToFirstPassword,
-                            },
-                        ],
-                    })(<Input.Password />)}
-                </Form.Item>
-
-
-                <Form.Item label="First Name" hasFeedback>
-                    {getFieldDecorator('first name', {
-                        rules: [
-                            {
-                                required: true,
-                                message: 'Please input your first name!',
-                                whitespace: true,
-                            },
-                        ],
-                    }) (<Input />)}
-                </Form.Item>
-
-
-                <Form.Item label="Last Name" hasFeedback>
-                    {getFieldDecorator('last name', {
-                        rules: [
-                            {
-                                required: true,
-                                message: 'Please input your last name!',
-                                whitespace: true,
-                            },
-                        ],
-                    }) (<Input />)}
-                </Form.Item>
-
-                <Form.Item label="Phone Number" hasFeedback>
-                    {getFieldDecorator('phone', {
-                        rules: [
-                            {
-                                required: true,
-                                message: 'Please input your phone number!',
-                                whitespace: true,
-                            },
-                        ],
-
-                    }) (<Input addonBefore={prefixSelector} style={{width: '100%',}}/>)}
-                </Form.Item>
-
-                <Form.Item
-                    name="agreement"
-                    valuePropName="checked"
-                    rules={[
-                        {
-                            validator: (_, value) =>
-                                value ? Promise.resolve() : Promise.reject('Should accept agreement'),
-                        },
-                    ]}
-                    {...tailFormItemLayout}
-                >
-                    <Checkbox>
-                        I have read the <a href="">agreement</a>
-                    </Checkbox>
-                </Form.Item>
-                <Form.Item {...tailFormItemLayout}>
-                    <Button type="primary" htmlType="submit">
-                        Register
-                    </Button>
-                </Form.Item>
-
-
-            </Form>
+                </Form>
             </CSSTransitionGroup>
 
         );

@@ -1,5 +1,7 @@
 package com.dispatch.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 import javax.persistence.Entity;
@@ -22,15 +24,16 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @JsonProperty("email")
+    private String emailId;
+
     private String startTime;
 
     private String endTime;
 
-    private double totalWeight;
 
-    private double price;
-
-    private String deliverType;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Payment payment;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Route route;
@@ -41,14 +44,22 @@ public class Order implements Serializable {
     @ManyToOne
     private Station station;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private User user;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private PickUpAddress pickUpAddress;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private PutDownAddress putDownAddress;
 
-    @ManyToOne
-    private User user;
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
 
     public int getId() {
         return id;
@@ -72,30 +83,6 @@ public class Order implements Serializable {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
-    }
-
-    public double getTotalWeight() {
-        return totalWeight;
-    }
-
-    public void setTotalWeight(double totalWeight) {
-        this.totalWeight = totalWeight;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getDeliverType() {
-        return deliverType;
-    }
-
-    public void setDeliverType(String deliverType) {
-        this.deliverType = deliverType;
     }
 
     public Route getRoute() {
@@ -122,6 +109,14 @@ public class Order implements Serializable {
         this.station = station;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public PickUpAddress getPickUpAddress() {
         return pickUpAddress;
     }
@@ -138,11 +133,11 @@ public class Order implements Serializable {
         this.putDownAddress = putDownAddress;
     }
 
-    public User getUser() {
-        return user;
+    public Payment getPayment() {
+        return payment;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 }

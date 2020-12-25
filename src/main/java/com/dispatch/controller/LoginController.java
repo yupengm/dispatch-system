@@ -20,12 +20,12 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> login(@RequestBody User user, BindingResult result) throws JsonProcessingException {
-        if (result.hasErrors()) {
-            return null; //TODO: don't return null.
-        }
+//        if (result.hasErrors()) {
+//            return null; //TODO: don't return null.
+//        }
         return userService.loginUser(user);
 
     }

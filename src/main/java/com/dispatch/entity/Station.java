@@ -13,7 +13,7 @@ public class Station implements Serializable {
     private static final long serialVersionUID = 2771531852204068105L;
 
     @Id
-    private String name;
+    private String stationName;
 
     private double latitude;
 
@@ -23,12 +23,13 @@ public class Station implements Serializable {
 
     private int robotAvailable;
 
-    public String getName() {
-        return name;
+
+    public String getStationName() {
+        return stationName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStationName(String stationName) {
+        this.stationName = stationName;
     }
 
     public double getLatitude() {
@@ -62,5 +63,4 @@ public class Station implements Serializable {
     public void setRobotAvailable(int robotAvailable) {
         this.robotAvailable = robotAvailable;
     }
-
 }

@@ -1,6 +1,5 @@
 package com.dispatch.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.json.JSONObject;
 
 import com.dispatch.external.GoogleMapClient;
@@ -8,9 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -26,23 +23,25 @@ public class AddressValidationService {
             toReturn.put("message", "Place NOT found.");
             String json = new ObjectMapper().writeValueAsString(toReturn);
             return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
+            // status 400
         }
 
         double[] pickUpGeoLocationXY = splitGeolocationXY(pickUplocationXYString);
         double[] putDownGeoLocationXY = splitGeolocationXY(putDownlocationXYString);
-            if (isSF(pickUpGeoLocationXY[0], pickUpGeoLocationXY[1])
-                    && isSF(putDownGeoLocationXY[0], putDownGeoLocationXY[1])) {
-                toReturn.put("pickUpGeoLocationX", String.valueOf(pickUpGeoLocationXY[0]));
-                toReturn.put("pickUpGeoLocationY", String.valueOf(pickUpGeoLocationXY[1]));
-                toReturn.put("putDownGeoLocationX", String.valueOf(putDownGeoLocationXY[0]));
-                toReturn.put("putDownGeoLocationY", String.valueOf(putDownGeoLocationXY[1]));
-                String json = new ObjectMapper().writeValueAsString(toReturn);
-                return new ResponseEntity<String>(json, HttpStatus.OK);
-            } else {
-                toReturn.put("message", "Out of service area");
-                String json = new ObjectMapper().writeValueAsString(toReturn);
-                return new ResponseEntity<String>(json, HttpStatus.BAD_REQUEST);
-            }
+        if (isSF(pickUpGeoLocationXY[0], pickUpGeoLocationXY[1])
+                && isSF(putDownGeoLocationXY[0], putDownGeoLocationXY[1])) {
+            toReturn.put("pickUpGeoLocationX", String.valueOf(pickUpGeoLocationXY[0]));
+            toReturn.put("pickUpGeoLocationY", String.valueOf(pickUpGeoLocationXY[1]));
+            toReturn.put("putDownGeoLocationX", String.valueOf(putDownGeoLocationXY[0]));
+            toReturn.put("putDownGeoLocationY", String.valueOf(putDownGeoLocationXY[1]));
+            String json = new ObjectMapper().writeValueAsString(toReturn);
+            return new ResponseEntity<String>(json, HttpStatus.OK);
+        } else {
+            toReturn.put("message", "Out of service area");
+            String json = new ObjectMapper().writeValueAsString(toReturn);
+            return new ResponseEntity<String>(json, HttpStatus.SERVICE_UNAVAILABLE);
+            // status 503
+        }
 
 
     }
