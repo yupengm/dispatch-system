@@ -423,7 +423,10 @@ export class MapContainer extends Component {
     getTrackingPath= (polyCode, map) =>{
 
         let res = this.decode(polyCode)
-        // console.log(res)
+
+        console.log(res)
+        console.log("props" + this.props)
+
         let points = res.map((p)=>{
             return{
                 lat: p.latitude,
@@ -431,6 +434,7 @@ export class MapContainer extends Component {
             }
         })
 
+        //Set 3 location, sta, ori, des
         let markers = []
         for (let i = 0; i < 3; i++) {
 
@@ -441,6 +445,19 @@ export class MapContainer extends Component {
             });
             markers.push(marker)
         }
+
+
+        // Set cur location
+        const curLocation = new google.maps.Marker({
+                // position: new google.maps.LatLng(this.props.curr.lat, parseFloat(this.props.curr.lng)),
+                position: new google.maps.LatLng(this.props.curr.lat, this.props.curr.lng),
+                map: map,
+                icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                }
+            });
+
+        markers.push(curLocation);
 
         this.setState({
             markers: markers

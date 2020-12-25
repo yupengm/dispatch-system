@@ -1,6 +1,7 @@
 package com.dispatch.service;
 
 import com.dispatch.dao.OrderDao;
+import com.dispatch.dao.StationDao;
 import com.dispatch.entity.Order;
 import com.dispatch.external.GoogleMapPolylineDecoder;
 
@@ -24,46 +25,97 @@ public class TrackingService {
     @Autowired
     private OrderDao orderDao;
 
+    @Autowired
+    private StationDao stationDao;
+
     public ResponseEntity<String> trackOrder(int orderId) throws JsonProcessingException {
         Order order = orderDao.getOrderByOrderId(orderId);
         Map<String, String> toReturn = new HashMap<>();
         String status = getStatus(order.getStartTime(),order.getRoute().getTimeFromStationToPickUpAddress(),
                 order.getRoute().getTimeFromPickUpAddressToPutDownAddress());
-        int timeInterval = -1; // means delivered
-        int timeElapsed = -1; // means delivered
-        if (status.equals("On the way to pick up")) {  // means from station to pickUpAddress
-            timeElapsed = getTimeElapsed(order.getStartTime());
-            timeInterval = order.getRoute().getTimeFromStationToPickUpAddress();
-        } else if (status.equals("Out for delivery")) {  // means from pickUpAddress to putDownAddress
-            timeElapsed = getTimeElapsed(order.getStartTime()) - order.getRoute().getTimeFromStationToPickUpAddress();
-            timeInterval = order.getRoute().getTimeFromPickUpAddressToPutDownAddress();
-        }
         int type = order.getRoute().getDeliverType();
-        if (type == 1 && timeInterval != -1) {
+
+        if (type == 1 && !status.equals("Completed")) {
+            int timeElapsed = getTimeElapsed(order.getStartTime());
+            int timeInterval = order.getRoute().getTimeFromStationToPickUpAddress() +
+                    order.getRoute().getTimeFromPickUpAddressToPutDownAddress();
             double scale = getScale(timeElapsed, timeInterval);
             GoogleMapPolylineDecoder decoder = new GoogleMapPolylineDecoder();
             List<List<Double>> coordinates = decoder.decodePolyline(order.getRoute().getRoutePoly());
             int index = (int) (Math.round(coordinates.size() * scale)) - 1;
             toReturn.put("currentX",String.valueOf(coordinates.get(index).get(0)));
             toReturn.put("currentY",String.valueOf(coordinates.get(index).get(1)));
-        } else if (type == 2 && timeInterval != -1) {
+        } else if(type == 2 && !status.equals("Completed")) {
+            Double startPointX = null; Double startPointY = null;
+            Double endPointX = null; Double endPointY = null;
+            int timeElapsed = -1; int timeInterval = -1;
+            if (status.equals("On the way to pick up")) {
+                timeElapsed = getTimeElapsed(order.getStartTime());
+                timeInterval = order.getRoute().getTimeFromStationToPickUpAddress();
+                startPointX = stationDao.getStationByName(order.getRoute().getStationName()).getLatitude();
+                startPointY = stationDao.getStationByName(order.getRoute().getStationName()).getLongitude();
+                endPointX = order.getRoute().getPickUpGeoX();
+                endPointY = order.getRoute().getPickUpGeoY();
+            } else if (status.equals("Out for delivery")) {
+                timeElapsed = getTimeElapsed(order.getStartTime()) - order.getRoute().getTimeFromStationToPickUpAddress();
+                timeInterval = order.getRoute().getTimeFromPickUpAddressToPutDownAddress();
+                startPointX = order.getRoute().getPickUpGeoX();
+                startPointY = order.getRoute().getPickUpGeoY();
+                endPointX = order.getRoute().getPutDownGeoX();
+                endPointY =  order.getRoute().getPutDownGeoY();
+            }
             double[] currentXY = trackDrone(timeElapsed,timeInterval,
-                    order.getRoute().getPickUpGeoX(),
-                    order.getRoute().getPickUpGeoY(),
-                    order.getRoute().getPutDownGeoX(),
-                    order.getRoute().getPutDownGeoY());
+                    startPointX,
+                    startPointY,
+                    endPointX,
+                    endPointY);
             toReturn.put("currentX",String.valueOf(currentXY[0]));
             toReturn.put("currentY",String.valueOf(currentXY[1]));
-            toReturn.put("PickUpAddressX",String.valueOf(order.getRoute().getPickUpGeoX()));
-            toReturn.put("PickUpAddressY",String.valueOf(order.getRoute().getPickUpGeoY()));
-            toReturn.put("PutDownAddressX",String.valueOf(order.getRoute().getPutDownGeoX()));
-            toReturn.put("PutDownAddressY",String.valueOf(order.getRoute().getPutDownGeoY()));
-            toReturn.put("stationX",String.valueOf(order.getStation().getLatitude()));
-            toReturn.put("stationY",String.valueOf(order.getStation().getLongitude()));
-
         }
 
 
+//        if (status.equals("On the way to pick up")) {  // means from station to pickUpAddress
+//            timeElapsed = getTimeElapsed(order.getStartTime());
+//            timeInterval = order.getRoute().getTimeFromStationToPickUpAddress();
+//            startPointX = stationDao.getStationByName(order.getRoute().getStationName()).getLatitude();
+//            startPointY = stationDao.getStationByName(order.getRoute().getStationName()).getLongitude();
+//            endPointX = order.getRoute().getPickUpGeoX();
+//            endPointY = order.getRoute().getPickUpGeoY();
+//
+//        } else if (status.equals("Out for delivery")) {  // means from pickUpAddress to putDownAddress
+//            timeElapsed = getTimeElapsed(order.getStartTime()) - order.getRoute().getTimeFromStationToPickUpAddress();
+//            timeInterval = order.getRoute().getTimeFromPickUpAddressToPutDownAddress();
+//            startPointX = order.getRoute().getPickUpGeoX();
+//            startPointY = order.getRoute().getPickUpGeoY();
+//            endPointX = order.getRoute().getPutDownGeoX();
+//            endPointY =  order.getRoute().getPutDownGeoY();
+//        }
+//
+//
+//        if (type == 1 && timeInterval != -1) {
+//            double scale = getScale(timeElapsed, timeInterval);
+//            GoogleMapPolylineDecoder decoder = new GoogleMapPolylineDecoder();
+//            List<List<Double>> coordinates = decoder.decodePolyline(order.getRoute().getRoutePoly());
+//            int index = (int) (Math.round(coordinates.size() * scale)) - 1;
+//            toReturn.put("currentX",String.valueOf(coordinates.get(index).get(0)));
+//            toReturn.put("currentY",String.valueOf(coordinates.get(index).get(1)));
+//        } else if (type == 2 && timeInterval != -1) {
+//            double[] currentXY = trackDrone(timeElapsed,timeInterval,
+//                    startPointX,
+//                    startPointY,
+//                    endPointX,
+//                    endPointY);
+//            toReturn.put("currentX",String.valueOf(currentXY[0]));
+//            toReturn.put("currentY",String.valueOf(currentXY[1]));
+//        }
+
+
+        toReturn.put("PickUpAddressX",String.valueOf(order.getRoute().getPickUpGeoX()));
+        toReturn.put("PickUpAddressY",String.valueOf(order.getRoute().getPickUpGeoY()));
+        toReturn.put("PutDownAddressX",String.valueOf(order.getRoute().getPutDownGeoX()));
+        toReturn.put("PutDownAddressY",String.valueOf(order.getRoute().getPutDownGeoY()));
+        toReturn.put("stationX",String.valueOf(order.getStation().getLatitude()));
+        toReturn.put("stationY",String.valueOf(order.getStation().getLongitude()));
 //        toReturn.put("status",String.valueOf(status));
         toReturn.put("PickUpAddressX",String.valueOf(order.getRoute().getPickUpGeoX()));
         toReturn.put("PickUpAddressY",String.valueOf(order.getRoute().getPickUpGeoY()));
